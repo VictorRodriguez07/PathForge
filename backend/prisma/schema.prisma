@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  submissions Submission[]
+}
+
+model Career {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String
+  skills      String[]
+  demandScore Int      @default(80)
+  createdAt   DateTime @default(now())
+
+  recommendations Recommendation[]
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+model Submission {
+  id         String   @id @default(cuid())
+  userId     String
+  exerciseId String
+  code       String
+  status     String
+  passed     Boolean?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
