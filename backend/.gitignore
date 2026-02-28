@@ -1,0 +1,34 @@
+# Dependencias de node
+node_modules/
+
+# Variables de entorno
+.env
+.env.local
+.env.dev
+.env.prod
+
+# Compilados
+dist/
+build/
+
+# Prisma
+src/generated/
+
+# Serverless Framework
+.serverless/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Coverage
+coverage/

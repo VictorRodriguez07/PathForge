@@ -1,33 +1,35 @@
 {
-  "name": "devpath-backend",
+  "name": "backend",
   "version": "1.0.0",
-  "type": "module",
+  "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc && tsc-alias",
-    "start": "node dist/index.js",
-    "lambda:dev": "serverless offline",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "serverless offline --stage dev",
+    "build": "npx tsc --noEmit",
+    "deploy:dev": "serverless deploy --stage dev",
+    "deploy:prod": "serverless deploy --stage prod",
     "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
     "db:studio": "prisma studio"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
-    "express": "^4.19.2",
-    "@prisma/client": "^5.14.0",
-    "zod": "^3.23.8",
-    "aws-serverless-express": "^3.4.0",
-    "jsonwebtoken": "^9.0.2",
-    "bcryptjs": "^2.4.3"
+    "@prisma/client": "^7.4.1",
+    "@types/node": "^25.3.0",
+    "dotenv": "^17.3.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/node": "^20.11.30",
-    "prisma": "^5.14.0",
-    "tsx": "^4.7.2",
-    "typescript": "^5.4.5",
-    "serverless": "^3.40.0"
+    "@serverless/utils": "^6.15.0",
+    "@types/aws-lambda": "^8.10.161",
+    "esbuild": "^0.27.3",
+    "prisma": "^7.4.1",
+    "serverless": "^4.33.0",
+    "serverless-offline": "^14.5.0"
   }
 }

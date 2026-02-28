@@ -1,32 +1,31 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
+// ─────────────────────────────────────────
+// USUARIOS
+// ─────────────────────────────────────────
+
 model User {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   email     String   @unique
-  name      String?
+  name      String
   role      Role     @default(STUDENT)
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  userPaths   UserPath[]
   submissions Submission[]
-}
 
-model Career {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  description String
-  skills      String[]
-  demandScore Int      @default(80)
-  createdAt   DateTime @default(now())
-
-  recommendations Recommendation[]
+  @@index([email])
+  @@map("users")
 }
 
 enum Role {
@@ -34,14 +33,239 @@ enum Role {
   ADMIN
 }
 
-model Submission {
-  id         String   @id @default(cuid())
-  userId     String
-  exerciseId String
-  code       String
-  status     String
-  passed     Boolean?
-  createdAt  DateTime @default(now())
+// ─────────────────────────────────────────
+// MATERIAS (JavaScript, Python, AWS, etc...)
+// ─────────────────────────────────────────
 
-  user User @relation(fields: [userId], references: [id])
+model Subject {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  slug        String  @unique
+  description String?
+  iconUrl     String?
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  challenges    Challenge[]
+  pathTemplates PathTemplate[]
+
+  @@index([slug])
+  @@map("subjects")
+}
+
+// ─────────────────────────────────────────
+// RETOS (ejercicios de código de programación primer mvp)
+// ─────────────────────────────────────────
+
+model Challenge {
+  id          String      @id @default(uuid())
+  title       String
+  slug        String      @unique
+  description String
+  difficulty  Difficulty
+  points      Int
+  timeLimit   Int         // segundos
+  memoryLimit Int         // MB
+  isActive    Boolean     @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  testCases    TestCase[]
+  submissions  Submission[]
+  moduleItems  ModuleItem[]
+
+  @@index([subjectId])
+  @@index([difficulty])
+  @@map("challenges")
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model TestCase {
+  id          String  @id @default(uuid())
+  input       String
+  expected    String
+  isPublic    Boolean @default(false)
+  orderIndex  Int
+
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+
+  @@index([challengeId])
+  @@map("test_cases")
+}
+
+// ─────────────────────────────────────────
+// RUTAS DE APRENDIZAJE — PLANTILLAS
+// ─────────────────────────────────────────
+
+model PathTemplate {
+  id          String @id @default(uuid())
+  title       String
+  slug        String @unique
+  description String
+  level       Level
+  goal        String // "Frontend Developer", "Backend Developer", etc.
+  weeklyHours Int    // horas recomendadas por semana
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  modules   PathModule[]
+  userPaths UserPath[]
+
+  @@index([subjectId])
+  @@index([level])
+  @@map("path_templates")
+}
+
+enum Level {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model PathModule {
+  id          String @id @default(uuid())
+  title       String
+  description String?
+  orderIndex  Int
+  durationDays Int
+
+  pathTemplateId String
+  pathTemplate   PathTemplate @relation(fields: [pathTemplateId], references: [id])
+
+  items ModuleItem[]
+  progress ModuleProgress[]
+
+  @@index([pathTemplateId])
+  @@map("path_modules")
+}
+
+// Relación entre módulos y retos
+model ModuleItem {
+  id         String @id @default(uuid())
+  orderIndex Int
+
+  moduleId    String
+  module      PathModule @relation(fields: [moduleId], references: [id])
+
+  challengeId String
+  challenge   Challenge  @relation(fields: [challengeId], references: [id])
+
+  @@unique([moduleId, challengeId])
+  @@index([moduleId])
+  @@map("module_items")
+}
+
+// ─────────────────────────────────────────
+// RUTAS DE APRENDIZAJE — INSTANCIA USUARIO
+// ─────────────────────────────────────────
+
+model UserPath {
+  id          String     @id @default(uuid())
+  status      PathStatus @default(ACTIVE)
+  currentLevel Level
+  goal        String
+  weeklyHours Int        // puede diferir de la plantilla según el usuario
+
+  startedAt   DateTime   @default(now())
+  completedAt DateTime?
+  updatedAt   DateTime   @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  pathTemplateId String
+  pathTemplate   PathTemplate @relation(fields: [pathTemplateId], references: [id])
+
+  moduleProgress ModuleProgress[]
+
+  @@index([userId])
+  @@index([pathTemplateId])
+  @@map("user_paths")
+}
+
+enum PathStatus {
+  ACTIVE
+  COMPLETED
+  PAUSED
+  ABANDONED
+}
+
+model ModuleProgress {
+  id          String         @id @default(uuid())
+  status      ModuleStatus   @default(PENDING)
+  completedAt DateTime?
+
+  userPathId String
+  userPath   UserPath   @relation(fields: [userPathId], references: [id])
+
+  moduleId String
+  module   PathModule @relation(fields: [moduleId], references: [id])
+
+  @@unique([userPathId, moduleId])
+  @@index([userPathId])
+  @@map("module_progress")
+}
+
+enum ModuleStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+// ─────────────────────────────────────────
+// SUBMISSIONS (intentos de retos)
+// ─────────────────────────────────────────
+
+model Submission {
+  id           String           @id @default(uuid())
+  code         String
+  language     String
+  status       SubmissionStatus @default(PENDING)
+  executionMs  Int?             // tiempo de ejecución real
+  memoryUsedMb Int?
+  passedTests  Int              @default(0)
+  totalTests   Int              @default(0)
+  errorMessage String?
+  s3LogKey     String?          // referencia al log en S3
+
+  submittedAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+
+  @@index([userId])
+  @@index([challengeId])
+  @@index([status])
+  @@map("submissions")
+}
+
+enum SubmissionStatus {
+  PENDING
+  RUNNING
+  ACCEPTED
+  WRONG_ANSWER
+  TIME_LIMIT_EXCEEDED
+  MEMORY_LIMIT_EXCEEDED
+  RUNTIME_ERROR
+  COMPILATION_ERROR
 }
