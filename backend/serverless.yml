@@ -6,10 +6,12 @@ provider:
   runtime: nodejs20.x
   region: us-east-1
   stage: ${opt:stage, 'dev'}
-  
+
   environment:
     STAGE: ${self:provider.stage}
     DATABASE_URL: ${env:DATABASE_URL}
+    COGNITO_USER_POOL_ID: !Ref CognitoUserPool
+    COGNITO_CLIENT_ID: !Ref CognitoUserPoolClient
 
   iam:
     role:
@@ -19,26 +21,36 @@ provider:
             - logs:CreateLogGroup
             - logs:CreateLogStream
             - logs:PutLogEvents
-          Resource: "*"
+          Resource: '*'
+        - Effect: Allow
+          Action:
+            - cognito-idp:AdminCreateUser
+            - cognito-idp:AdminSetUserPassword
+            - cognito-idp:AdminInitiateAuth
+            - cognito-idp:AdminGetUser
+          Resource: !GetAtt CognitoUserPool.Arn
 
 build:
   esbuild:
     bundle: true
-    minify: false
-    sourcemap: true
+    minify: true
+    sourcemap: false
     target: node20
     platform: node
-    external:
-      - "@prisma/client"
-      - ".prisma"
+    exclude:
+      - '@prisma/client'
+      - '.prisma'
+      - '@prisma/engines'
+      - 'prisma'
 
 package:
   individually: true
   patterns:
-    - "!node_modules/**"
-    - "!src/**"
-    - "!prisma/**"
-    - "src/generated/prisma/**"
+    - '!**'
+    - '!node_modules/**'
+    - 'node_modules/.prisma/client/libquery_engine-rhel*'
+    - 'node_modules/.prisma/client/schema.prisma'
+    - 'node_modules/@prisma/client/runtime/**'
 
 plugins:
   - serverless-offline
@@ -52,3 +64,67 @@ functions:
       - httpApi:
           path: /health
           method: get
+
+  authRegister:
+    handler: src/handlers/auth-register.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /auth/register
+          method: post
+
+  authLogin:
+    handler: src/handlers/auth-login.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /auth/login
+          method: post
+
+resources:
+  Resources:
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: pathforge-${self:provider.stage}
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes: []
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireUppercase: true
+            RequireLowercase: true
+            RequireNumbers: true
+            RequireSymbols: false
+        Schema:
+          - Name: email
+            AttributeDataType: String
+            Required: true
+            Mutable: true
+          - Name: name
+            AttributeDataType: String
+            Required: true
+            Mutable: true
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: false
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: pathforge-client-${self:provider.stage}
+        UserPoolId: !Ref CognitoUserPool
+        ExplicitAuthFlows:
+          - ALLOW_ADMIN_USER_PASSWORD_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+          - ALLOW_USER_SRP_AUTH
+        GenerateSecret: false
+        AccessTokenValidity: 1
+        IdTokenValidity: 1
+        RefreshTokenValidity: 30
+        TokenValidityUnits:
+          AccessToken: days
+          IdToken: days
+          RefreshToken: days
