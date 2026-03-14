@@ -12,7 +12,7 @@ export const handler = async (event: APIGatewayProxyEventV2) => {
       status: "ok",
       stage: process.env["STAGE"],
       authenticated: auth.isAuthenticated,
-      user: auth.user?.email ?? null,
+      user: auth.user?.cognitoId ?? null,
     }),
   };
 };

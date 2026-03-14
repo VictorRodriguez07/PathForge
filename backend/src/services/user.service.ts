@@ -8,8 +8,6 @@ export const createUser= async(data: CreateUserInput)=>{
 
     if(extistingUser) throw new Error("User with this email already exists")
 
-    return prisma.user.create({
-        data
-    })
+    return "ok";
 
 }

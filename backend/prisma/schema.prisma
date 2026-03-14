@@ -14,6 +14,7 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
+  cognitoId String   @unique
   email     String   @unique
   name      String
   role      Role     @default(STUDENT)
@@ -23,8 +24,10 @@ model User {
 
   userPaths   UserPath[]
   submissions Submission[]
+  careerRecommendations CareerRecommendation[]
 
   @@index([email])
+  @@index([cognitoId])
   @@map("users")
 }
 
@@ -257,6 +260,18 @@ model Submission {
   @@index([challengeId])
   @@index([status])
   @@map("submissions")
+}
+
+model CareerRecommendation {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  recommendations Json
+  userProfile     Json
+  createdAt       DateTime @default(now())
+
+  @@index([userId])
+  @@map("career_recommendations")
 }
 
 enum SubmissionStatus {

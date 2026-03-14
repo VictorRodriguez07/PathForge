@@ -82,6 +82,15 @@ functions:
       - httpApi:
           path: /auth/login
           method: post
+  careerDiscovery:
+    handler: src/handlers/career-discovery.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /careers/discover
+          method: post
+          
 
 resources:
   Resources:

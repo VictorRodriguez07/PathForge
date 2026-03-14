@@ -4,7 +4,7 @@ import {
   AdminSetUserPasswordCommand,
   AdminInitiateAuthCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
-import { cognitoClient } from "../infrastructure/cognito";
+import { cognitoClient } from '../infrastructure/cognito';
 import { prisma } from "../infrastructure/prisma";
 import { RegisterInput, LoginInput } from "../schemas/auth.schema";
 
@@ -25,7 +25,7 @@ export const registerUser = async (data: RegisterInput) => {
   }
 
   //función para crear el nuevo usuario en cognito, utilizando el comando AdminCreateUserCommand para crear el usuario con una contraseña temporal, y luego el comando AdminSetUserPasswordCommand para establecer la contraseña permanente.
-  await cognitoClient.send(
+  const cognitoUser = await cognitoClient.send(
     new AdminCreateUserCommand({
       UserPoolId: USER_POOL_ID,
       Username: data.email,
@@ -39,30 +39,33 @@ export const registerUser = async (data: RegisterInput) => {
     })
   );
 
+
   //funcion para establecer la contraseña permanente del usuario recién creado en Cognito, utilizando el comando AdminSetUserPasswordCommand para establecer la contraseña permanente.
   await cognitoClient.send(
     new AdminSetUserPasswordCommand({
-      UserPoolId: USER_POOL_ID,
-      Username: data.email,
-      Password: data.password,
-      Permanent: true,
+    UserPoolId: USER_POOL_ID,
+    Username: data.email,
+    Password: data.password,
+    Permanent: true,
     })
   );
+  const cognitoId = cognitoUser.User?.Username ?? data.email;
 
   //función para guardar el nuevo usuario en la base de datos utilizando Prisma, creando un nuevo registro en la tabla de usuarios con el email y nombre proporcionados.
   const user = await prisma.user.create({
-    data: {
-      email: data.email,
-      name: data.name,
-    },
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      role: true,
-      createdAt: true,
-    },
-  });
+  data: {
+    cognitoId,
+    email: data.email,
+    name: data.name,
+  },
+  select: {
+    id: true,
+    email: true,
+    name: true,
+    role: true,
+    createdAt: true,
+  },
+});
 
   return user;
 };

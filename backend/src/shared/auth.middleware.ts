@@ -11,7 +11,6 @@ const verifier = CognitoJwtVerifier.create({
 //interfas para representar al usuario autenticado, con propiedades para el ID de Cognito y el email del usuario.
 export interface AuthenticatedUser {
   cognitoId: string;
-  email: string;
 }
 
 //interfas para representar la estrcutura del objeto que debe seguirse, con propiedades para el usuario autenticado (o null si no hay un usuario autenticado) y un booleano que indica si el usuario está autenticado o no.
@@ -50,8 +49,7 @@ export async function requireAuth(event: APIGatewayProxyEventV2): Promise<AuthCo
     const payload = await verifier.verify(token);
     return {
       user: {
-        cognitoId: payload.sub,
-        email: payload.username as string,
+        cognitoId: payload.sub
       },
       isAuthenticated: true,
     };
@@ -74,8 +72,7 @@ export async function optionalAuth(
     const payload = await verifier.verify(token);
     return {
       user: {
-        cognitoId: payload.sub,
-        email: payload.username as string,
+        cognitoId: payload.sub
       },
       isAuthenticated: true,
     };
