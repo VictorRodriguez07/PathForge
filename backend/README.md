@@ -60,6 +60,8 @@ El servidor estará disponible en `http://localhost:3000`.
 | `npm run db:migrate` | Correr migraciones de base de datos |
 | `npm run db:generate` | Regenerar cliente Prisma |
 | `npm run db:studio` | Abrir Prisma Studio |
+| `npm run db:seed` | correr el seed generado de base de datos |
+  
 
 
 

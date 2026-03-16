@@ -155,7 +155,7 @@ model PathModule {
   items ModuleItem[]
   progress ModuleProgress[]
 
-  @@index([pathTemplateId])
+  @@unique([pathTemplateId, orderIndex])
   @@map("path_modules")
 }
 
