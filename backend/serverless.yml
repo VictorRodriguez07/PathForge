@@ -90,6 +90,59 @@ functions:
       - httpApi:
           path: /careers/discover
           method: post
+  learningPathList:
+    handler: src/handlers/learning-path-list.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /learning-paths
+          method: get
+
+  learningPathGet:
+    handler: src/handlers/learning-path-get.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /learning-paths/{slug}
+          method: get
+
+  learningPathEnroll:
+    handler: src/handlers/learning-path-enroll.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /learning-paths/{slug}/enroll
+          method: post
+
+  learningPathCompleteModule:
+    handler: src/handlers/learning-path-complete-module.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /learning-paths/{pathId}/modules/{moduleId}/complete
+          method: put
+
+  learningPathProgress:
+    handler: src/handlers/learning-path-progress.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /learning-paths/{slug}/progress
+          method: get
+
+  learningPathAbandon:
+    handler: src/handlers/learning-path-abandon.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /learning-paths/{pathId}/enroll
+          method: delete
           
 
 resources:
