@@ -12,6 +12,7 @@ provider:
     DATABASE_URL: ${env:DATABASE_URL}
     COGNITO_USER_POOL_ID: !Ref CognitoUserPool
     COGNITO_CLIENT_ID: !Ref CognitoUserPoolClient
+    SQS_QUEUE_URL: ${env:SQS_QUEUE_URL}
 
   iam:
     role:
@@ -29,6 +30,19 @@ provider:
             - cognito-idp:AdminInitiateAuth
             - cognito-idp:AdminGetUser
           Resource: !GetAtt CognitoUserPool.Arn
+        - Effect: Allow
+          Action:
+            - sqs:SendMessage
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+          Resource: arn:aws:sqs:us-east-1:016562553174:pathforge-code-execution
+        - Effect: Allow
+          Action:
+            - ecr:GetDownloadUrlForLayer
+            - ecr:BatchGetImage
+            - ecr:BatchCheckLayerAvailability
+          Resource: arn:aws:ecr:us-east-1:016562553174:repository/pathforge-executor
 
 build:
   esbuild:
@@ -143,6 +157,58 @@ functions:
       - httpApi:
           path: /learning-paths/{pathId}/enroll
           method: delete
+  exerciseList:
+    handler: src/handlers/exercise-list.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /exercises
+          method: get
+
+  exerciseGet:
+    handler: src/handlers/exercise-get.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /exercises/{slug}
+          method: get
+
+  exerciseRun:
+    handler: src/handlers/exercise-run.handler
+    memorySize: 256
+    timeout: 15
+    events:
+      - httpApi:
+          path: /exercises/{slug}/run
+          method: post
+
+  exerciseSubmit:
+    handler: src/handlers/exercise-submit.handler
+    memorySize: 256
+    timeout: 15
+    events:
+      - httpApi:
+          path: /exercises/{slug}/submit
+          method: post
+
+  submissionGet:
+    handler: src/handlers/submission-get.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /submissions/{submissionId}
+          method: get
+  codeExecutor:
+    image: 016562553174.dkr.ecr.us-east-1.amazonaws.com/pathforge-executor:latest
+    memorySize: 512
+    timeout: 30
+    events:
+      - sqs:
+          arn: arn:aws:sqs:us-east-1:016562553174:pathforge-code-execution
+          batchSize: 1
           
 
 resources:

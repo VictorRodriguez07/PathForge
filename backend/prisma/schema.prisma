@@ -104,6 +104,7 @@ model TestCase {
   challengeId String
   challenge   Challenge @relation(fields: [challengeId], references: [id])
 
+  @@unique([challengeId, orderIndex])
   @@index([challengeId])
   @@map("test_cases")
 }
