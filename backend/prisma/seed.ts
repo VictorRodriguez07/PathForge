@@ -11,6 +11,8 @@ async function main() {
   console.log("Seed completed successfully.");
   await seedExercises();
   console.log("Exercises seeded successfully.");
+  await seedConcepts();
+  console.log("Concepts seeded successfully.");
 
 }
 
@@ -578,6 +580,152 @@ Output: false
 
     console.log(`✅ Exercise seeded: ${exerciseInfo.title}`);
   }
+}
+
+async function seedConcepts() {
+  const javascript = await prisma.subject.findUniqueOrThrow({ where: { slug: "javascript" } });
+  const typescript = await prisma.subject.findUniqueOrThrow({ where: { slug: "typescript" } });
+  const react = await prisma.subject.findUniqueOrThrow({ where: { slug: "react" } });
+  const nodejs = await prisma.subject.findUniqueOrThrow({ where: { slug: "nodejs" } });
+  const python = await prisma.subject.findUniqueOrThrow({ where: { slug: "python" } });
+  const aws = await prisma.subject.findUniqueOrThrow({ where: { slug: "aws" } });
+
+  const concepts = [
+    // JavaScript
+    { name: "Variables, tipos de datos y operadores", slug: "js-variables", level: "BEGINNER" as const, subjectId: javascript.id },
+    { name: "Funciones y scope", slug: "js-functions", level: "BEGINNER" as const, subjectId: javascript.id },
+    { name: "Arrays y objetos", slug: "js-arrays-objects", level: "BEGINNER" as const, subjectId: javascript.id },
+    { name: "Manipulación del DOM", slug: "js-dom", level: "BEGINNER" as const, subjectId: javascript.id },
+    { name: "Eventos del navegador", slug: "js-events", level: "BEGINNER" as const, subjectId: javascript.id },
+    { name: "Promesas y async/await", slug: "js-async", level: "INTERMEDIATE" as const, subjectId: javascript.id },
+    { name: "Closures y callbacks", slug: "js-closures", level: "INTERMEDIATE" as const, subjectId: javascript.id },
+    { name: "Módulos ES6+", slug: "js-modules", level: "INTERMEDIATE" as const, subjectId: javascript.id },
+    { name: "Fetch API y consumo de APIs REST", slug: "js-fetch", level: "INTERMEDIATE" as const, subjectId: javascript.id },
+    { name: "Patrones de diseño en JavaScript", slug: "js-patterns", level: "ADVANCED" as const, subjectId: javascript.id },
+    { name: "Performance y optimización", slug: "js-performance", level: "ADVANCED" as const, subjectId: javascript.id },
+    { name: "Testing con Jest", slug: "js-testing", level: "ADVANCED" as const, subjectId: javascript.id },
+
+    // TypeScript
+    { name: "Tipos básicos y anotaciones", slug: "ts-basic-types", level: "BEGINNER" as const, subjectId: typescript.id },
+    { name: "Interfaces y type aliases", slug: "ts-interfaces", level: "BEGINNER" as const, subjectId: typescript.id },
+    { name: "Funciones tipadas", slug: "ts-functions", level: "BEGINNER" as const, subjectId: typescript.id },
+    { name: "Generics", slug: "ts-generics", level: "INTERMEDIATE" as const, subjectId: typescript.id },
+    { name: "Utility types", slug: "ts-utility-types", level: "INTERMEDIATE" as const, subjectId: typescript.id },
+    { name: "Decoradores", slug: "ts-decorators", level: "ADVANCED" as const, subjectId: typescript.id },
+    { name: "TypeScript con React", slug: "ts-react", level: "INTERMEDIATE" as const, subjectId: typescript.id },
+    { name: "Configuración avanzada de tsconfig", slug: "ts-config", level: "ADVANCED" as const, subjectId: typescript.id },
+
+    // React
+    { name: "Componentes y JSX", slug: "react-components", level: "BEGINNER" as const, subjectId: react.id },
+    { name: "Props y estado con useState", slug: "react-state", level: "BEGINNER" as const, subjectId: react.id },
+    { name: "useEffect y ciclo de vida", slug: "react-effects", level: "BEGINNER" as const, subjectId: react.id },
+    { name: "Manejo de formularios", slug: "react-forms", level: "INTERMEDIATE" as const, subjectId: react.id },
+    { name: "Context API y useContext", slug: "react-context", level: "INTERMEDIATE" as const, subjectId: react.id },
+    { name: "Custom hooks", slug: "react-custom-hooks", level: "INTERMEDIATE" as const, subjectId: react.id },
+    { name: "React Router y navegación", slug: "react-router", level: "INTERMEDIATE" as const, subjectId: react.id },
+    { name: "Estado global con Zustand", slug: "react-zustand", level: "INTERMEDIATE" as const, subjectId: react.id },
+    { name: "Optimización con useMemo y useCallback", slug: "react-optimization", level: "ADVANCED" as const, subjectId: react.id },
+    { name: "Testing de componentes", slug: "react-testing", level: "ADVANCED" as const, subjectId: react.id },
+
+    // Node.js
+    { name: "Módulos y sistema de archivos", slug: "node-modules", level: "BEGINNER" as const, subjectId: nodejs.id },
+    { name: "HTTP nativo y Express básico", slug: "node-express-basic", level: "BEGINNER" as const, subjectId: nodejs.id },
+    { name: "Manejo de rutas y middlewares", slug: "node-routes", level: "BEGINNER" as const, subjectId: nodejs.id },
+    { name: "Conexión a bases de datos con Prisma", slug: "node-prisma", level: "INTERMEDIATE" as const, subjectId: nodejs.id },
+    { name: "Autenticación y JWT", slug: "node-auth", level: "INTERMEDIATE" as const, subjectId: nodejs.id },
+    { name: "Validación con Zod", slug: "node-validation", level: "INTERMEDIATE" as const, subjectId: nodejs.id },
+    { name: "Testing con Jest y Supertest", slug: "node-testing", level: "ADVANCED" as const, subjectId: nodejs.id },
+    { name: "Deploy y variables de entorno", slug: "node-deploy", level: "ADVANCED" as const, subjectId: nodejs.id },
+
+    // Python
+    { name: "Variables, tipos y estructuras de datos", slug: "py-basics", level: "BEGINNER" as const, subjectId: python.id },
+    { name: "Funciones y módulos", slug: "py-functions", level: "BEGINNER" as const, subjectId: python.id },
+    { name: "POO en Python", slug: "py-oop", level: "INTERMEDIATE" as const, subjectId: python.id },
+    { name: "NumPy y operaciones vectorizadas", slug: "py-numpy", level: "INTERMEDIATE" as const, subjectId: python.id },
+    { name: "Pandas y análisis de datos", slug: "py-pandas", level: "INTERMEDIATE" as const, subjectId: python.id },
+    { name: "Visualización con Matplotlib", slug: "py-matplotlib", level: "INTERMEDIATE" as const, subjectId: python.id },
+    { name: "Machine Learning con Scikit-learn", slug: "py-sklearn", level: "ADVANCED" as const, subjectId: python.id },
+    { name: "Deep Learning básico", slug: "py-deep-learning", level: "ADVANCED" as const, subjectId: python.id },
+
+    // AWS
+    { name: "Fundamentos de cloud y regiones", slug: "aws-fundamentals", level: "BEGINNER" as const, subjectId: aws.id },
+    { name: "IAM y gestión de permisos", slug: "aws-iam", level: "BEGINNER" as const, subjectId: aws.id },
+    { name: "EC2 y cómputo en la nube", slug: "aws-ec2", level: "BEGINNER" as const, subjectId: aws.id },
+    { name: "S3 y almacenamiento", slug: "aws-s3", level: "BEGINNER" as const, subjectId: aws.id },
+    { name: "Lambda y serverless", slug: "aws-lambda", level: "INTERMEDIATE" as const, subjectId: aws.id },
+    { name: "API Gateway", slug: "aws-api-gateway", level: "INTERMEDIATE" as const, subjectId: aws.id },
+    { name: "RDS y bases de datos", slug: "aws-rds", level: "INTERMEDIATE" as const, subjectId: aws.id },
+    { name: "VPC y networking", slug: "aws-vpc", level: "INTERMEDIATE" as const, subjectId: aws.id },
+    { name: "CloudFormation e IaC", slug: "aws-cloudformation", level: "ADVANCED" as const, subjectId: aws.id },
+    { name: "CI/CD con CodePipeline", slug: "aws-cicd", level: "ADVANCED" as const, subjectId: aws.id },
+  ];
+
+  for (const concept of concepts) {
+    await prisma.concept.upsert({
+      where: { slug: concept.slug },
+      update: concept,
+      create: concept,
+    });
+  }
+
+  console.log(`✅ ${concepts.length} concepts seeded`);
+
+  // Asociar conceptos a módulos
+  await seedConceptsToModules();
+}
+
+async function seedConceptsToModules() {
+  // JavaScript desde Cero
+  const jsPath = await prisma.pathTemplate.findUniqueOrThrow({ where: { slug: "javascript-beginner" } });
+  const jsModules = await prisma.pathModule.findMany({
+    where: { pathTemplateId: jsPath.id },
+    orderBy: { orderIndex: "asc" },
+  });
+
+  const conceptMappings: { moduleSlug: string; conceptSlugs: string[] }[] = [
+    {
+      moduleSlug: "Fundamentos de JavaScript",
+      conceptSlugs: ["js-variables", "js-functions"],
+    },
+    {
+      moduleSlug: "Funciones y Scope",
+      conceptSlugs: ["js-functions", "js-closures"],
+    },
+    {
+      moduleSlug: "Arrays y Objetos",
+      conceptSlugs: ["js-arrays-objects"],
+    },
+    {
+      moduleSlug: "DOM y Eventos",
+      conceptSlugs: ["js-dom", "js-events"],
+    },
+    {
+      moduleSlug: "Asincronismo y APIs",
+      conceptSlugs: ["js-async", "js-fetch"],
+    },
+    {
+      moduleSlug: "Proyecto Final",
+      conceptSlugs: ["js-modules", "js-patterns"],
+    },
+  ];
+
+  for (const mapping of conceptMappings) {
+    const module = jsModules.find((m) => m.title === mapping.moduleSlug);
+    if (!module) continue;
+
+    for (const conceptSlug of mapping.conceptSlugs) {
+      const concept = await prisma.concept.findUnique({ where: { slug: conceptSlug } });
+      if (!concept) continue;
+
+      await prisma.conceptOnModule.upsert({
+        where: { moduleId_conceptId: { moduleId: module.id, conceptId: concept.id } },
+        update: {},
+        create: { moduleId: module.id, conceptId: concept.id },
+      });
+    }
+  }
+
+  console.log("✅ Concepts mapped to modules");
 }
 
 main()

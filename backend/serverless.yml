@@ -13,6 +13,24 @@ provider:
     COGNITO_USER_POOL_ID: !Ref CognitoUserPool
     COGNITO_CLIENT_ID: !Ref CognitoUserPoolClient
     SQS_QUEUE_URL: ${env:SQS_QUEUE_URL}
+  
+  httpApi:
+    cors:
+      allowedOrigins:
+        - http://localhost:3000
+        - http://localhost:3001
+        - https://pathforge.dev
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+        - X-Requested-With
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+      allowCredentials: false
 
   iam:
     role:
@@ -209,6 +227,32 @@ functions:
       - sqs:
           arn: arn:aws:sqs:us-east-1:016562553174:pathforge-code-execution
           batchSize: 1
+  conceptsGet:
+    handler: src/handlers/concepts-get.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /concepts/{subjectSlug}
+          method: get
+
+  customPathGenerate:
+    handler: src/handlers/custom-path-generate.handler
+    memorySize: 256
+    timeout: 15
+    events:
+      - httpApi:
+          path: /learning-paths/custom/generate
+          method: post
+
+  customPathConfirm:
+    handler: src/handlers/custom-path-confirm.handler
+    memorySize: 256
+    timeout: 15
+    events:
+      - httpApi:
+          path: /learning-paths/custom/confirm
+          method: post
           
 
 resources:
