@@ -1,0 +1,830 @@
+/* ─── Page & Background ──────────────────────── */
+.page {
+  min-height: calc(100vh - 56px);
+  position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 52px 24px 80px;
+}
+
+.bgOrb1 {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  top: -150px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.09), transparent 65%);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bgOrb2 {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.07), transparent 65%);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Form Wrap ──────────────────────────────── */
+.formWrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 640px;
+}
+
+/* ─── Step Indicator ─────────────────────────── */
+.steps {
+  display: flex;
+  align-items: center;
+  margin-bottom: 52px;
+}
+
+.stepItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepCircle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--ff-h);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.stepDone {
+  background: #3B82F6;
+  color: #fff;
+}
+
+.stepActive {
+  background: #3B82F6;
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+.stepIdle {
+  background: rgba(255, 255, 255, 0.04);
+  color: #3D4A62;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.stepLabel {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.stepLabelActive { color: var(--c-t1); font-weight: 500; }
+.stepLabelDone   { color: var(--c-t2); }
+.stepLabelIdle   { color: var(--c-muted); }
+
+.stepLine {
+  flex: 1;
+  height: 1px;
+  margin: 0 8px;
+  min-width: 24px;
+  transition: background 0.25s;
+}
+
+.stepLineDone { background: #3B82F6; }
+.stepLineIdle { background: rgba(255, 255, 255, 0.055); }
+
+/* ─── Step Content ───────────────────────────── */
+.stepContent { margin-bottom: 32px; }
+
+.stepQLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #3B82F6;
+  margin-bottom: 10px;
+}
+
+.stepTitle {
+  font-family: var(--ff-h);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--c-t1);
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.stepSub {
+  font-size: 14px;
+  color: var(--c-t2);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.sectionLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-t2);
+  margin-bottom: 10px;
+}
+
+.optional { color: var(--c-muted); font-weight: 300; }
+.required { color: var(--c-blue); }
+
+/* ─── Level Cards ────────────────────────────── */
+.levelGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.levelCard {
+  padding: 18px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  font-family: var(--ff-b);
+}
+
+.levelCard:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.levelCardSel {
+  border-color: rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.levelCardName {
+  font-family: var(--ff-h);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-t1);
+  margin-bottom: 4px;
+}
+
+.levelCardDesc {
+  font-size: 11px;
+  color: var(--c-muted);
+  line-height: 1.4;
+}
+
+/* ─── Chips ──────────────────────────────────── */
+.techSection { margin-top: 8px; }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 7px 13px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--c-t2);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--ff-b);
+}
+
+.chip:hover {
+  border-color: rgba(255, 255, 255, 0.13);
+  color: var(--c-t1);
+}
+
+.chipSel {
+  border-color: rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--c-t1);
+}
+
+/* ─── Icon Chips ─────────────────────────────── */
+.iconChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.iconChip {
+  padding: 8px 14px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--c-t2);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--ff-b);
+}
+
+.iconChip:hover {
+  border-color: rgba(255, 255, 255, 0.13);
+  color: var(--c-t1);
+}
+
+.iconChipSel {
+  border-color: rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--c-t1);
+}
+
+/* ─── Pref Cards ─────────────────────────────── */
+.prefCards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prefCard {
+  padding: 13px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--c-t2);
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  font-family: var(--ff-b);
+}
+
+.prefCard:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--c-t1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.prefCardSel {
+  border-color: rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--c-t1);
+}
+
+/* ─── Objective Cards ────────────────────────── */
+.objectiveCards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.objectiveCard {
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--c-t2);
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  font-family: var(--ff-b);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.objectiveCard:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--c-t1);
+}
+
+.objectiveCardSel {
+  border-color: rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--c-t1);
+}
+
+.objectiveCheck {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Hours Slider ───────────────────────────── */
+.hoursSection {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.hoursDisplay {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.hoursNum {
+  font-family: var(--ff-h);
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--c-t1);
+  line-height: 1;
+}
+
+.hoursUnit {
+  font-size: 14px;
+  color: var(--c-t2);
+  font-weight: 300;
+}
+
+.hoursSlider {
+  width: 100%;
+  accent-color: #3B82F6;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.hoursHints {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--c-muted);
+}
+
+/* ─── Remote Toggle ──────────────────────────── */
+.remoteSection {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.remoteLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.remoteLabelTitle {
+  font-size: 14px;
+  color: var(--c-t1);
+  font-weight: 500;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.remoteLabelDesc {
+  font-size: 12px;
+  color: var(--c-muted);
+  font-weight: 300;
+  display: block;
+}
+
+.toggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.toggleOn {
+  background: #3B82F6;
+  border-color: #3B82F6;
+}
+
+.toggleKnob {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s;
+}
+
+.toggleOn .toggleKnob {
+  transform: translateX(20px);
+}
+
+.remoteHint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+/* ─── Buttons ────────────────────────────────── */
+.btnRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btnPrimary {
+  flex: 1;
+  padding: 13px;
+  background: var(--c-blue);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-family: var(--ff-h);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.28);
+  transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btnPrimary:hover { opacity: 0.88; }
+.btnPrimary:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btnGhost {
+  padding: 13px 18px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: var(--c-t2);
+  font-size: 13px;
+  cursor: pointer;
+  font-family: var(--ff-b);
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btnGhost:hover {
+  color: var(--c-t1);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ─── Error Banner ───────────────────────────── */
+.errorBanner {
+  padding: 12px 14px;
+  background: rgba(239, 68, 68, 0.07);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  color: #fca5a5;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* ─── Results ────────────────────────────────── */
+.resultsWrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.resultsTop {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.resultsBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 99px;
+  font-size: 11px;
+  color: #10B981;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.resultsTitle {
+  font-family: var(--ff-h);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--c-t1);
+  letter-spacing: -0.4px;
+  margin-bottom: 6px;
+}
+
+.resultsSub {
+  font-size: 14px;
+  color: var(--c-t2);
+  font-weight: 300;
+}
+
+.redoBtn {
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: var(--c-t2);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--ff-b);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.redoBtn:hover {
+  color: var(--c-t1);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ─── Career Cards ───────────────────────────── */
+.careersGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.careerCard {
+  background: #0A0F1A;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.careerCardTop    { border-color: rgba(59, 130, 246, 0.3); background: #0C1220; }
+.careerCardSecond { border-color: rgba(255, 255, 255, 0.08); }
+.careerCardThird  { opacity: 0.82; }
+.careerCard:hover { border-color: rgba(59, 130, 246, 0.35); }
+
+.cardTopBar {
+  padding: 14px 18px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rankLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  font-family: var(--ff-h);
+}
+
+.rankBadge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-family: var(--ff-h);
+}
+
+.badgeGold   { background: rgba(59, 130, 246, 0.15); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.2); }
+.badgeSilver { background: rgba(255, 255, 255, 0.05); color: #7C8DB0; border: 1px solid rgba(255, 255, 255, 0.08); }
+.badgeBronze { background: rgba(61, 74, 98, 0.3); color: #3D4A62; border: 1px solid rgba(255, 255, 255, 0.04); }
+
+.cardBody {
+  padding: 14px 18px 16px;
+  flex: 1;
+}
+
+.careerName {
+  font-family: var(--ff-h);
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--c-t1);
+  letter-spacing: -0.3px;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.scoreSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.scoreBig {
+  font-family: var(--ff-h);
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.scoreBigBlue { color: #3B82F6; }
+.scoreBigGray { color: #7C8DB0; }
+.scoreBigDim  { color: #3D4A62; }
+
+.scoreInfo { flex: 1; }
+.scoreInfoLabel { font-size: 10px; color: var(--c-muted); margin-bottom: 6px; }
+
+.compatBar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.compatFill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.5s ease;
+}
+
+.dataRows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.dataRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dataKey {
+  font-size: 11px;
+  color: var(--c-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dataVal {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-t2);
+}
+
+.dataBadge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.dataBadgeGreen { background: rgba(16, 185, 129, 0.1); color: #10B981; }
+.dataBadgeAmber { background: rgba(245, 158, 11, 0.1); color: #F59E0B; }
+.dataBadgeMuted { background: rgba(61, 74, 98, 0.2); color: #3D4A62; }
+
+.gapSection {
+  padding: 11px 12px;
+  background: rgba(245, 158, 11, 0.04);
+  border-radius: 8px;
+  border: 1px solid rgba(245, 158, 11, 0.1);
+  margin-bottom: 14px;
+}
+
+.gapTitle {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #F59E0B;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.gapChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.gapChip {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.18);
+  color: #F59E0B;
+  font-weight: 500;
+}
+
+/* ─── Card CTA ───────────────────────────────── */
+.cardCta {
+  padding: 0 18px 18px;
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.ctaMain {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: var(--ff-h);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+}
+
+.ctaMainActive {
+  background: #3B82F6;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.25);
+}
+
+.ctaMainActive:hover { opacity: 0.85; }
+
+.ctaMainInactive {
+  background: rgba(59, 130, 246, 0.08);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.ctaMainInactive:hover {
+  background: rgba(59, 130, 246, 0.14);
+}
+
+.ctaSec {
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  color: var(--c-muted);
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--ff-b);
+  transition: all 0.15s;
+}
+
+.ctaSec:hover {
+  color: var(--c-t1);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* ─── Responsive ─────────────────────────────── */
+@media (max-width: 900px) {
+  .careersGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .levelGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .steps {
+    gap: 0;
+  }
+
+  .stepLabel {
+    display: none;
+  }
+}

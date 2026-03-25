@@ -1,23 +1,27 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
-import { registerUser } from "../services/auth.service";
+import { registerUser, loginUser } from "../services/auth.service";
 import { registerSchema } from "../schemas/auth.schema";
 import { ZodError } from "zod";
 
-//Funcion principal de entrada para el registro de usuarios.
 export const handler = async (event: APIGatewayProxyEventV2) => {
   try {
     const body = JSON.parse(event.body ?? "{}");
-    //Llamada a la función para la validación de los datos de entrada del registro de usuarios, utilizando el esquema definido en registerSchema.
     const data = registerSchema.parse(body);
-    //Llamada a la función de servicio para registrar el nuevo usuario, pasando los datos validados. Si el registro es exitoso, se devuelve una respuesta con el usuario registrado.
-    const user = await registerUser(data);
+
+    await registerUser(data);
+
+    const result = await loginUser({
+      email: data.email,
+      password: data.password,
+    });
 
     return {
       statusCode: 201,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: "Usuario registrado exitosamente",
-        user,
+        user: result.user,
+        tokens: result.tokens,
       }),
     };
   } catch (error) {

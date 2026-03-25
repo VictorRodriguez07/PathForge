@@ -253,6 +253,23 @@ functions:
       - httpApi:
           path: /learning-paths/custom/confirm
           method: post
+  userMe:
+    handler: src/handlers/user-me.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /users/me
+          method: get
+
+  userPaths:
+    handler: src/handlers/user-paths.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /users/me/paths
+          method: get
           
 
 resources:

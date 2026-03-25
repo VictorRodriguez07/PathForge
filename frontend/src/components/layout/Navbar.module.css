@@ -1,0 +1,145 @@
+.navbar {
+  height: 56px;
+  border-bottom: 1px solid var(--c-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: rgba(6, 8, 16, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+}
+
+.logoMark {
+  width: 30px;
+  height: 30px;
+  background: #0D1117;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--c-border);
+}
+
+.logoName {
+  font-family: var(--ff-h);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-t1);
+  letter-spacing: -0.2px;
+}
+
+.logoCyan {
+  color: var(--c-cyan);
+}
+
+.nav {
+  display: flex;
+  gap: 2px;
+}
+
+.navLink {
+  font-size: 13.5px;
+  font-weight: 400;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: var(--c-t2);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.navLink:hover {
+  color: var(--c-t1);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.navLinkActive {
+  color: var(--c-t1);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  font-family: var(--ff-h);
+  flex-shrink: 0;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.userName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-t1);
+  line-height: 1.2;
+}
+
+.logoutBtn {
+  font-size: 11px;
+  color: var(--c-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: var(--ff-b);
+  text-align: left;
+  transition: color 0.15s;
+}
+
+.logoutBtn:hover {
+  color: var(--c-t2);
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 16px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .userInfo {
+    display: none;
+  }
+}
