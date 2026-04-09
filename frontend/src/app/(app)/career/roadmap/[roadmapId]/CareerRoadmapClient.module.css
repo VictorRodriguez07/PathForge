@@ -1,0 +1,464 @@
+.page {
+  min-height: calc(100vh - 56px);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.orb1 {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  top: -150px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.08), transparent 65%);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb2 {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.06), transparent 65%);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 52px 24px 80px;
+}
+
+/* ─── Header ─────────────────────────────────── */
+.header {
+  margin-bottom: 48px;
+}
+
+.headerBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 99px;
+  font-size: 11px;
+  color: #60A5FA;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.headerTitle {
+  font-family: var(--ff-h);
+  font-size: clamp(26px, 4vw, 34px);
+  font-weight: 800;
+  color: var(--c-t1);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  line-height: 1.15;
+}
+
+.headerSub {
+  font-size: 15px;
+  color: var(--c-t2);
+  font-weight: 300;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* ─── Progress ───────────────────────────────── */
+.progressWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progressRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progressLabel {
+  font-size: 13px;
+  color: var(--c-t2);
+}
+
+.progressPct {
+  font-family: var(--ff-h);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-t1);
+}
+
+.progressTrack {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #2563EB, #22D3EE);
+  transition: width 0.5s ease;
+}
+
+/* ─── Timeline ───────────────────────────────── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.stepWrap {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Línea conectora entre steps */
+.connector {
+  width: 2px;
+  height: 32px;
+  margin-left: 19px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.connectorCompleted { background: rgba(16, 185, 129, 0.3); }
+.connectorIn_progress { background: rgba(34, 211, 238, 0.2); }
+.connectorAvailable { background: rgba(59, 130, 246, 0.15); }
+.connectorLocked { background: rgba(255, 255, 255, 0.055); }
+
+/* ─── Step ───────────────────────────────────── */
+.step {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Step indicator */
+.stepInd {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.indCompleted {
+  background: rgba(16, 185, 129, 0.12);
+  border: 2px solid rgba(16, 185, 129, 0.35);
+}
+
+.indIn_progress {
+  background: rgba(34, 211, 238, 0.08);
+  border: 2px solid rgba(34, 211, 238, 0.35);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.15);
+}
+
+.indAvailable {
+  background: rgba(59, 130, 246, 0.08);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.12);
+}
+
+.indLocked {
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Step card */
+.stepCard {
+  flex: 1;
+  background: #0A0F1A;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 14px;
+  padding: 18px 22px;
+  transition: border-color 0.2s;
+}
+
+.completed .stepCard {
+  border-color: rgba(16, 185, 129, 0.15);
+  background: #081210;
+}
+
+.in_progress .stepCard {
+  border-color: rgba(34, 211, 238, 0.2);
+  background: #081418;
+}
+
+.available .stepCard {
+  border-color: rgba(59, 130, 246, 0.18);
+  background: #0C1220;
+}
+
+.locked .stepCard {
+  opacity: 0.45;
+}
+
+.stepTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.stepOrder {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  font-family: var(--ff-h);
+}
+
+.stepTitle {
+  font-family: var(--ff-h);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--c-t1);
+  letter-spacing: -0.2px;
+  margin-bottom: 14px;
+}
+
+.locked .stepTitle {
+  color: #3D4A62;
+}
+
+/* ─── Badge ──────────────────────────────────── */
+.badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-family: var(--ff-h);
+}
+
+.badgeCompleted {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badgeProgress {
+  background: rgba(34, 211, 238, 0.1);
+  color: #22D3EE;
+  border: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+.badgeAvailable {
+  background: rgba(59, 130, 246, 0.1);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.badgeLocked {
+  background: rgba(255, 255, 255, 0.04);
+  color: #3D4A62;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.badgeSoon {
+  background: rgba(245, 158, 11, 0.08);
+  color: #F59E0B;
+  border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+/* ─── Step progress bar ──────────────────────── */
+.stepProgress {
+  margin-bottom: 14px;
+}
+
+.stepProgressRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 11px;
+  color: var(--c-muted);
+}
+
+.stepProgressBar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.stepProgressFill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* ─── Step footer ────────────────────────────── */
+.stepFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.stepPathInfo {
+  flex: 1;
+}
+
+.stepPathName {
+  font-size: 12px;
+  color: var(--c-t2);
+  margin-bottom: 2px;
+}
+
+.stepPathLevel {
+  font-size: 11px;
+  color: var(--c-muted);
+}
+
+.stepUnlockHint {
+  font-size: 12px;
+  color: #3D4A62;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+/* ─── CTAs ───────────────────────────────────── */
+.stepCta {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-family: var(--ff-h);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  border: none;
+}
+
+.ctaStart {
+  background: #3B82F6;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.28);
+}
+
+.ctaStart:hover { opacity: 0.85; }
+
+.ctaContinue {
+  background: rgba(34, 211, 238, 0.08);
+  color: #22D3EE;
+  border: 1px solid rgba(34, 211, 238, 0.22);
+}
+
+.ctaContinue:hover {
+  background: rgba(34, 211, 238, 0.15);
+  border-color: rgba(34, 211, 238, 0.35);
+}
+
+/* ─── Footer note ────────────────────────────── */
+.footerNote {
+  margin-top: 48px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.footerNoteIcon {
+  color: #3D4A62;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.footerNoteText {
+  font-size: 13px;
+  color: #3D4A62;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ─── Loading ────────────────────────────────── */
+.skeleton {
+  height: 160px;
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ─── Error ──────────────────────────────────── */
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+}
+
+.errorText {
+  font-size: 15px;
+  color: var(--c-t2);
+}
+
+.errorBtn {
+  padding: 10px 20px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 8px;
+  color: #60A5FA;
+  font-size: 13px;
+  font-family: var(--ff-h);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.errorBtn:hover {
+  background: rgba(59, 130, 246, 0.18);
+}
+
+
+/* ─── Responsive ─────────────────────────────── */
+@media (max-width: 600px) {
+  .content {
+    padding: 32px 16px 60px;
+  }
+
+  .stepCard {
+    padding: 16px 18px;
+  }
+
+  .stepFooter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stepCta {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -1,13 +1,15 @@
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL as string;
 
 export const QUERY_KEYS = {
-  learningPaths: ['learning-paths'] as const,
-  learningPathDetail: (slug: string) => ['learning-paths', slug] as const,
+ learningPaths: () => ['learning-paths'] as const,
+  learningPath: (slug: string) => ['learning-paths', slug] as const,
   learningPathProgress: (slug: string) => ['learning-paths', slug, 'progress'] as const,
-  myPaths: ['users', 'me', 'paths'] as const,
+  myLearningPaths: () => ['learning-paths', 'my'] as const,
   exercises: ['exercises'] as const,
   exerciseDetail: (slug: string) => ['exercises', slug] as const,
   submission: (id: string) => ['submissions', id] as const,
+  careerRoadmap: (id: string) => ['career-roadmap', id] as const,
+  myRoadmaps: ['my-roadmaps'] as const,
 } as const;
 
 export const LEVEL_LABELS: Record<string, string> = {

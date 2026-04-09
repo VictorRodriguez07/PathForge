@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import { ConceptsResponse, CustomPathInput, GeneratedPath, ConfirmCustomPathInput } from '../types';
+import { ConceptsResponse, CustomPathInput, GeneratedPath, ConfirmCustomPathInput, CustomPathDetail } from '../types';
 
 export const customPathsApi = {
   getConcepts: async (subjectSlug: string): Promise<ConceptsResponse> => {
@@ -22,4 +22,9 @@ export const customPathsApi = {
     );
     return res.data;
   },
+
+  getById: async (id: string): Promise<CustomPathDetail> => {
+  const res = await apiClient.get<{ path: CustomPathDetail }>(`/users/me/paths/${id}`);
+  return res.data.path;
+}
 };

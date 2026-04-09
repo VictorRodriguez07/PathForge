@@ -1,0 +1,130 @@
+.page { min-height: 100vh; position: relative; overflow-x: hidden; }
+.orb1 { position: fixed; top: -120px; right: -80px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+.orb2 { position: fixed; bottom: -100px; left: -60px; width: 340px; height: 340px; border-radius: 50%; background: radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+.content { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+/* ── Hero ─────────────────────────────────── */
+.hero { background: linear-gradient(135deg, #060810 0%, #0d1425 100%); border: 0.5px solid #1e2d4a; border-radius: 16px; padding: 2rem 2rem 1.75rem; margin-bottom: 2.5rem; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 240px; height: 240px; border-radius: 50%; background: rgba(59,130,246,0.08); pointer-events: none; }
+.hero::after { content: ''; position: absolute; bottom: -50px; left: 35%; width: 180px; height: 180px; border-radius: 50%; background: rgba(34,211,238,0.05); pointer-events: none; }
+.heroBadge { display: inline-flex; align-items: center; gap: 6px; background: rgba(59,130,246,0.15); color: #93c5fd; font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 0.5px solid rgba(59,130,246,0.3); margin-bottom: 1rem; }
+.heroTitle { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 600; color: #f1f5f9; margin-bottom: 0.5rem; line-height: 1.3; }
+.heroDesc { font-size: 14px; color: #94a3b8; line-height: 1.7; max-width: 520px; margin-bottom: 1.5rem; }
+.heroCta { display: inline-flex; align-items: center; gap: 8px; background: #3b82f6; color: #fff; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.15s; }
+.heroCta:hover { background: #2563eb; }
+.heroHint { display: block; font-size: 12px; color: #475569; margin-top: 10px; }
+
+/* ── Mis rutas personalizadas ─────────────── */
+.myPathsSection { margin-bottom: 2rem; }
+.myPathsHeader { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+.myPathsTitle { font-size: 15px; font-weight: 500; color: #cbd5e1; }
+.myPathsCount { font-size: 12px; color: #22d3ee; background: rgba(34,211,238,0.1); border: 0.5px solid rgba(34,211,238,0.2); padding: 2px 8px; border-radius: 20px; }
+
+.customGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+
+.customCard { background: #0a1628; border: 0.5px solid rgba(34,211,238,0.15); border-radius: 14px; padding: 1.25rem; cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
+.customCard:hover { border-color: rgba(34,211,238,0.35); transform: translateY(-2px); }
+.customCardCompleted { border-color: rgba(16,185,129,0.2); background: rgba(16,185,129,0.04); }
+.customCardCompleted:hover { border-color: rgba(16,185,129,0.4); }
+.customCardHead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+.customCardIcon { width: 38px; height: 38px; border-radius: 8px; background: rgba(34,211,238,0.08); border: 0.5px solid rgba(34,211,238,0.15); display: flex; align-items: center; justify-content: center; }
+.customCardIcon img { width: 24px; height: 24px; object-fit: contain; }
+.customCardBadges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.badgeMiRuta { font-size: 10px; font-weight: 500; color: #22d3ee; background: rgba(34,211,238,0.1); border: 0.5px solid rgba(34,211,238,0.2); padding: 2px 8px; border-radius: 20px; }
+.badgeCompletedSmall { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 500; color: #10b981; background: rgba(16,185,129,0.1); border: 0.5px solid rgba(16,185,129,0.2); padding: 2px 8px; border-radius: 20px; }
+.customCardTitle { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: #e2e8f0; margin-bottom: 4px; line-height: 1.35; }
+.customCardMeta { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #475569; margin-bottom: 0.75rem; }
+.dot { width: 3px; height: 3px; border-radius: 50%; background: #334155; }
+.customCardFooter { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 0.75rem; border-top: 0.5px solid rgba(255,255,255,0.05); }
+
+/* ── Divider ──────────────────────────────── */
+.divider { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+.dividerLine { flex: 1; height: 0.5px; background: rgba(255,255,255,0.08); }
+.dividerText { font-size: 12px; color: #475569; white-space: nowrap; }
+
+/* ── Filters ──────────────────────────────── */
+.filters { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.filterBtn { font-size: 13px; padding: 6px 14px; border-radius: 20px; border: 0.5px solid rgba(255,255,255,0.1); background: transparent; color: #64748b; cursor: pointer; transition: all 0.15s; }
+.filterBtn:hover { border-color: rgba(255,255,255,0.2); color: #94a3b8; }
+.filterActive { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+.filterActive:hover { background: #2563eb; border-color: #2563eb; color: #fff; }
+
+/* ── Grid catálogo ────────────────────────── */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 1rem; }
+
+/* ── Card base ────────────────────────────── */
+.card { background: #0c1220; border: 0.5px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 1.25rem; cursor: pointer; transition: border-color 0.15s, transform 0.15s; position: relative; overflow: hidden; }
+.card:hover { border-color: rgba(59,130,246,0.3); transform: translateY(-2px); }
+.cardEnrolled { border-color: rgba(34,211,238,0.2); }
+.cardEnrolled:hover { border-color: rgba(34,211,238,0.4); }
+
+/* ── Card completada — logro ──────────────── */
+.cardCompleted {
+  border-color: rgba(16,185,129,0.3);
+  background: linear-gradient(145deg, #071512 0%, #0c1220 60%);
+}
+.cardCompleted:hover { border-color: rgba(16,185,129,0.55); transform: translateY(-2px); }
+
+.completedGlow {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, #10b981, transparent);
+  opacity: 0.8;
+}
+
+.completedBadgeGroup { display: flex; align-items: center; gap: 6px; }
+.badgeCompletedFull {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; color: #fff;
+  background: #10b981; border: none;
+  padding: 4px 10px; border-radius: 20px;
+}
+
+.completedStats {
+  display: flex; align-items: center; gap: 16px;
+  margin: 0.75rem 0; padding: 0.75rem 0;
+  border-top: 0.5px solid rgba(16,185,129,0.1);
+  border-bottom: 0.5px solid rgba(16,185,129,0.1);
+}
+.completedStat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.completedStatNum { font-size: 18px; font-weight: 600; color: #e2e8f0; line-height: 1; }
+.completedStatLabel { font-size: 10px; color: #475569; }
+.completedStatDivider { width: 1px; height: 24px; background: rgba(255,255,255,0.06); }
+
+.completedTrack { height: 3px; background: rgba(16,185,129,0.15); border-radius: 3px; overflow: hidden; margin-bottom: 0.75rem; }
+.completedFill { height: 3px; width: 100%; background: #10b981; border-radius: 3px; }
+
+.completedReview { font-size: 12px; color: #10b981; font-weight: 500; }
+
+/* ── Card header ──────────────────────────── */
+.cardHead { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.75rem; }
+.cardIcon { width: 38px; height: 38px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cardIcon img { width: 24px; height: 24px; object-fit: contain; }
+.cardIconFallback { font-size: 16px; font-weight: 600; color: #64748b; }
+.levelBadge { font-size: 11px; padding: 3px 9px; border-radius: 20px; font-weight: 500; }
+.levelBEGINNER     { background: rgba(16,185,129,0.12); color: #34d399; }
+.levelINTERMEDIATE { background: rgba(59,130,246,0.12); color: #60a5fa; }
+.levelADVANCED     { background: rgba(168,85,247,0.12); color: #c084fc; }
+
+.cardTitle { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px; line-height: 1.35; }
+.cardDesc { font-size: 13px; color: #64748b; line-height: 1.55; margin-bottom: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.cardMeta { display: flex; align-items: center; gap: 14px; margin-bottom: 0.75rem; }
+.metaItem { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #475569; }
+
+/* ── Card footer ──────────────────────────── */
+.cardFooter { display: flex; align-items: center; justify-content: space-between; padding-top: 0.75rem; border-top: 0.5px solid rgba(255,255,255,0.06); gap: 12px; }
+.progressWrap { flex: 1; }
+.progressLabels { display: flex; justify-content: space-between; font-size: 11px; color: #475569; margin-bottom: 5px; }
+.progressTrack { height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+.progressFill { height: 4px; background: #22d3ee; border-radius: 4px; transition: width 0.3s ease; }
+.notEnrolled { font-size: 12px; color: #334155; }
+.ctaPill { display: flex; align-items: center; gap: 2px; font-size: 12px; color: #3b82f6; font-weight: 500; white-space: nowrap; flex-shrink: 0; }
+
+/* ── Skeleton ─────────────────────────────── */
+.skeleton { background: rgba(255,255,255,0.04); border-radius: 14px; animation: shimmer 1.5s ease-in-out infinite; }
+.skeletonGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+@keyframes shimmer { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* ── Empty / Error ────────────────────────── */
+.emptyState, .errorState { text-align: center; padding: 4rem 2rem; color: #475569; font-size: 14px; }
+.errorState button { margin-top: 1rem; padding: 8px 20px; background: #3b82f6; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; }

@@ -20,15 +20,19 @@ export default function Navbar() {
   };
 
   const initials = user?.name
-    ? user.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
+    ? user.name
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase()
     : 'U';
 
   const navLinks = [
     { href: '/dashboard', label: 'Inicio' },
     { href: '/paths', label: 'Roadmaps' },
-      { href: '/career', label: 'Descubre tu carrera' },
+    { href: '/career', label: 'Carreras' },
     { href: '/exercises', label: 'Ejercicios' },
-    { href: '/leaderboard', label: 'Ranking' },
   ];
 
   return (
@@ -42,20 +46,20 @@ export default function Navbar() {
             Path<span className={styles.logoCyan}>Forge</span>
           </span>
         </Link>
-
         <nav className={styles.nav} aria-label="Navegación principal">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`${styles.navLink} ${pathname.startsWith(link.href) ? styles.navLinkActive : ''}`}
+              className={`${styles.navLink} ${
+                pathname.startsWith(link.href) ? styles.navLinkActive : ''
+              }`}
             >
               {link.label}
             </Link>
           ))}
         </nav>
       </div>
-
       <div className={styles.right}>
         <div className={styles.userMenu}>
           <div className={styles.avatar} aria-label={user?.name ?? 'Usuario'}>
@@ -63,7 +67,11 @@ export default function Navbar() {
           </div>
           <div className={styles.userInfo}>
             <span className={styles.userName}>{user?.name ?? 'Usuario'}</span>
-            <button className={styles.logoutBtn} onClick={handleLogout} type="button">
+            <button
+              className={styles.logoutBtn}
+              onClick={handleLogout}
+              type="button"
+            >
               Cerrar sesión
             </button>
           </div>

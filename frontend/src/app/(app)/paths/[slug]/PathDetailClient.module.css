@@ -1,0 +1,274 @@
+.page { min-height: 100vh; position: relative; overflow-x: hidden; }
+
+.orb1 {
+  position: fixed; top: -120px; right: -80px; width: 480px; height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+.orb2 {
+  position: fixed; bottom: -100px; left: -60px; width: 360px; height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+.content {
+  position: relative; z-index: 1;
+  max-width: 720px; margin: 0 auto;
+  padding: 2rem 1.5rem 6rem;
+}
+
+/* ── Back ─────────────────────────────────── */
+.back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500;
+  color: rgba(148,163,184,0.6);
+  background: none; border: none; cursor: pointer; padding: 0;
+  margin-bottom: 1.75rem;
+  transition: color 0.15s;
+}
+.back:hover { color: #94a3b8; }
+
+/* ── Hero ─────────────────────────────────── */
+.hero {
+  display: flex; gap: 1.25rem; align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+.heroIcon {
+  width: 60px; height: 60px; border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.09);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.heroIcon img { width: 36px; height: 36px; object-fit: contain; }
+.heroIconFallback { font-size: 22px; font-weight: 600; color: #64748b; }
+.heroInfo { flex: 1; min-width: 0; }
+.heroTop { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+
+.badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; letter-spacing: 0.02em; }
+.levelBEGINNER     { background: rgba(16,185,129,0.12);  color: #34d399; border: 0.5px solid rgba(16,185,129,0.2); }
+.levelINTERMEDIATE { background: rgba(59,130,246,0.12);  color: #60a5fa; border: 0.5px solid rgba(59,130,246,0.2); }
+.levelADVANCED     { background: rgba(168,85,247,0.12);  color: #c084fc; border: 0.5px solid rgba(168,85,247,0.2); }
+.badgeGoal         { background: rgba(255,255,255,0.05); color: rgba(148,163,184,0.8); border: 0.5px solid rgba(255,255,255,0.08); }
+.badgeCompleted    {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600;
+  background: rgba(245,158,11,0.12); color: #fbbf24;
+  border: 0.5px solid rgba(245,158,11,0.2);
+}
+
+.heroTitle {
+  font-size: 24px; font-weight: 700;
+  color: #f1f5f9; line-height: 1.25;
+  margin-bottom: 8px; letter-spacing: -0.02em;
+}
+.heroDesc { font-size: 14px; color: rgba(148,163,184,0.75); line-height: 1.7; }
+
+/* ── Meta row ─────────────────────────────── */
+.metaRow {
+  display: flex; gap: 8px;
+  margin-bottom: 1.75rem; flex-wrap: wrap;
+}
+.metaChip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: rgba(148,163,184,0.65);
+  background: rgba(255,255,255,0.03);
+  border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 8px; padding: 5px 12px;
+}
+
+/* ── CTA ──────────────────────────────────── */
+.ctaBlock {
+  background: rgba(59,130,246,0.05);
+  border: 0.5px solid rgba(59,130,246,0.2);
+  border-radius: 12px; padding: 1.25rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
+}
+.ctaLeft { font-size: 14px; color: rgba(148,163,184,0.75); line-height: 1.5; }
+.ctaLeft strong {
+  display: block; font-size: 15px; font-weight: 600;
+  color: #f1f5f9; margin-bottom: 2px;
+}
+.ctaBtn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #3b82f6; color: #fff;
+  font-size: 14px; font-weight: 500;
+  padding: 10px 22px; border-radius: 8px;
+  border: none; cursor: pointer; white-space: nowrap;
+  transition: background 0.15s, transform 0.1s;
+}
+.ctaBtn:hover   { background: #2563eb; transform: translateY(-1px); }
+.ctaBtn:active  { transform: translateY(0); }
+.ctaBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── Progress ─────────────────────────────── */
+.progressBlock {
+  background: rgba(34,211,238,0.04);
+  border: 0.5px solid rgba(34,211,238,0.18);
+  border-radius: 12px; padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+.progressHeader {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 10px;
+}
+.progressHeader span { font-size: 13px; color: rgba(148,163,184,0.65); }
+.progressHeader strong { font-size: 22px; font-weight: 700; color: #22d3ee; letter-spacing: -0.02em; }
+.progressTrack {
+  height: 5px; background: rgba(255,255,255,0.06);
+  border-radius: 6px; overflow: hidden; margin-bottom: 8px;
+}
+.progressFill {
+  height: 5px; background: linear-gradient(90deg, #22d3ee, #3b82f6);
+  border-radius: 6px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.progressMeta { font-size: 12px; color: rgba(71,85,105,0.9); }
+
+/* ── Completion ───────────────────────────── */
+.completionBlock {
+  display: flex; align-items: center; gap: 1.25rem;
+  background: rgba(245,158,11,0.06);
+  border: 0.5px solid rgba(245,158,11,0.2);
+  border-radius: 14px; padding: 1.5rem;
+  margin-bottom: 2rem;
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.completionLeft { flex-shrink: 0; }
+.completionTrophy {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: rgba(245,158,11,0.1); border: 0.5px solid rgba(245,158,11,0.25);
+  display: flex; align-items: center; justify-content: center;
+}
+.completionRight { flex: 1; min-width: 0; }
+.completionTitle { font-size: 16px; font-weight: 600; color: #fbbf24; margin-bottom: 4px; }
+.completionSub   { font-size: 13px; color: rgba(148,163,184,0.6); line-height: 1.6; margin-bottom: 1rem; }
+.completionStats { display: flex; align-items: center; gap: 16px; }
+.completionStat  { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.completionStatNum   { font-size: 20px; font-weight: 700; color: #f1f5f9; line-height: 1; }
+.completionStatLabel { font-size: 11px; color: rgba(148,163,184,0.45); text-transform: uppercase; letter-spacing: 0.05em; }
+.completionStatDivider { width: 1px; height: 28px; background: rgba(255,255,255,0.08); }
+
+/* ── Section title ────────────────────────── */
+.sectionTitle {
+  font-size: 11px; font-weight: 600;
+  /* FIX: era #334155 sobre #060810 = ~2.3:1 contraste, ilegible */
+  color: rgba(148,163,184,0.5);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 2rem; text-align: center;
+}
+
+/* ── Map wrapper ──────────────────────────── */
+.mapWrap {
+  position: relative;
+  /* FIX: más ancho para que las activeCards quepan sin salirse */
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  /* Contexto visual: fondo sutil que enmarca el camino */
+  padding: 24px 80px;
+}
+.mapSvg { display: block; overflow: visible; }
+
+/* Pulse ring del nodo activo */
+.pulseRing {
+  animation: pulseRing 2.4s ease-out infinite;
+  transform-box: fill-box; transform-origin: center;
+}
+@keyframes pulseRing {
+  0%   { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* ── Active card (fuera del SVG) ──────────── */
+.activeCard {
+  position: absolute; width: 148px;
+  background: rgba(13,22,40,0.95);
+  border: 0.5px solid rgba(59,130,246,0.4);
+  border-radius: 10px; padding: 10px 12px;
+  backdrop-filter: blur(4px);
+  /* FIX: ya no se posiciona fuera del mapWrap, usa offset interno */
+}
+.activeCardLeft  { right: 4px; transform: translateY(-50%); }
+.activeCardRight { left: 4px;  transform: translateY(-50%); }
+.activeCardTitle { font-size: 11px; font-weight: 500; color: #e2e8f0; margin-bottom: 3px; line-height: 1.4; }
+.activeCardMeta  { font-size: 10px; color: rgba(148,163,184,0.5); margin-bottom: 8px; }
+.activeCardBtn {
+  display: flex; align-items: center; justify-content: center; gap: 3px;
+  width: 100%; background: #3b82f6; color: #fff;
+  font-size: 11px; font-weight: 500;
+  padding: 6px; border-radius: 6px; border: none;
+  cursor: pointer; transition: background 0.15s; font-family: inherit;
+}
+.activeCardBtn:hover { background: #2563eb; }
+
+/* ── Unenroll ─────────────────────────────── */
+.unenrollWrap {
+  margin-top: 3rem; padding-top: 1.5rem;
+  border-top: 0.5px solid rgba(255,255,255,0.06);
+  text-align: center;
+}
+.unenrollBtn {
+  font-size: 13px; color: rgba(71,85,105,0.7);
+  background: none; border: none; cursor: pointer;
+  padding: 4px 0; transition: color 0.2s;
+}
+.unenrollBtn:hover { color: #ef4444; }
+
+/* ── Confirm overlay ──────────────────────── */
+.confirmOverlay {
+  position: fixed; inset: 0;
+  background: rgba(6,8,16,0.8);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 99; padding: 1rem;
+}
+.confirmBox {
+  background: #0c1422;
+  border: 0.5px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 1.75rem;
+  max-width: 400px; width: 100%;
+}
+.confirmTitle { font-size: 16px; font-weight: 600; color: #f1f5f9; margin-bottom: 8px; }
+.confirmDesc  { font-size: 13px; color: rgba(148,163,184,0.65); line-height: 1.6; margin-bottom: 1.5rem; }
+.confirmActions { display: flex; gap: 10px; justify-content: flex-end; }
+.confirmCancel {
+  font-size: 13px; padding: 8px 16px; border-radius: 8px;
+  border: 0.5px solid rgba(255,255,255,0.1);
+  background: transparent; color: rgba(148,163,184,0.75);
+  cursor: pointer; transition: border-color 0.15s, color 0.15s;
+}
+.confirmCancel:hover { border-color: rgba(255,255,255,0.2); color: #f1f5f9; }
+.confirmDanger {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; padding: 8px 16px; border-radius: 8px;
+  border: none; background: rgba(239,68,68,0.15); color: #f87171;
+  cursor: pointer; transition: background 0.15s;
+}
+.confirmDanger:hover  { background: rgba(239,68,68,0.28); }
+.confirmDanger:disabled,
+.confirmCancel:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Shared ───────────────────────────────── */
+.spin { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.skeleton {
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+@keyframes shimmer { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.errorState { text-align: center; padding: 4rem 2rem; color: rgba(148,163,184,0.5); font-size: 14px; }
+.errorState button {
+  margin-top: 1rem; padding: 8px 20px;
+  background: #3b82f6; color: #fff;
+  border: none; border-radius: 8px;
+  cursor: pointer; font-size: 13px;
+  transition: background 0.15s;
+}
+.errorState button:hover { background: #2563eb; }

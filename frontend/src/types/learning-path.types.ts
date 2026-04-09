@@ -1,5 +1,7 @@
 export type Level = 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
-export type PathStatus = 'ACTIVE' | 'COMPLETED' | 'PAUSED';
+export type PathStatus = 'ACTIVE' | 'COMPLETED' | 'PAUSED' | 'ABANDONED';
+export type ModuleStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
+
 
 export interface Subject {
   name: string;
@@ -13,6 +15,7 @@ export interface LearningPathModule {
   description: string | null;
   orderIndex: number;
   durationDays: number;
+  pathTemplateId: string;
 }
 
 export interface LearningPath {
@@ -33,21 +36,62 @@ export interface LearningPath {
   };
 }
 
-export interface LearningPathDetail extends LearningPath {
-  pathModules: LearningPathModule[];
+export interface LearningPathDetail extends Omit<LearningPath, '_count'> {
+  modules: LearningPathModule[];
 }
 
-export interface ModuleProgress {
+
+export interface PathModuleProgress {
   moduleId: string;
-  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
+  title: string;
+  orderIndex: number;
+  durationDays: number;
+  status: ModuleStatus;
 }
+
+export interface LearningPathProgress {
+  pathId: string;
+  status: PathStatus;
+  weeklyHours: number;
+  progress: number;
+  completedModules: number;
+  totalModules: number;
+  modules: PathModuleProgress[];
+}
+
 
 export interface UserLearningPath {
   id: string;
   status: PathStatus;
   weeklyHours: number;
+  currentLevel: string | null;
+  goal: string;
   startedAt: string;
-  completedAt: string | null;
-  pathTemplate: LearningPathDetail;
-  moduleProgress: ModuleProgress[];
+  isCustom: boolean;
+  title: string;
+  slug: string | null;
+  level: Level;
+  subject: Subject | null;
+  progress: {
+    completed: number;
+    total: number;
+    percentage: number;
+  };
+
+}
+
+export interface CustomPathDetail {
+  id: string;
+  status: PathStatus;
+  isCustom: true;
+  title: string;
+  description: string | null;
+  level: Level;
+  goal: string;
+  weeklyHours: number;
+  slug: null;
+  subject: null;
+  modules: Pick<LearningPathModule, 'id' | 'title' | 'orderIndex' | 'durationDays'>[];
+  moduleProgress: { moduleId: string; status: ModuleStatus }[];
+  progress: { completed: number; total: number; percentage: number };
 }

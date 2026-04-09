@@ -1,15 +1,12 @@
 import { apiClient } from './client';
-import { Exercise, ExerciseDetail, RunResult, Submission, Language } from '../types';
-
-interface RunRequest {
-  code: string;
-  language: Language;
-}
-
-interface SubmitRequest {
-  code: string;
-  language: Language;
-}
+import {
+  Exercise,
+  ExerciseDetail,
+  RunResponse,
+  SubmitResponse,
+  Submission,
+  SupportedLanguage,
+} from '../types';
 
 export const exercisesApi = {
   getAll: async (): Promise<Exercise[]> => {
@@ -22,13 +19,13 @@ export const exercisesApi = {
     return res.data.exercise;
   },
 
-  run: async (slug: string, data: RunRequest): Promise<RunResult> => {
-    const res = await apiClient.post<RunResult>(`/exercises/${slug}/run`, data);
+  run: async (slug: string, code: string, language: SupportedLanguage): Promise<RunResponse> => {
+    const res = await apiClient.post<RunResponse>(`/exercises/${slug}/run`, { code, language });
     return res.data;
   },
 
-  submit: async (slug: string, data: SubmitRequest): Promise<{ submissionId: string }> => {
-    const res = await apiClient.post<{ submissionId: string }>(`/exercises/${slug}/submit`, data);
+  submit: async (slug: string, code: string, language: SupportedLanguage): Promise<SubmitResponse> => {
+    const res = await apiClient.post<SubmitResponse>(`/exercises/${slug}/submit`, { code, language });
     return res.data;
   },
 

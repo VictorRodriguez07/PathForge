@@ -1,0 +1,455 @@
+/* ── Layout base ─────────────────────────────── */
+.page {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.orb1 {
+  position: fixed;
+  top: -100px;
+  right: -60px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb2 {
+  position: fixed;
+  bottom: -80px;
+  left: -40px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* ── Hero ────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, #080612 0%, #100d20 100%);
+  border: 0.5px solid #1e1a35;
+  border-radius: 16px;
+  padding: 2rem 2rem 1.75rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.07);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: 40%;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: rgba(168, 85, 247, 0.05);
+  pointer-events: none;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(99, 102, 241, 0.12);
+  color: #a5b4fc;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 0.5px solid rgba(99, 102, 241, 0.25);
+  margin-bottom: 1rem;
+}
+
+.heroTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.heroDesc {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.7;
+  max-width: 500px;
+  margin-bottom: 1.5rem;
+}
+
+.heroCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #6366f1;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.heroCta:hover {
+  background: #4f46e5;
+}
+
+.heroHint {
+  display: block;
+  font-size: 12px;
+  color: #475569;
+  margin-top: 10px;
+}
+
+/* ── Filters ─────────────────────────────────── */
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filterBtn:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #94a3b8;
+}
+
+.filterActive {
+  background: #6366f1;
+  color: #fff;
+  border-color: #6366f1;
+}
+
+.filterActive:hover {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #fff;
+}
+
+/* ── Grid ────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Card base ───────────────────────────────── */
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #0c1020;
+  border: 0.5px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Card activa ─────────────────────────────── */
+.cardActive {
+  border-color: rgba(99, 102, 241, 0.15);
+}
+
+.cardActive:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ── Card completada ─────────────────────────── */
+.cardCompleted {
+  border-color: rgba(16, 185, 129, 0.25);
+  background: linear-gradient(145deg, #071512 0%, #0c1020 60%);
+}
+
+.cardCompleted:hover {
+  border-color: rgba(16, 185, 129, 0.5);
+  transform: translateY(-2px);
+}
+
+.completedGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #10b981, transparent);
+  opacity: 0.8;
+}
+
+/* ── Card head ───────────────────────────────── */
+.cardHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.cardIconWrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Badges ──────────────────────────────────── */
+.badgeActive {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #818cf8;
+  background: rgba(99, 102, 241, 0.1);
+  border: 0.5px solid rgba(99, 102, 241, 0.2);
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+.badgeCompletedFull {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: #10b981;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* ── Card content ────────────────────────────── */
+.cardTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 3px;
+  line-height: 1.35;
+}
+
+.cardSlug {
+  font-size: 12px;
+  color: #475569;
+  margin-bottom: 0.75rem;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #475569;
+  margin-bottom: 0.75rem;
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #334155;
+}
+
+/* ── Card footer ─────────────────────────────── */
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.06);
+  gap: 12px;
+  margin-top: auto;
+}
+
+.progressWrap {
+  flex: 1;
+}
+
+.progressLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #475569;
+  margin-bottom: 5px;
+}
+
+.progressTrack {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 4px;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.ctaPill {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  color: #818cf8;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Completed card specifics ────────────────── */
+.completedStats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0.75rem 0;
+  padding: 0.75rem 0;
+  border-top: 0.5px solid rgba(16, 185, 129, 0.1);
+  border-bottom: 0.5px solid rgba(16, 185, 129, 0.1);
+}
+
+.completedStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.completedStatNum {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e2e8f0;
+  line-height: 1;
+}
+
+.completedStatLabel {
+  font-size: 10px;
+  color: #475569;
+}
+
+.completedStatDivider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.completedTrack {
+  height: 3px;
+  background: rgba(16, 185, 129, 0.12);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.completedFill {
+  height: 3px;
+  width: 100%;
+  background: #10b981;
+  border-radius: 3px;
+}
+
+.completedReview {
+  font-size: 12px;
+  color: #10b981;
+  font-weight: 500;
+}
+
+/* ── Skeleton ────────────────────────────────── */
+.skeleton {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 1rem;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Empty / Error ───────────────────────────── */
+.emptyState,
+.errorState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #475569;
+  font-size: 14px;
+}
+
+.errorState button {
+  margin-top: 1rem;
+  padding: 8px 20px;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 600px) {
+  .content {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .heroTitle {
+    font-size: 20px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

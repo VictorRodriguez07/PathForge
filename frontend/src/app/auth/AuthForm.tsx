@@ -57,9 +57,9 @@ function calcStrength(val: string): number {
 }
 
 const LOGIN_FEATURES = [
-  { icon: Map,      color: '#3B82F6', bg: 'rgba(59,130,246,0.1)',  label: 'Rutas adaptadas a tu nivel y objetivos' },
+  { icon: Map,      color: '#3B82F6', bg: 'rgba(59,130,246,0.1)',  label: 'Rutas de aprendizaje adaptadas a tu nivel y objetivos' },
   { icon: Terminal, color: '#22D3EE', bg: 'rgba(34,211,238,0.1)',  label: 'Ejecución de código en tiempo real' },
-  { icon: BarChart3,color: '#10B981', bg: 'rgba(16,185,129,0.1)',  label: 'Ranking y progreso visible en tu perfil' },
+  { icon: BarChart3,color: '#10B981', bg: 'rgba(16,185,129,0.1)',  label: 'Ranking y competencia en comunidad' },
   { icon: Compass,  color: '#F59E0B', bg: 'rgba(245,158,11,0.1)', label: 'Descubre tu carrera ideal en tech' },
 ];
 
@@ -211,7 +211,7 @@ export default function AuthForm() {
       <div className={styles.miniHero}>
         <div className={styles.miniBadge}>
           <span className={styles.badgeDot} aria-hidden="true" />
-          {isRegister ? 'Gratis para siempre · Sin tarjeta' : '1,200+ developers activos'}
+          {isRegister ? 'Gratis para siempre · Sin tarjeta' : '+ Forja tu camino'}
         </div>
         <h1 className={styles.miniHeadline}>
           {isRegister ? (
@@ -255,7 +255,7 @@ export default function AuthForm() {
 
             <div className={styles.badge}>
               <span className={styles.badgeDot} aria-hidden="true" />
-              {isRegister ? 'Gratis para siempre · Sin tarjeta' : '1,200+ developers activos'}
+              {isRegister ? 'Gratis para siempre ' : 'Forja tu camino'}
             </div>
 
             <h1 className={styles.headline}>
@@ -269,7 +269,7 @@ export default function AuthForm() {
             <p className={styles.description}>
               {isRegister
                 ? 'Únete a miles de developers construyendo su camino profesional con PathForge.'
-                : 'Rutas personalizadas, retos reales y una comunidad que te impulsa a crecer como developer.'}
+                : 'Descubre tu camino ideal, practica tu programación y haz parte de una comunidad que te impulsa a crecer.'}
             </p>
 
             <ul className={styles.features} role="list">

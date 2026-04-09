@@ -31,13 +31,18 @@ export interface CareerDiscoveryInput {
   openToRemote: boolean;
 }
 
+export interface GapItem {
+  slug: string;
+  label: string;
+}
+
 export interface CareerRecommendation {
   career: string;
   title: string;
   score: number;
   compatibility: number;
   reasoning: string[];
-  gapAnalysis: string[];
+  gapAnalysis: GapItem[];
   estimatedMonths: number;
   marketDemand: MarketDemand;
   averageSalary: string;
@@ -46,6 +51,7 @@ export interface CareerRecommendation {
 
 export interface CareerDiscoveryResponse {
   recommendations: CareerRecommendation[];
+  recommendationId: string;
   userProfile: {
     experienceLevel: ExperienceLevel;
     objective: CareerObjective;
@@ -53,4 +59,44 @@ export interface CareerDiscoveryResponse {
   };
   generatedAt: string;
   savedToProfile: boolean;
+}
+
+export interface CareerRoadmapStep {
+  id: string;
+  order: number;
+  techSlug: string;
+  techLabel: string;
+  status: 'LOCKED' | 'AVAILABLE' | 'IN_PROGRESS' | 'COMPLETED' | 'SKIPPED';
+  pathTemplate: {
+    id: string;
+    title: string;
+    slug: string;
+    level: string;
+  } | null;
+  userPath: {
+    id: string;
+    progress: {
+      completed: number;
+      total: number;
+      percentage: number;
+    };
+  } | null;
+}
+
+export interface CareerRoadmap {
+  id: string;
+  careerSlug: string;
+  careerTitle: string;
+  status: 'ACTIVE' | 'COMPLETED' | 'ABANDONED';
+  steps: CareerRoadmapStep[];
+}
+
+export interface CareerRoadmapSummary {
+  id: string;
+  careerSlug: string;
+  careerTitle: string;
+  status: 'ACTIVE' | 'COMPLETED' | 'ABANDONED';
+  totalSteps: number;
+  completedSteps: number;
+  createdAt: string;
 }

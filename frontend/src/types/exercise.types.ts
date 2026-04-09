@@ -1,11 +1,11 @@
 export type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
-export type SubmissionStatus = 'PENDING' | 'RUNNING' | 'ACCEPTED' | 'WRONG_ANSWER' | 'TIME_LIMIT' | 'RUNTIME_ERROR';
-export type Language = 'javascript' | 'typescript' | 'python';
+export type SubmissionStatus = 'PENDING' | 'ACCEPTED' | 'WRONG_ANSWER' | 'TIME_LIMIT_EXCEEDED' | 'RUNTIME_ERROR' | 'COMPILE_ERROR';
+export type SupportedLanguage = 'javascript' | 'typescript' | 'python';
 
-export interface TestCase {
-  input: string;
-  expected: string;
-  isPublic: boolean;
+export interface ExerciseSubject {
+  name: string;
+  slug: string;
+  iconUrl: string | null;
 }
 
 export interface Exercise {
@@ -17,31 +17,57 @@ export interface Exercise {
   points: number;
   timeLimit: number;
   memoryLimit: number;
-  subject: {
-    name: string;
-    slug: string;
-  };
+  isActive: boolean;
+  createdAt: string;
+  subject: ExerciseSubject;
+  _count: { submissions: number };
 }
 
-export interface ExerciseDetail extends Exercise {
+export interface TestCase {
+  id: string;
+  input: string;
+  expected: string;
+  orderIndex: number;
+}
+
+export interface ExerciseDetail extends Omit<Exercise, '_count'> {
   testCases: TestCase[];
 }
 
 export interface RunResult {
+  testCaseId: string;
   passed: boolean;
-  results: {
-    input: string;
-    expected: string;
-    got: string;
-    passed: boolean;
-  }[];
+  output: string;
+  expected: string;
+}
+
+export interface RunResponse {
+  results: RunResult[];
+  passedTests: number;
+  totalTests: number;
+}
+
+export interface SubmitResponse {
+  submissionId: string;
+  status: SubmissionStatus;
+  message: string;
 }
 
 export interface Submission {
   id: string;
+  code: string;
+  language: string;
   status: SubmissionStatus;
-  language: Language;
-  executionTime: number | null;
-  memoryUsed: number | null;
-  createdAt: string;
+  executionMs: number | null;
+  memoryUsedMb: number | null;
+  passedTests: number;
+  totalTests: number;
+  errorMessage: string | null;
+  submittedAt: string;
+  challenge: {
+    title: string;
+    slug: string;
+    difficulty: Difficulty;
+    points: number;
+  };
 }

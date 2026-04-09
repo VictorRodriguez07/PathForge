@@ -8,6 +8,7 @@ import { usersApi } from '@/api';
 import { UserPathSummary } from '@/types';
 import { QUERY_KEYS } from '@/lib/constants';
 import styles from './DashboardClient.module.css';
+import { resolveSubjectFromTitle } from '@/lib/path-utils';
 
 const LEVEL_LABELS: Record<string, string> = {
   BEGINNER: 'Principiante',
@@ -41,24 +42,28 @@ function getGreeting(): string {
 
 function PathCard({ path, onContinue }: { path: UserPathSummary; onContinue: (path: UserPathSummary) => void }) {
   const isCustom = path.isCustom;
-
   return (
     <article className={`${styles.pathCard} ${isCustom ? styles.pathCardCustom : ''}`}>
       <div className={styles.pathCardHeader}>
         <div className={styles.pathCardLeft}>
-          {path.subject?.iconUrl ? (
-            <div className={styles.pathIcon}>
-              <img src={path.subject.iconUrl} alt={path.subject.name} width={28} height={28} />
-            </div>
-          ) : (
-            <div className={`${styles.pathIcon} ${styles.pathIconCustom}`}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path d="M2 17l10 5 10-5" />
-                <path d="M2 12l10 5 10-5" />
-              </svg>
-            </div>
-          )}
+          {(() => {
+            const icon = path.subject?.iconUrl
+              ? { iconUrl: path.subject.iconUrl, name: path.subject.name }
+              : resolveSubjectFromTitle(path.title);
+            return icon.iconUrl ? (
+              <div className={styles.pathIcon}>
+                <img src={icon.iconUrl} alt={icon.name} width={28} height={28} />
+              </div>
+            ) : (
+              <div className={`${styles.pathIcon} ${styles.pathIconCustom}`}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                  <path d="M2 17l10 5 10-5" />
+                  <path d="M2 12l10 5 10-5" />
+                </svg>
+              </div>
+            );
+          })()}
           <div className={styles.pathCardInfo}>
             <div className={styles.pathCardTop}>
               <h3 className={styles.pathCardTitle}>{path.title}</h3>
@@ -231,10 +236,17 @@ export default function DashboardClient() {
     : 0;
 
   const handleContinuePath = (path: UserPathSummary) => {
-    if (path.slug) router.push(`/paths/${path.slug}`);
-  };
+  if (path.slug) {
+    // Ruta de catálogo — navegar por slug
+    router.push(`/paths/${path.slug}`);
+  } else if (path.isCustom) {
+    // Ruta personalizada — no tiene slug ni página de detalle propia aún
+    // Navegar al catálogo donde están listadas en la sección "Mis rutas"
+    router.push('/paths');
+  }
+};
 
-  const handleCreatePath = () => router.push('/paths');
+  const handleCreatePath = () => router.push('/paths/custom');
   const handleStartCareer = () => router.push('/career');
 
   return (

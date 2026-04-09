@@ -1,5 +1,10 @@
 import { apiClient } from './client';
-import { LearningPath, LearningPathDetail, UserLearningPath } from '../types';
+import {
+  LearningPath,
+  LearningPathDetail,
+  LearningPathProgress,
+  UserLearningPath,
+} from '../types';
 
 interface EnrollRequest {
   weeklyHours: number;
@@ -16,21 +21,31 @@ export const learningPathsApi = {
     return res.data.path;
   },
 
-  enroll: async (slug: string, data: EnrollRequest): Promise<UserLearningPath> => {
-    const res = await apiClient.post<{ userPath: UserLearningPath }>(`/learning-paths/${slug}/enroll`, data);
+  enroll: async (slug: string, data: EnrollRequest): Promise<{ id: string }> => {
+    const res = await apiClient.post<{ userPath: { id: string } }>(
+      `/learning-paths/${slug}/enroll`,
+      data
+    );
     return res.data.userPath;
   },
 
-  getProgress: async (slug: string): Promise<UserLearningPath> => {
-    const res = await apiClient.get<{ userPath: UserLearningPath }>(`/learning-paths/${slug}/progress`);
-    return res.data.userPath;
+  getProgress: async (slug: string): Promise<LearningPathProgress> => {
+    const res = await apiClient.get<LearningPathProgress>(
+      `/learning-paths/${slug}/progress`
+    );
+    return res.data;
   },
 
-  completeModule: async (pathId: string, moduleId: string): Promise<void> => {
-    await apiClient.put(`/learning-paths/${pathId}/modules/${moduleId}/complete`);
-  },
+ completeModule: async (pathId: string, moduleId: string): Promise<void> => {
+  await apiClient.put<unknown>(`/learning-paths/${pathId}/modules/${moduleId}/complete`);
+},
 
   unenroll: async (pathId: string): Promise<void> => {
     await apiClient.delete(`/learning-paths/${pathId}/enroll`);
+  },
+
+  getMyPaths: async (): Promise<UserLearningPath[]> => {
+  const res = await apiClient.get<{ paths: UserLearningPath[] }>('/users/me/paths');
+  return res.data.paths ?? [];
   },
 };

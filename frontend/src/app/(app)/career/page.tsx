@@ -1,13 +1,11 @@
-import type { Metadata } from 'next';
-import CareerDiscoveryClient from './CareerDiscoveryClient';
+import { Metadata } from 'next';
+import CareerHubClient from './CareerHubClient';
 
 export const metadata: Metadata = {
-  title: 'Descubre tu carrera ideal',
-  description:
-    'Responde algunas preguntas y descubre qué carrera en tecnología es perfecta para ti según tu perfil, experiencia y objetivos.',
-  robots: { index: false, follow: false },
+  title: 'Carreras | PathForge',
+  description: 'Gestiona tus rutas de carrera activas o descubre una nueva.',
 };
 
-export default function CareerDiscoveryPage() {
-  return <CareerDiscoveryClient />;
+export default function CareerPage() {
+  return <CareerHubClient />;
 }

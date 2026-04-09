@@ -74,11 +74,7 @@ function StepIndicator({ current }: { current: number }) {
         return (
           <div key={label} className={styles.stepItem}>
             <div className={`${styles.stepCircle} ${isDone ? styles.stepDone : isActive ? styles.stepActive : styles.stepIdle}`}>
-              {isDone ? (
-                <CheckCircle2 size={13} strokeWidth={2.5} />
-              ) : (
-                <span>{idx}</span>
-              )}
+              {isDone ? <CheckCircle2 size={13} strokeWidth={2.5} /> : <span>{idx}</span>}
             </div>
             <span className={`${styles.stepLabel} ${isDone ? styles.stepLabelDone : isActive ? styles.stepLabelActive : styles.stepLabelIdle}`}>
               {label}
@@ -112,7 +108,6 @@ function Step1({ form, setForm }: { form: FormState; setForm: (f: FormState) => 
           </button>
         ))}
       </div>
-
       <div className={styles.techSection}>
         <div className={styles.sectionLabel}>Tecnologías que ya conoces <span className={styles.optional}>(opcional)</span></div>
         <div className={styles.chips}>
@@ -146,7 +141,6 @@ function Step2({ form, setForm }: { form: FormState; setForm: (f: FormState) => 
       <div className={styles.stepQLabel}>Paso 2 de 4</div>
       <h2 className={styles.stepTitle}>¿Qué tipo de proyectos te emocionan?</h2>
       <p className={styles.stepSub}>Selecciona todos los que apliquen. Esto define el camino que más disfrutarás.</p>
-
       <div className={styles.sectionLabel}>Tipos de proyecto <span className={styles.required}>*</span></div>
       <div className={styles.iconChips}>
         {PROJECT_TYPE_OPTIONS.map((opt) => {
@@ -170,7 +164,6 @@ function Step2({ form, setForm }: { form: FormState; setForm: (f: FormState) => 
           );
         })}
       </div>
-
       <div className={styles.sectionLabel} style={{ marginTop: 24 }}>¿Con qué tipo de trabajo te identificas más? <span className={styles.required}>*</span></div>
       <div className={styles.prefCards}>
         {WORK_PREFERENCE_OPTIONS.map((opt) => (
@@ -194,7 +187,6 @@ function Step3({ form, setForm }: { form: FormState; setForm: (f: FormState) => 
       <div className={styles.stepQLabel}>Paso 3 de 4</div>
       <h2 className={styles.stepTitle}>¿Cuál es tu objetivo principal?</h2>
       <p className={styles.stepSub}>Tu objetivo define la urgencia y enfoque de tu ruta de aprendizaje.</p>
-
       <div className={styles.objectiveCards}>
         {OBJECTIVE_OPTIONS.map((opt) => (
           <button
@@ -210,7 +202,6 @@ function Step3({ form, setForm }: { form: FormState; setForm: (f: FormState) => 
           </button>
         ))}
       </div>
-
       <div className={styles.sectionLabel} style={{ marginTop: 24 }}>¿En qué industrias te gustaría trabajar? <span className={styles.required}>*</span></div>
       <div className={styles.iconChips}>
         {INDUSTRY_OPTIONS.map((opt) => {
@@ -244,17 +235,13 @@ function Step4({ form, setForm }: { form: FormState; setForm: (f: FormState) => 
       <div className={styles.stepQLabel}>Paso 4 de 4</div>
       <h2 className={styles.stepTitle}>¿Cuánto tiempo puedes dedicar?</h2>
       <p className={styles.stepSub}>Esto nos permite calcular estimaciones de tiempo reales para tu caso.</p>
-
       <div className={styles.hoursSection}>
         <div className={styles.hoursDisplay}>
           <span className={styles.hoursNum}>{form.weeklyHours}</span>
           <span className={styles.hoursUnit}>horas por semana</span>
         </div>
         <input
-          type="range"
-          min={5}
-          max={40}
-          step={1}
+          type="range" min={5} max={40} step={1}
           value={form.weeklyHours}
           onChange={(e) => setForm({ ...form, weeklyHours: Number(e.target.value) })}
           className={styles.hoursSlider}
@@ -265,7 +252,6 @@ function Step4({ form, setForm }: { form: FormState; setForm: (f: FormState) => 
           <span>40h — Tiempo completo</span>
         </div>
       </div>
-
       <div className={styles.remoteSection}>
         <div className={styles.remoteLabel}>
           <div className={styles.remoteLabelText}>
@@ -283,9 +269,9 @@ function Step4({ form, setForm }: { form: FormState; setForm: (f: FormState) => 
         </div>
         <div className={styles.remoteHint}>
           {form.openToRemote ? (
-            <><Wifi size={13} color="#10B981" /> <span style={{ color: '#10B981' }}>Abierto a trabajo remoto e internacional</span></>
+            <><Wifi size={13} color="#10B981" /><span style={{ color: '#10B981' }}>Abierto a trabajo remoto e internacional</span></>
           ) : (
-            <><WifiOff size={13} color="#3D4A62" /> <span style={{ color: '#3D4A62' }}>Solo trabajo presencial o local</span></>
+            <><WifiOff size={13} color="#3D4A62" /><span style={{ color: '#3D4A62' }}>Solo trabajo presencial o local</span></>
           )}
         </div>
       </div>
@@ -301,12 +287,8 @@ function canProceed(step: number, form: FormState): boolean {
 }
 
 function ResultsBadge({ value, type }: { value: string; type: 'demand' | 'remote' }) {
-  const isGreen = type === 'demand'
-    ? value === 'very_high'
-    : value === 'excellent';
-  const isAmber = type === 'demand'
-    ? value === 'high'
-    : value === 'good';
+  const isGreen = type === 'demand' ? value === 'very_high' : value === 'excellent';
+  const isAmber = type === 'demand' ? value === 'high' : value === 'good';
   const label = type === 'demand' ? MARKET_DEMAND_LABELS[value] : REMOTE_LABELS[value];
   return (
     <span className={`${styles.dataBadge} ${isGreen ? styles.dataBadgeGreen : isAmber ? styles.dataBadgeAmber : styles.dataBadgeMuted}`}>
@@ -323,15 +305,23 @@ function ResultsView({
   onRedo: () => void;
 }) {
   const router = useRouter();
+
   const rankMeta = [
     { badge: 'Mejor match', badgeClass: styles.badgeGold },
     { badge: 'Alta compatibilidad', badgeClass: styles.badgeSilver },
     { badge: 'Alternativa', badgeClass: styles.badgeBronze },
   ];
 
-  const handleCreatePath = (career: string) => {
-    router.push(`/paths?career=${career}`);
-  };
+  const { mutate: createRoadmap, isPending: isCreating, variables: creatingVars } = useMutation({
+    mutationFn: ({ careerRecommendationId, careerIndex }: { careerRecommendationId: string; careerIndex: number }) =>
+      careersApi.createRoadmap(careerRecommendationId, careerIndex),
+    onSuccess: (data) => {
+      
+     if (!data?.roadmap?.id) return;
+      router.push(`/career/roadmap/${data.roadmap.id}`);
+      
+    },
+  });
 
   return (
     <div className={styles.resultsWrap}>
@@ -356,6 +346,8 @@ function ResultsView({
         {results.recommendations.map((rec, i) => {
           const meta = rankMeta[i] ?? rankMeta[2];
           const isTop = i === 0;
+          const isThisCreating = isCreating && creatingVars?.careerIndex === i;
+
           return (
             <article
               key={rec.career}
@@ -414,7 +406,7 @@ function ResultsView({
                     </div>
                     <div className={styles.gapChips}>
                       {rec.gapAnalysis.map((gap) => (
-                        <span key={gap} className={styles.gapChip}>{gap}</span>
+                        <span key={gap.slug} className={styles.gapChip}>{gap.label}</span>
                       ))}
                     </div>
                   </div>
@@ -424,10 +416,14 @@ function ResultsView({
               <div className={styles.cardCta}>
                 <button
                   className={`${styles.ctaMain} ${isTop ? styles.ctaMainActive : styles.ctaMainInactive}`}
-                  onClick={() => handleCreatePath(rec.career)}
+                  onClick={() => createRoadmap({
+                    careerRecommendationId: results.recommendationId,
+                    careerIndex: i,
+                  })}
+                  disabled={isCreating}
                   type="button"
                 >
-                  Crear mi ruta →
+                  {isThisCreating ? 'Creando ruta...' : 'Crear mi ruta →'}
                 </button>
                 <button className={styles.ctaSec} type="button">
                   Ver más
@@ -479,7 +475,7 @@ export default function CareerDiscoveryClient() {
       <div className={styles.page}>
         <div className={styles.bgOrb1} aria-hidden="true" />
         <div className={styles.bgOrb2} aria-hidden="true" />
-        <ResultsView results={results} onRedo={handleRedo} />
+         <ResultsView results={results} onRedo={handleRedo} />
       </div>
     );
   }
@@ -488,28 +484,20 @@ export default function CareerDiscoveryClient() {
     <div className={styles.page}>
       <div className={styles.bgOrb1} aria-hidden="true" />
       <div className={styles.bgOrb2} aria-hidden="true" />
-
       <div className={styles.formWrap}>
         <StepIndicator current={step} />
-
         {step === 1 && <Step1 form={form} setForm={setForm} />}
         {step === 2 && <Step2 form={form} setForm={setForm} />}
         {step === 3 && <Step3 form={form} setForm={setForm} />}
         {step === 4 && <Step4 form={form} setForm={setForm} />}
-
         {error && (
           <div className={styles.errorBanner} role="alert">
             Error al procesar tu perfil. Intenta de nuevo.
           </div>
         )}
-
         <div className={styles.btnRow}>
           {step > 1 && (
-            <button
-              className={styles.btnGhost}
-              onClick={() => setStep(step - 1)}
-              type="button"
-            >
+            <button className={styles.btnGhost} onClick={() => setStep(step - 1)} type="button">
               <ChevronLeft size={15} /> Atrás
             </button>
           )}

@@ -1,0 +1,124 @@
+.page { min-height: 100vh; position: relative; overflow-x: hidden; }
+.orb1 { position: fixed; top: -120px; right: -80px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+.orb2 { position: fixed; bottom: -100px; left: -60px; width: 340px; height: 340px; border-radius: 50%; background: radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+.content { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 2rem 1.5rem 8rem; }
+
+.back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #64748b; background: none; border: none; cursor: pointer; padding: 0; margin-bottom: 2rem; transition: color 0.15s; }
+.back:hover { color: #94a3b8; }
+
+/* ── Header ───────────────────────────────── */
+.header { margin-bottom: 1.75rem; }
+.headerBadge { display: inline-flex; align-items: center; gap: 6px; background: rgba(59,130,246,0.12); color: #60a5fa; font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 0.5px solid rgba(59,130,246,0.25); margin-bottom: 1rem; }
+.headerTitle { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 600; color: #e2e8f0; line-height: 1.3; margin-bottom: 8px; }
+.headerDesc { font-size: 14px; color: #64748b; line-height: 1.7; }
+
+/* ── Step indicator ───────────────────────── */
+.stepIndicator { display: flex; align-items: center; gap: 8px; margin-bottom: 2rem; }
+.stepDot { width: 8px; height: 8px; border-radius: 50%; background: #1e2d4a; transition: all 0.2s; }
+.stepDotActive { background: #3b82f6; width: 24px; border-radius: 4px; }
+.stepDotDone { background: #10b981; }
+
+/* ── Subject grid ─────────────────────────── */
+.subjectGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 2rem; }
+.subjectCard {
+  background: #0c1220; border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 12px; padding: 1.25rem 1rem; display: flex; flex-direction: column;
+  align-items: center; gap: 10px; cursor: pointer; position: relative;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.subjectCard:hover { border-color: rgba(59,130,246,0.3); transform: translateY(-2px); }
+.subjectCardActive { border-color: #3b82f6; background: rgba(59,130,246,0.08); }
+.subjectIcon { width: 36px; height: 36px; object-fit: contain; }
+.subjectLabel { font-size: 13px; font-weight: 500; color: #94a3b8; }
+.subjectCardActive .subjectLabel { color: #e2e8f0; }
+.subjectCheck { position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; border-radius: 50%; background: #3b82f6; display: flex; align-items: center; justify-content: center; color: #fff; }
+
+/* ── Option list ──────────────────────────── */
+.fieldLabel { font-size: 13px; font-weight: 500; color: #64748b; margin-bottom: 0.75rem; }
+.optionList { display: flex; flex-direction: column; gap: 8px; }
+.optionCard {
+  background: #0c1220; border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 10px; padding: 0.875rem 1rem;
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  text-align: left; transition: border-color 0.15s;
+}
+.optionCard:hover { border-color: rgba(59,130,246,0.25); }
+.optionCardActive { border-color: #3b82f6; background: rgba(59,130,246,0.07); }
+.optionCheck {
+  width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #1e2d4a;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: #fff; transition: all 0.15s;
+}
+.optionCardActive .optionCheck { background: #3b82f6; border-color: #3b82f6; }
+.optionBody { flex: 1; }
+.optionTitle { font-size: 14px; font-weight: 500; color: #94a3b8; margin-bottom: 2px; }
+.optionCardActive .optionTitle { color: #e2e8f0; }
+.optionDesc { font-size: 12px; color: #334155; }
+
+/* ── Hours ────────────────────────────────── */
+.hoursRow { display: flex; gap: 8px; flex-wrap: wrap; }
+.hourBtn { padding: 8px 16px; border-radius: 8px; border: 0.5px solid rgba(255,255,255,0.07); background: #0c1220; color: #64748b; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+.hourBtn:hover { border-color: rgba(59,130,246,0.25); color: #94a3b8; }
+.hourBtnActive { border-color: #3b82f6; background: rgba(59,130,246,0.1); color: #60a5fa; }
+
+/* ── Concepts ─────────────────────────────── */
+.conceptsLoading { display: flex; align-items: center; gap: 10px; color: #475569; font-size: 14px; padding: 2rem 0; }
+.conceptsEmpty { padding: 2rem; text-align: center; color: #475569; font-size: 14px; }
+.conceptsList { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 1rem; }
+.conceptGroup { }
+.conceptGroupLabel { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.conceptLevelBeginner    { color: #34d399; }
+.conceptLevelIntermediate { color: #60a5fa; }
+.conceptLevelAdvanced    { color: #c084fc; }
+.conceptItems { display: flex; flex-wrap: wrap; gap: 8px; }
+.conceptChip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 13px; color: #475569; padding: 5px 12px; border-radius: 20px;
+  border: 0.5px solid rgba(255,255,255,0.07); background: #0c1220; cursor: pointer;
+  transition: all 0.15s;
+}
+.conceptChip:hover { border-color: rgba(59,130,246,0.25); color: #94a3b8; }
+.conceptChipActive { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.35); color: #34d399; }
+.conceptsCount { font-size: 12px; color: #10b981; margin-top: 0.5rem; }
+
+/* ── Preview stats ────────────────────────── */
+.statsRow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.25rem; }
+.statCard { background: #0c1220; border: 0.5px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 1rem 0.75rem; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.statNum { font-size: 20px; font-weight: 600; color: #e2e8f0; line-height: 1; }
+.statLabel { font-size: 11px; color: #334155; }
+
+.skipNote {
+  display: flex; align-items: flex-start; gap: 8px;
+  background: rgba(16,185,129,0.06); border: 0.5px solid rgba(16,185,129,0.15);
+  border-radius: 8px; padding: 10px 12px;
+  font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 1.5rem;
+}
+.skipNote strong { color: #34d399; font-weight: 500; }
+
+/* ── Module preview ───────────────────────── */
+.modulePreviewList { display: flex; flex-direction: column; gap: 6px; margin-bottom: 2rem; }
+.modulePreview {
+  display: flex; align-items: center; gap: 12px;
+  background: #0c1220; border: 0.5px solid rgba(255,255,255,0.06);
+  border-radius: 8px; padding: 0.75rem 1rem;
+}
+.modulePreviewNew { border-color: rgba(59,130,246,0.15); }
+.modulePreviewNum { font-size: 11px; font-weight: 600; color: #334155; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.modulePreviewBody { flex: 1; min-width: 0; }
+.modulePreviewTitle { font-size: 14px; font-weight: 500; color: #94a3b8; margin-bottom: 2px; }
+.modulePreviewNew .modulePreviewTitle { color: #e2e8f0; }
+.modulePreviewMeta { font-size: 12px; color: #334155; }
+.newBadge { font-size: 10px; font-weight: 500; color: #60a5fa; background: rgba(59,130,246,0.1); border: 0.5px solid rgba(59,130,246,0.2); padding: 2px 8px; border-radius: 20px; flex-shrink: 0; }
+
+/* ── Footer ───────────────────────────────── */
+.footer { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(6,8,16,0.92); backdrop-filter: blur(12px); border-top: 0.5px solid rgba(255,255,255,0.07); padding: 1rem 1.5rem; display: flex; justify-content: flex-end; z-index: 50; }
+.nextBtn { display: inline-flex; align-items: center; gap: 8px; background: #3b82f6; color: #fff; font-size: 14px; font-weight: 500; padding: 10px 22px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.15s; }
+.nextBtn:hover { background: #2563eb; }
+.nextBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+.confirmBtn { display: inline-flex; align-items: center; gap: 8px; background: #10b981; color: #fff; font-size: 14px; font-weight: 500; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.15s; }
+.confirmBtn:hover { background: #059669; }
+.confirmBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Shared ───────────────────────────────── */
+.spin { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }

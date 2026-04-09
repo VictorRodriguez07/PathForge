@@ -1,3 +1,8 @@
+import ExercisesCatalogClient from './ExercisesCatalogClient';
+
 export default function ExercisesPage() {
-  return <div>Exercises</div>;
+
+  return <ExercisesCatalogClient />;
+
 }
+
