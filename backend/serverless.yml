@@ -253,6 +253,14 @@ functions:
       - httpApi:
           path: /learning-paths/custom/confirm
           method: post
+  userCustomPathDetail:
+    handler: src/handlers/user-customPath-detail.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /users/me/paths/{id}
+          method: get
   userMe:
     handler: src/handlers/user-me.handler
     memorySize: 256
@@ -270,6 +278,33 @@ functions:
       - httpApi:
           path: /users/me/paths
           method: get
+  careerRoadmapCreate:
+    handler: src/handlers/career-roadmap-create.handler
+    memorySize: 256
+    timeout: 15
+    events:
+      - httpApi:
+          path: /career/roadmap
+          method: post
+ 
+  careerRoadmapGet:
+    handler: src/handlers/career-roadmap-get.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /career/roadmap/{roadmapId}
+          method: get
+ 
+  careerRoadmapsList:
+    handler: src/handlers/career-roadmap-list.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - httpApi:
+          path: /career/roadmap
+          method: get
+ 
           
 
 resources:

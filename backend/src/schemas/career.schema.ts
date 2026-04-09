@@ -84,5 +84,6 @@ export const careerDiscoverySchema = z.object({
   industries: z.array(industry).min(1, "Selecciona al menos una industria"),
   openToRemote: z.boolean(),
 });
+
 export type KnownTechnology = z.infer<typeof knownTechnologies>;
 export type CareerDiscoveryInput = z.infer<typeof careerDiscoverySchema>;

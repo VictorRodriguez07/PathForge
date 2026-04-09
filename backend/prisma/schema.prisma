@@ -22,9 +22,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userPaths   UserPath[]
-  submissions Submission[]
+  userPaths             UserPath[]
+  submissions           Submission[]
   careerRecommendations CareerRecommendation[]
+  careerRoadmaps        CareerRoadmap[]
 
   @@index([email])
   @@index([cognitoId])
@@ -53,7 +54,7 @@ model Subject {
 
   challenges    Challenge[]
   pathTemplates PathTemplate[]
-  concepts Concept[]
+  concepts      Concept[]
 
   @@index([slug])
   @@map("subjects")
@@ -64,15 +65,15 @@ model Subject {
 // ─────────────────────────────────────────
 
 model Challenge {
-  id          String      @id @default(uuid())
+  id          String     @id @default(uuid())
   title       String
-  slug        String      @unique
+  slug        String     @unique
   description String
   difficulty  Difficulty
   points      Int
-  timeLimit   Int         // segundos
-  memoryLimit Int         // MB
-  isActive    Boolean     @default(true)
+  timeLimit   Int        // segundos
+  memoryLimit Int        // MB
+  isActive    Boolean    @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -80,9 +81,9 @@ model Challenge {
   subjectId String
   subject   Subject @relation(fields: [subjectId], references: [id])
 
-  testCases    TestCase[]
-  submissions  Submission[]
-  moduleItems  ModuleItem[]
+  testCases   TestCase[]
+  submissions Submission[]
+  moduleItems ModuleItem[]
 
   @@index([subjectId])
   @@index([difficulty])
@@ -96,11 +97,11 @@ enum Difficulty {
 }
 
 model TestCase {
-  id          String  @id @default(uuid())
-  input       String
-  expected    String
-  isPublic    Boolean @default(false)
-  orderIndex  Int
+  id         String  @id @default(uuid())
+  input      String
+  expected   String
+  isPublic   Boolean @default(false)
+  orderIndex Int
 
   challengeId String
   challenge   Challenge @relation(fields: [challengeId], references: [id])
@@ -114,16 +115,14 @@ model TestCase {
 // RUTAS DE APRENDIZAJE — PLANTILLAS
 // ─────────────────────────────────────────
 
-
-
 model PathTemplate {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   title       String
-  slug        String @unique
+  slug        String  @unique
   description String
   level       Level
-  goal        String // "Frontend Developer", "Backend Developer", etc.
-  weeklyHours Int    // horas recomendadas por semana
+  goal        String
+  weeklyHours Int
   isActive    Boolean @default(true)
 
   createdAt DateTime @default(now())
@@ -132,8 +131,9 @@ model PathTemplate {
   subjectId String
   subject   Subject @relation(fields: [subjectId], references: [id])
 
-  modules   PathModule[]
-  userPaths UserPath[]
+  modules            PathModule[]
+  userPaths          UserPath[]
+  careerRoadmapSteps CareerRoadmapStep[]
 
   @@index([subjectId])
   @@index([level])
@@ -147,16 +147,16 @@ enum Level {
 }
 
 model PathModule {
-  id          String @id @default(uuid())
-  title       String
-  description String?
-  orderIndex  Int
+  id           String  @id @default(uuid())
+  title        String
+  description  String?
+  orderIndex   Int
   durationDays Int
 
   pathTemplateId String
   pathTemplate   PathTemplate @relation(fields: [pathTemplateId], references: [id])
 
-  items ModuleItem[]
+  items    ModuleItem[]
   progress ModuleProgress[]
   concepts ConceptOnModule[]
 
@@ -169,11 +169,11 @@ model ModuleItem {
   id         String @id @default(uuid())
   orderIndex Int
 
-  moduleId    String
-  module      PathModule @relation(fields: [moduleId], references: [id])
+  moduleId String
+  module   PathModule @relation(fields: [moduleId], references: [id])
 
   challengeId String
-  challenge   Challenge  @relation(fields: [challengeId], references: [id])
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
 
   @@unique([moduleId, challengeId])
   @@index([moduleId])
@@ -181,12 +181,12 @@ model ModuleItem {
 }
 
 model Concept {
-  id          String   @id @default(uuid())
-  name        String
-  slug        String   @unique
-  level       Level
-  subjectId   String
-  subject     Subject  @relation(fields: [subjectId], references: [id])
+  id        String @id @default(uuid())
+  name      String
+  slug      String @unique
+  level     Level
+  subjectId String
+  subject   Subject         @relation(fields: [subjectId], references: [id])
   moduleItems ConceptOnModule[]
 
   @@index([subjectId])
@@ -209,26 +209,29 @@ model ConceptOnModule {
 // ─────────────────────────────────────────
 
 model UserPath {
-  id          String   @id @default(uuid())
-  status      PathStatus @default(ACTIVE)
+  id           String     @id @default(uuid())
+  status       PathStatus @default(ACTIVE)
   currentLevel String?
-  goal        String
-  weeklyHours Int
-  isCustom    Boolean  @default(false)
-  customTitle String?
-  startedAt   DateTime @default(now())
-  completedAt DateTime?
-  updatedAt   DateTime @updatedAt
+  goal         String
+  weeklyHours  Int
+  isCustom     Boolean    @default(false)
+  customTitle  String?
+  startedAt    DateTime   @default(now())
+  completedAt  DateTime?
+  updatedAt    DateTime   @updatedAt
 
   userId         String
   pathTemplateId String?
-  user           User         @relation(fields: [userId], references: [id])
+  user           User          @relation(fields: [userId], references: [id])
   pathTemplate   PathTemplate? @relation(fields: [pathTemplateId], references: [id])
-  moduleProgress ModuleProgress[]
+
+  moduleProgress     ModuleProgress[]
+  careerRoadmapSteps CareerRoadmapStep[]
 
   @@index([userId])
   @@map("user_paths")
 }
+
 enum PathStatus {
   ACTIVE
   COMPLETED
@@ -237,12 +240,12 @@ enum PathStatus {
 }
 
 model ModuleProgress {
-  id          String         @id @default(uuid())
-  status      ModuleStatus   @default(PENDING)
+  id          String       @id @default(uuid())
+  status      ModuleStatus @default(PENDING)
   completedAt DateTime?
 
   userPathId String
-  userPath   UserPath   @relation(fields: [userPathId], references: [id])
+  userPath   UserPath @relation(fields: [userPathId], references: [id])
 
   moduleId String
   module   PathModule @relation(fields: [moduleId], references: [id])
@@ -267,12 +270,12 @@ model Submission {
   code         String
   language     String
   status       SubmissionStatus @default(PENDING)
-  executionMs  Int?             // tiempo de ejecución real
+  executionMs  Int?
   memoryUsedMb Int?
   passedTests  Int              @default(0)
   totalTests   Int              @default(0)
   errorMessage String?
-  s3LogKey     String?          // referencia al log en S3
+  s3LogKey     String?
 
   submittedAt DateTime @default(now())
 
@@ -288,18 +291,6 @@ model Submission {
   @@map("submissions")
 }
 
-model CareerRecommendation {
-  id              String   @id @default(uuid())
-  userId          String
-  user            User     @relation(fields: [userId], references: [id])
-  recommendations Json
-  userProfile     Json
-  createdAt       DateTime @default(now())
-
-  @@index([userId])
-  @@map("career_recommendations")
-}
-
 enum SubmissionStatus {
   PENDING
   RUNNING
@@ -310,3 +301,77 @@ enum SubmissionStatus {
   RUNTIME_ERROR
   COMPILATION_ERROR
 }
+
+// ─────────────────────────────────────────
+// CAREER DISCOVERY
+// ─────────────────────────────────────────
+
+model CareerRecommendation {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  recommendations Json
+  userProfile     Json
+  createdAt       DateTime @default(now())
+
+  careerRoadmaps CareerRoadmap[]
+
+  @@index([userId])
+  @@map("career_recommendations")
+}
+
+// ─────────────────────────────────────────
+// CAREER ROADMAP
+// ─────────────────────────────────────────
+
+model CareerRoadmap {
+  id                     String        @id @default(uuid())
+  userId                 String
+  careerSlug             String
+  careerTitle            String
+  status                 RoadmapStatus @default(ACTIVE)
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  careerRecommendationId String
+  user                   User          @relation(fields: [userId], references: [id])
+  careerRecommendation   CareerRecommendation @relation(fields: [careerRecommendationId], references: [id])
+  steps                  CareerRoadmapStep[]
+  @@index([userId])
+  @@index([careerRecommendationId])
+  @@map("career_roadmaps")
+}
+
+enum RoadmapStatus {
+  ACTIVE
+  COMPLETED
+  ABANDONED
+}
+
+model CareerRoadmapStep {
+  id        String     @id @default(uuid())
+  techSlug  String
+  techLabel String
+  order     Int
+  status    StepStatus @default(LOCKED)
+
+  roadmapId      String
+  pathTemplateId String?
+  userPathId     String?
+
+  roadmap      CareerRoadmap  @relation(fields: [roadmapId], references: [id])
+  pathTemplate PathTemplate?  @relation(fields: [pathTemplateId], references: [id])
+  userPath     UserPath?      @relation(fields: [userPathId], references: [id])
+
+  @@unique([roadmapId, order])
+  @@index([roadmapId])
+  @@index([userPathId])
+  @@map("career_roadmap_steps")
+}
+
+enum StepStatus {
+  LOCKED
+  AVAILABLE
+  IN_PROGRESS
+  COMPLETED
+}
+

@@ -34,21 +34,21 @@ export async function getLearningPathBySlug(slug: string) {
 }
 
 //funcion que permite a un usuario inscribirse en una ruta de aprendizaje, inicializando su progreso en cada modulo como "PENDING"
-export async function enrollUserInLearningPath (cognitoId: string,slug: string, input: EnrollPathInput) {
+export async function enrollUserInLearningPath(cognitoId: string, slug: string, input: EnrollPathInput) {
   const user = await prisma.user.findUniqueOrThrow({
     where: { cognitoId },
     select: { id: true },
   });
 
   const path = await prisma.pathTemplate.findUnique({
-  where: { slug },
-  include: {
-    modules: {
-      orderBy: { orderIndex: "asc" },
-      select: { id: true },
+    where: { slug },
+    include: {
+      modules: {
+        orderBy: { orderIndex: "asc" },
+        select: { id: true },
+      },
     },
-  },
-});
+  });
 
   if (!path) throw new Error("PATH_NOT_FOUND");
 
@@ -56,9 +56,20 @@ export async function enrollUserInLearningPath (cognitoId: string,slug: string, 
     where: { userId: user.id, pathTemplateId: path.id },
   });
 
-  if (existing) throw new Error("ALREADY_ENROLLED");
+  if (existing) {
+    if (existing.status !== "ABANDONED") throw new Error("ALREADY_ENROLLED");
 
-  // Crear la relación entre el usuario y la ruta. guarda la ruta a la cual se inscribió el usuario.
+
+    return prisma.userPath.update({
+      where: { id: existing.id },
+      data: {
+        status: "ACTIVE",
+        startedAt: new Date(),
+        weeklyHours: input.weeklyHours,
+      },
+    });
+  }
+
   const userPath = await prisma.userPath.create({
     data: {
       userId: user.id,
@@ -70,7 +81,6 @@ export async function enrollUserInLearningPath (cognitoId: string,slug: string, 
     },
   });
 
-  //Inicializa el progreso de cada módulo de la ruta de aprendizaje en la cual está el usuario en un estado de "PENDING"
   await prisma.moduleProgress.createMany({
     data: path.modules.map((module) => ({
       userPathId: userPath.id,

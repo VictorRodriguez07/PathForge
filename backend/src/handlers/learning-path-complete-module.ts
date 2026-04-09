@@ -1,5 +1,6 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { completeModule } from "../services/learning-path.service";
+import { unlockNextStep } from "../services/career-roadmap.service";
 import { requireAuth, UnauthorizedError } from "../shared/auth.middleware";
 
 export const handler = async (event: APIGatewayProxyEventV2) => {
@@ -17,6 +18,11 @@ export const handler = async (event: APIGatewayProxyEventV2) => {
     }
 
     const result = await completeModule(auth.user!.cognitoId, pathId, moduleId);
+
+    
+    if (result.pathCompleted === true) {
+      await unlockNextStep(pathId);
+    }
 
     return {
       statusCode: 200,

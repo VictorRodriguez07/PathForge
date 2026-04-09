@@ -13,6 +13,7 @@ export const handler = async (event: APIGatewayProxyEventV2) => {
     const recommendations = discoverCareers(input);
 
     let savedToProfile = false;
+    let recommendationId: string | null = null;
 
     if (auth.isAuthenticated && auth.user) {
       const dbUser = await prisma.user.findUnique({
@@ -21,7 +22,7 @@ export const handler = async (event: APIGatewayProxyEventV2) => {
       });
 
       if (dbUser) {
-        await prisma.careerRecommendation.create({
+        const saved= await prisma.careerRecommendation.create({
           data: {
             userId: dbUser.id,
             recommendations: JSON.parse(JSON.stringify(recommendations)),
@@ -33,6 +34,7 @@ export const handler = async (event: APIGatewayProxyEventV2) => {
           },
         });
         savedToProfile = true;
+        recommendationId = saved.id;
       }
     }
 
@@ -41,6 +43,7 @@ export const handler = async (event: APIGatewayProxyEventV2) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         recommendations,
+        recommendationId,
         userProfile: {
           experienceLevel: input.experienceLevel,
           objective: input.objective,
@@ -48,6 +51,8 @@ export const handler = async (event: APIGatewayProxyEventV2) => {
         },
         generatedAt: new Date().toISOString(),
         savedToProfile,
+       
+        
       }),
     };
   } catch (error) {

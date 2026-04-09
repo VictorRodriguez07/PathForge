@@ -18,7 +18,7 @@ export const handler = async (event: APIGatewayProxyEventV2) => {
     const userPaths = await prisma.userPath.findMany({
       where: {
         userId: user.id,
-        status: { in: ["ACTIVE", "PAUSED"] },
+       status: { in: ["ACTIVE", "PAUSED", "COMPLETED"] },
       },
       include: {
         pathTemplate: {

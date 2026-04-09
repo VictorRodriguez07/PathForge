@@ -19,6 +19,12 @@ async function main() {
 async function seedSubjects() {
   const subjects = [
     {
+      name: "HTML/CSS",
+      slug: "html-css",
+      description: "Fundamentos de estructura y estilos para la web",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
+    {
       name: "JavaScript",
       slug: "javascript",
       description: "El lenguaje de programación más usado en la web",
@@ -33,8 +39,20 @@ async function seedSubjects() {
     {
       name: "React",
       slug: "react",
-      description: "La librería más popular para construir interfaces de usuario",
+      description: "Librería para construir interfaces modernas",
       iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+    },
+    {
+      name: "Vue",
+      slug: "vue",
+      description: "Framework progresivo para interfaces web",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg",
+    },
+    {
+      name: "Angular",
+      slug: "angular",
+      description: "Framework para aplicaciones web empresariales",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg",
     },
     {
       name: "Node.js",
@@ -45,7 +63,7 @@ async function seedSubjects() {
     {
       name: "Python",
       slug: "python",
-      description: "Lenguaje versátil ideal para data science, IA y backend",
+      description: "Lenguaje versátil para backend, automatización y data science",
       iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
     },
     {
@@ -54,6 +72,89 @@ async function seedSubjects() {
       description: "La plataforma cloud más usada en la industria",
       iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg",
     },
+    {
+      name: "Git",
+      slug: "git",
+      description: "Sistema de control de versiones distribuido",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
+    },
+    {
+      name: "Linux",
+      slug: "linux",
+      description: "Sistema operativo esencial para desarrollo y DevOps",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg",
+    },
+    {
+      name: "Docker",
+      slug: "docker",
+      description: "Plataforma para crear y ejecutar contenedores",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+    },
+    {
+      name: "SQL",
+      slug: "sql",
+      description: "Lenguaje para trabajar con bases de datos relacionales",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+    },
+    {
+      name: "PostgreSQL",
+      slug: "postgresql",
+      description: "Base de datos relacional robusta y escalable",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+    },
+    {
+      name: "MongoDB",
+      slug: "mongodb",
+      description: "Base de datos NoSQL orientada a documentos",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+    },
+
+    {
+      name: "Java",
+      slug: "java",
+      description: "Lenguaje orientado a objetos muy usado en backend y mobile",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
+    },
+    {
+      name: "C#",
+      slug: "csharp",
+      description: "Lenguaje de propósito general del ecosistema Microsoft",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
+    },
+
+    {
+      name: "Kubernetes",
+      slug: "kubernetes",
+      description: "Plataforma de orquestación de contenedores",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg",
+    },
+    {
+      name: "Azure",
+      slug: "azure",
+      description: "Plataforma cloud de Microsoft",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg",
+    },
+    {
+      name: "GCP",
+      slug: "gcp",
+      description: "Google Cloud Platform para infraestructura y datos",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg",
+    },
+    {
+      name: "React Native",
+      slug: "react-native",
+      description: "Framework para aplicaciones móviles con React",
+      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+    },
+
+
+    {
+      name: "Postman",
+      slug: "postman",
+      description: "Herramienta para probar y documentar APIs",
+      iconUrl: "https://www.postman.com/favicon-32x32.png",
+    },
+
   ];
 
   for (const subject of subjects) {
@@ -68,65 +169,112 @@ async function seedSubjects() {
 }
 
 async function seedPathTemplates() {
-  const javascript = await prisma.subject.findUniqueOrThrow({
-    where: { slug: "javascript" },
-  });
-  const typescript = await prisma.subject.findUniqueOrThrow({
-    where: { slug: "typescript" },
-  });
-  const react = await prisma.subject.findUniqueOrThrow({
-    where: { slug: "react" },
-  });
-  const nodejs = await prisma.subject.findUniqueOrThrow({
-    where: { slug: "nodejs" },
-  });
-  const python = await prisma.subject.findUniqueOrThrow({
-    where: { slug: "python" },
-  });
-  const aws = await prisma.subject.findUniqueOrThrow({
-    where: { slug: "aws" },
-  });
+  const s = async (slug: string) => prisma.subject.findUniqueOrThrow({ where: { slug } });
+
+  const htmlCss = await s("html-css");
+  const javascript = await s("javascript");
+  const typescript = await s("typescript");
+  const react = await s("react");
+  const vue = await s("vue");
+  const angular = await s("angular");
+  const nodejs = await s("nodejs");
+  const python = await s("python");
+  const aws = await s("aws");
+  const git = await s("git");
+  const linux = await s("linux");
+  const docker = await s("docker");
+  const sql = await s("sql");
+  const postgresql = await s("postgresql");
+  const mongodb = await s("mongodb");
+  const java = await s("java");
+  const csharp = await s("csharp");
+  const kubernetes = await s("kubernetes");
+  const azure = await s("azure");
+  const gcp = await s("gcp");
+  const reactNative = await s("react-native");
+  const postman = await s("postman");
+
+
 
   const paths = [
     {
+      title: "HTML y CSS desde Cero",
+      slug: "html-css-beginner",
+      description: "Aprende a construir y estilizar páginas web desde cero con HTML y CSS",
+      level: "BEGINNER" as const,
+      goal: "frontend",
+      weeklyHours: 10,
+      subjectId: htmlCss.id,
+      modules: [
+        { title: "Estructura HTML", orderIndex: 1, durationDays: 10 },
+        { title: "Textos, enlaces y listas", orderIndex: 2, durationDays: 8 },
+        { title: "Formularios", orderIndex: 3, durationDays: 10 },
+        { title: "CSS básico", orderIndex: 4, durationDays: 12 },
+        { title: "Box model y layout", orderIndex: 5, durationDays: 12 },
+        { title: "Proyecto responsive", orderIndex: 6, durationDays: 12 },
+      ],
+    },
+    {
       title: "JavaScript desde Cero",
       slug: "javascript-beginner",
-      description: "Aprende los fundamentos de JavaScript desde cero hasta poder construir aplicaciones web interactivas",
+      description: "Aprende los fundamentos de JavaScript desde cero hasta construir aplicaciones web interactivas",
       level: "BEGINNER" as const,
       goal: "frontend",
       weeklyHours: 10,
       subjectId: javascript.id,
       modules: [
-        {
-          title: "Fundamentos de JavaScript",
-          orderIndex: 1,
-          durationDays: 14,
-        },
-        {
-          title: "Funciones y Scope",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Arrays y Objetos",
-          orderIndex: 3,
-          durationDays: 12,
-        },
-        {
-          title: "DOM y Eventos",
-          orderIndex: 4,
-          durationDays: 14,
-        },
-        {
-          title: "Asincronismo y APIs",
-          orderIndex: 5,
-          durationDays: 14,
-        },
-        {
-          title: "Proyecto Final",
-          orderIndex: 6,
-          durationDays: 10,
-        },
+        { title: "Sintaxis, variables y tipos", orderIndex: 1, durationDays: 10 },
+        { title: "Condicionales y ciclos", orderIndex: 2, durationDays: 8 },
+        { title: "Funciones y scope", orderIndex: 3, durationDays: 10 },
+        { title: "Arrays y objetos", orderIndex: 4, durationDays: 12 },
+        { title: "DOM y eventos", orderIndex: 5, durationDays: 12 },
+        { title: "Proyecto final", orderIndex: 6, durationDays: 10 },
+      ],
+    },
+    {
+      title: "Git Esencial",
+      slug: "git-beginner",
+      description: "Domina el control de versiones para trabajar como desarrollador profesional",
+      level: "BEGINNER" as const,
+      goal: "fullstack",
+      weeklyHours: 6,
+      subjectId: git.id,
+      modules: [
+        { title: "Fundamentos de Git", orderIndex: 1, durationDays: 6 },
+        { title: "Repositorios y commits", orderIndex: 2, durationDays: 6 },
+        { title: "Branches y merge", orderIndex: 3, durationDays: 8 },
+        { title: "GitHub y colaboración", orderIndex: 4, durationDays: 8 },
+      ],
+    },
+    {
+      title: "Linux Esencial para DevOps",
+      slug: "linux-beginner",
+      description: "Domina la terminal y los fundamentos de Linux para trabajar en cloud y servidores",
+      level: "BEGINNER" as const,
+      goal: "devops",
+      weeklyHours: 8,
+      subjectId: linux.id,
+      modules: [
+        { title: "Terminal y navegación", orderIndex: 1, durationDays: 8 },
+        { title: "Permisos y usuarios", orderIndex: 2, durationDays: 8 },
+        { title: "Procesos y servicios", orderIndex: 3, durationDays: 8 },
+        { title: "Redirecciones y pipes", orderIndex: 4, durationDays: 8 },
+      ],
+    },
+    {
+      title: "SQL para Desarrollo Profesional",
+      slug: "sql-beginner",
+      description: "Aprende SQL para consultar y modelar datos de forma profesional",
+      level: "BEGINNER" as const,
+      goal: "backend",
+      weeklyHours: 8,
+      subjectId: sql.id,
+      modules: [
+        { title: "SELECT y filtros", orderIndex: 1, durationDays: 8 },
+        { title: "JOINs", orderIndex: 2, durationDays: 10 },
+        { title: "GROUP BY y agregaciones", orderIndex: 3, durationDays: 8 },
+        { title: "Subqueries y CTEs", orderIndex: 4, durationDays: 10 },
+        { title: "Modelado básico", orderIndex: 5, durationDays: 8 },
       ],
     },
     {
@@ -138,154 +286,213 @@ async function seedPathTemplates() {
       weeklyHours: 12,
       subjectId: typescript.id,
       modules: [
-        {
-          title: "Tipos Básicos y Sistema de Tipos",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Interfaces y Types",
-          orderIndex: 2,
-          durationDays: 8,
-        },
-        {
-          title: "Generics",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Decoradores y Metadata",
-          orderIndex: 4,
-          durationDays: 8,
-        },
-        {
-          title: "TypeScript con React",
-          orderIndex: 5,
-          durationDays: 12,
-        },
+        { title: "Tipos básicos y narrowing", orderIndex: 1, durationDays: 10 },
+        { title: "Interfaces y type aliases", orderIndex: 2, durationDays: 8 },
+        { title: "Generics", orderIndex: 3, durationDays: 10 },
+        { title: "Utility types", orderIndex: 4, durationDays: 8 },
+        { title: "TypeScript en React y Node", orderIndex: 5, durationDays: 12 },
       ],
     },
     {
       title: "React para Frontend Developers",
       slug: "react-frontend",
-      description: "Conviértete en un Frontend Developer profesional dominando React y su ecosistema",
+      description: "Conviértete en Frontend Developer profesional dominando React y su ecosistema",
       level: "INTERMEDIATE" as const,
       goal: "frontend",
       weeklyHours: 15,
       subjectId: react.id,
       modules: [
-        {
-          title: "Fundamentos de React",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Hooks Esenciales",
-          orderIndex: 2,
-          durationDays: 12,
-        },
-        {
-          title: "Estado Global con Zustand",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "React Router y Navegación",
-          orderIndex: 4,
-          durationDays: 7,
-        },
-        {
-          title: "Formularios con React Hook Form",
-          orderIndex: 5,
-          durationDays: 7,
-        },
-        {
-          title: "Optimización y Performance",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto: App Full-Stack",
-          orderIndex: 7,
-          durationDays: 14,
-        },
+        { title: "Componentes y JSX", orderIndex: 1, durationDays: 10 },
+        { title: "Estado y hooks básicos", orderIndex: 2, durationDays: 12 },
+        { title: "Renderizado y composición", orderIndex: 3, durationDays: 8 },
+        { title: "Routing y navegación", orderIndex: 4, durationDays: 7 },
+        { title: "Forms y validación", orderIndex: 5, durationDays: 8 },
+        { title: "Performance y testing", orderIndex: 6, durationDays: 10 },
+        { title: "Proyecto final", orderIndex: 7, durationDays: 14 },
+      ],
+    },
+    {
+      title: "Vue para Frontend Developers",
+      slug: "vue-frontend",
+      description: "Aprende Vue para construir interfaces modernas y reactivas",
+      level: "INTERMEDIATE" as const,
+      goal: "frontend",
+      weeklyHours: 12,
+      subjectId: vue.id,
+      modules: [
+        { title: "Fundamentos de Vue", orderIndex: 1, durationDays: 10 },
+        { title: "Templates y reactividad", orderIndex: 2, durationDays: 10 },
+        { title: "Componentes y props", orderIndex: 3, durationDays: 10 },
+        { title: "Composables y estado", orderIndex: 4, durationDays: 10 },
+        { title: "Routing y formularios", orderIndex: 5, durationDays: 10 },
+        { title: "Proyecto final", orderIndex: 6, durationDays: 12 },
+      ],
+    },
+    {
+      title: "Angular para Frontend Developers",
+      slug: "angular-frontend",
+      description: "Domina Angular para crear aplicaciones web empresariales",
+      level: "INTERMEDIATE" as const,
+      goal: "frontend",
+      weeklyHours: 12,
+      subjectId: angular.id,
+      modules: [
+        { title: "Fundamentos de Angular", orderIndex: 1, durationDays: 10 },
+        { title: "Componentes y templates", orderIndex: 2, durationDays: 10 },
+        { title: "Servicios e inyección de dependencias", orderIndex: 3, durationDays: 10 },
+        { title: "Routing y forms", orderIndex: 4, durationDays: 10 },
+        { title: "RxJS y estado", orderIndex: 5, durationDays: 12 },
+        { title: "Proyecto final", orderIndex: 6, durationDays: 12 },
       ],
     },
     {
       title: "Node.js Backend Developer",
       slug: "nodejs-backend",
-      description: "Construye APIs robustas y escalables con Node.js, Express y PostgreSQL",
+      description: "Construye APIs robustas y escalables con Node.js, Express y bases de datos",
       level: "INTERMEDIATE" as const,
       goal: "backend",
       weeklyHours: 15,
       subjectId: nodejs.id,
       modules: [
-        {
-          title: "Node.js Core y Módulos",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "Express.js y REST APIs",
-          orderIndex: 2,
-          durationDays: 12,
-        },
-        {
-          title: "Base de Datos con Prisma",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Autenticación y Seguridad",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Testing con Jest",
-          orderIndex: 5,
-          durationDays: 8,
-        },
-        {
-          title: "Deploy y DevOps Básico",
-          orderIndex: 6,
-          durationDays: 10,
-        },
+        { title: "Node.js core", orderIndex: 1, durationDays: 8 },
+        { title: "Express y REST APIs", orderIndex: 2, durationDays: 12 },
+        { title: "PostgreSQL y Prisma", orderIndex: 3, durationDays: 12 },
+        { title: "Auth, JWT y seguridad", orderIndex: 4, durationDays: 10 },
+        { title: "Testing y calidad", orderIndex: 5, durationDays: 10 },
+        { title: "Deploy y observabilidad", orderIndex: 6, durationDays: 10 },
       ],
     },
     {
-      title: "Python para Data Science",
-      slug: "python-data-science",
-      description: "Aprende Python aplicado al análisis de datos, visualización y machine learning",
-      level: "BEGINNER" as const,
-      goal: "data_science",
-      weeklyHours: 12,
-      subjectId: python.id,
+      title: "PostgreSQL Profesional",
+      slug: "postgresql-intermediate",
+      description: "Domina PostgreSQL para construir backends y sistemas de datos confiables",
+      level: "INTERMEDIATE" as const,
+      goal: "backend",
+      weeklyHours: 10,
+      subjectId: postgresql.id,
       modules: [
-        {
-          title: "Python Fundamentals",
-          orderIndex: 1,
-          durationDays: 12,
-        },
-        {
-          title: "NumPy y Pandas",
-          orderIndex: 2,
-          durationDays: 14,
-        },
-        {
-          title: "Visualización con Matplotlib",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Machine Learning con Scikit-learn",
-          orderIndex: 4,
-          durationDays: 16,
-        },
-        {
-          title: "Proyecto: Análisis de Dataset Real",
-          orderIndex: 5,
-          durationDays: 14,
-        },
+        { title: "Tablas y constraints", orderIndex: 1, durationDays: 10 },
+        { title: "Relaciones y normalización", orderIndex: 2, durationDays: 10 },
+        { title: "Transacciones y locks", orderIndex: 3, durationDays: 10 },
+        { title: "Consultas avanzadas", orderIndex: 4, durationDays: 10 },
+        { title: "Performance y tuning", orderIndex: 5, durationDays: 12 },
+      ],
+    },
+    {
+      title: "MongoDB para Backend",
+      slug: "mongodb-intermediate",
+      description: "Aprende bases de datos NoSQL con MongoDB en escenarios reales",
+      level: "INTERMEDIATE" as const,
+      goal: "backend",
+      weeklyHours: 10,
+      subjectId: mongodb.id,
+      modules: [
+        { title: "Documentos y colecciones", orderIndex: 1, durationDays: 8 },
+        { title: "Modelado de datos", orderIndex: 2, durationDays: 10 },
+        { title: "Consultas y agregaciones", orderIndex: 3, durationDays: 10 },
+        { title: "Índices y performance", orderIndex: 4, durationDays: 10 },
+        { title: "Integración con Node.js", orderIndex: 5, durationDays: 12 },
+      ],
+    },
+    {
+      title: "Java desde Cero",
+      slug: "java-beginner",
+      description: "Aprende Java entendiendo tipos, control de flujo, objetos y la lógica de un lenguaje orientado a objetos.",
+      level: "BEGINNER" as const,
+      goal: "backend",
+      weeklyHours: 10,
+      subjectId: java.id,
+      modules: [
+        { title: "Qué hace diferente a Java y cómo compilarlo", orderIndex: 1, durationDays: 8 },
+        { title: "Sintaxis, tipos y operadores", orderIndex: 2, durationDays: 10 },
+        { title: "Control de flujo y métodos", orderIndex: 3, durationDays: 10 },
+        { title: "Arrays, String y estructuras básicas", orderIndex: 4, durationDays: 12 },
+        { title: "POO introductoria", orderIndex: 5, durationDays: 14 },
+        { title: "Mini proyecto de consola", orderIndex: 6, durationDays: 12 },
+      ],
+    },
+    {
+      title: "Java Profesional",
+      slug: "java-intermediate",
+      description: "Consolida Java para escribir software más sólido, mantenible y listo para backend.",
+      level: "INTERMEDIATE" as const,
+      goal: "backend",
+      weeklyHours: 12,
+      subjectId: java.id,
+      modules: [
+        { title: "POO sólida y diseño de clases", orderIndex: 1, durationDays: 10 },
+        { title: "Herencia, interfaces y polimorfismo", orderIndex: 2, durationDays: 10 },
+        { title: "Colecciones y genéricos", orderIndex: 3, durationDays: 12 },
+        { title: "Excepciones, archivos y streams", orderIndex: 4, durationDays: 12 },
+        { title: "Testing con JUnit y organización del código", orderIndex: 5, durationDays: 12 },
+        { title: "Proyecto intermedio bien estructurado", orderIndex: 6, durationDays: 14 },
+      ],
+    },
+    {
+      title: "Java Avanzado",
+      slug: "java-advanced",
+      description: "Profundiza en concurrencia, performance y patrones de diseño para software de nivel profesional.",
+      level: "ADVANCED" as const,
+      goal: "backend",
+      weeklyHours: 12,
+      subjectId: java.id,
+      modules: [
+        { title: "Generics avanzados y APIs robustas", orderIndex: 1, durationDays: 10 },
+        { title: "Concurrencia y thread safety", orderIndex: 2, durationDays: 12 },
+        { title: "Java Collections y performance", orderIndex: 3, durationDays: 10 },
+        { title: "Patrones de diseño aplicados", orderIndex: 4, durationDays: 12 },
+        { title: "Arquitectura limpia en Java", orderIndex: 5, durationDays: 12 },
+        { title: "Preparación para Spring Boot", orderIndex: 6, durationDays: 14 },
+      ],
+    },
+    {
+      title: "Spring Boot Backend",
+      slug: "spring-boot-backend",
+      description: "Aprende a construir APIs y servicios backend con Spring Boot, con foco en estructura, validación, persistencia y seguridad.",
+      level: "ADVANCED" as const,
+      goal: "backend",
+      weeklyHours: 15,
+      subjectId: java.id,
+      modules: [
+        { title: "Estructura de proyecto y arranque", orderIndex: 1, durationDays: 10 },
+        { title: "Controllers, services y dependency injection", orderIndex: 2, durationDays: 12 },
+        { title: "REST APIs y validación", orderIndex: 3, durationDays: 12 },
+        { title: "Persistencia con JPA y bases de datos", orderIndex: 4, durationDays: 14 },
+        { title: "Seguridad, configuración y profiles", orderIndex: 5, durationDays: 12 },
+        { title: "Testing y despliegue", orderIndex: 6, durationDays: 14 },
+      ],
+    },
+
+    {
+      title: "Docker para Desarrolladores",
+      slug: "docker-intermediate",
+      description: "Aprende a contenerizar aplicaciones y trabajar con entornos reproducibles",
+      level: "INTERMEDIATE" as const,
+      goal: "devops",
+      weeklyHours: 10,
+      subjectId: docker.id,
+      modules: [
+        { title: "Imágenes y contenedores", orderIndex: 1, durationDays: 8 },
+        { title: "Dockerfile", orderIndex: 2, durationDays: 10 },
+        { title: "Volúmenes y redes", orderIndex: 3, durationDays: 8 },
+        { title: "Docker Compose", orderIndex: 4, durationDays: 10 },
+        { title: "Buenas prácticas y optimización", orderIndex: 5, durationDays: 10 },
+      ],
+    },
+    {
+      title: "Kubernetes Esencial",
+      slug: "kubernetes-intermediate",
+      description: "Orquesta contenedores y despliega aplicaciones modernas en clústeres",
+      level: "INTERMEDIATE" as const,
+      goal: "devops",
+      weeklyHours: 12,
+      subjectId: kubernetes.id,
+      modules: [
+        { title: "Pods y deployments", orderIndex: 1, durationDays: 10 },
+        { title: "Services e ingress", orderIndex: 2, durationDays: 10 },
+        { title: "ConfigMaps y secrets", orderIndex: 3, durationDays: 10 },
+        { title: "Escalado y troubleshooting", orderIndex: 4, durationDays: 12 },
+        { title: "Proyecto de despliegue", orderIndex: 5, durationDays: 12 },
       ],
     },
     {
@@ -297,43 +504,98 @@ async function seedPathTemplates() {
       weeklyHours: 10,
       subjectId: aws.id,
       modules: [
-        {
-          title: "Fundamentos de Cloud y AWS",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "Compute: EC2 y Lambda",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Storage: S3 y EBS",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "Networking: VPC y Route 53",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Seguridad: IAM y KMS",
-          orderIndex: 5,
-          durationDays: 8,
-        },
-        {
-          title: "Bases de Datos en AWS",
-          orderIndex: 6,
-          durationDays: 8,
-        },
-        {
-          title: "Preparación para el Examen",
-          orderIndex: 7,
-          durationDays: 14,
-        },
+        { title: "Fundamentos de cloud", orderIndex: 1, durationDays: 8 },
+        { title: "IAM y seguridad", orderIndex: 2, durationDays: 10 },
+        { title: "Compute: EC2 y Lambda", orderIndex: 3, durationDays: 10 },
+        { title: "Storage: S3", orderIndex: 4, durationDays: 8 },
+        { title: "Networking básico", orderIndex: 5, durationDays: 10 },
+        { title: "Preparación para examen", orderIndex: 6, durationDays: 14 },
       ],
     },
+    {
+      title: "AWS para Backend y Serverless",
+      slug: "aws-intermediate",
+      description: "Construye y despliega arquitecturas modernas con AWS",
+      level: "INTERMEDIATE" as const,
+      goal: "devops",
+      weeklyHours: 12,
+      subjectId: aws.id,
+      modules: [
+        { title: "Lambda y API Gateway", orderIndex: 1, durationDays: 12 },
+        { title: "DynamoDB y RDS", orderIndex: 2, durationDays: 12 },
+        { title: "VPC y networking", orderIndex: 3, durationDays: 12 },
+        { title: "CloudWatch y monitoreo", orderIndex: 4, durationDays: 10 },
+        { title: "Seguridad y buenas prácticas", orderIndex: 5, durationDays: 10 },
+      ],
+    },
+    {
+      title: "AWS Well-Architected",
+      slug: "aws-advanced",
+      description: "Diseña arquitecturas seguras, confiables y eficientes en AWS",
+      level: "ADVANCED" as const,
+      goal: "devops",
+      weeklyHours: 12,
+      subjectId: aws.id,
+      modules: [
+        { title: "Operational Excellence", orderIndex: 1, durationDays: 10 },
+        { title: "Security Pillar", orderIndex: 2, durationDays: 10 },
+        { title: "Reliability Pillar", orderIndex: 3, durationDays: 10 },
+        { title: "Performance Efficiency", orderIndex: 4, durationDays: 10 },
+        { title: "Cost Optimization", orderIndex: 5, durationDays: 10 },
+        { title: "Sustainability", orderIndex: 6, durationDays: 10 },
+      ],
+    },
+    {
+      title: "Python para Data Science",
+      slug: "python-data-science",
+      description: "Aprende Python aplicado al análisis de datos, visualización y machine learning",
+      level: "BEGINNER" as const,
+      goal: "data_science",
+      weeklyHours: 12,
+      subjectId: python.id,
+      modules: [
+        { title: "Python fundamentals", orderIndex: 1, durationDays: 12 },
+        { title: "Estructuras de datos", orderIndex: 2, durationDays: 10 },
+        { title: "NumPy", orderIndex: 3, durationDays: 12 },
+        { title: "Pandas", orderIndex: 4, durationDays: 14 },
+        { title: "Matplotlib", orderIndex: 5, durationDays: 10 },
+        { title: "Proyecto de análisis", orderIndex: 6, durationDays: 14 },
+      ],
+    },
+
+    {
+      title: "React Native para Mobile Developers",
+      slug: "react-native-intermediate",
+      description: "Construye apps móviles con React Native y buenas prácticas modernas",
+      level: "INTERMEDIATE" as const,
+      goal: "mobile",
+      weeklyHours: 12,
+      subjectId: reactNative.id,
+      modules: [
+        { title: "Fundamentos de React Native", orderIndex: 1, durationDays: 10 },
+        { title: "Componentes y estilos", orderIndex: 2, durationDays: 10 },
+        { title: "Navegación", orderIndex: 3, durationDays: 10 },
+        { title: "APIs y almacenamiento local", orderIndex: 4, durationDays: 10 },
+        { title: "Proyecto final", orderIndex: 5, durationDays: 14 },
+      ],
+    },
+    {
+      title: "QA Automation con JavaScript",
+      slug: "qa-javascript-intermediate",
+      description: "Aprende automatización de pruebas para aplicaciones web modernas",
+      level: "INTERMEDIATE" as const,
+      goal: "qa",
+      weeklyHours: 10,
+      subjectId: javascript.id,
+      modules: [
+        { title: "Fundamentos de testing", orderIndex: 1, durationDays: 8 },
+        { title: "Pruebas unitarias", orderIndex: 2, durationDays: 10 },
+        { title: "Pruebas de integración", orderIndex: 3, durationDays: 10 },
+        { title: "E2E con Cypress o Playwright", orderIndex: 4, durationDays: 12 },
+        { title: "Reportes y estrategia QA", orderIndex: 5, durationDays: 10 },
+      ],
+    },
+
   ];
 
   for (const pathData of paths) {
