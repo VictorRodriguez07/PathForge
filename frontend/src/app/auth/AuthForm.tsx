@@ -341,11 +341,7 @@ export default function AuthForm() {
               </p>
             </header>
 
-            {/* Google */}
-            <button className={styles.googleBtn} type="button">
-                <GoogleIcon />
-                <span>Continuar con Google</span>
-            </button>
+         
 
             <div className={styles.divider} aria-hidden="true">
               <div className={styles.dividerLine} />

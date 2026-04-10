@@ -221,7 +221,7 @@ export default function CareerHubClient() {
             type="button"
           >
             <Plus size={15} />
-            {roadmaps.length === 0 ? 'Descubrir mi carrera' : 'Explorar otra carrera'}
+            {roadmaps.length === 0 ? 'Descubrir mi carrera' : 'Descubrir mi carrera'}
           </button>
           {roadmaps.length === 0 && (
             <span className={styles.heroHint}>Toma menos de 3 minutos</span>
