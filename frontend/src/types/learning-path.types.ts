@@ -9,6 +9,20 @@ export interface Subject {
   iconUrl: string | null;
 }
 
+export interface Concept {
+  id: string;
+  name: string;
+  slug: string;
+  level: Level;
+  description: string | null;
+  whyMatters: string | null;
+  explanation: string | null;
+  codeExample: string | null;
+  practicalTips: string[];
+  commonMistakes: string[];
+  resources: Record<string, unknown> | null;
+}
+
 export interface LearningPathModule {
   id: string;
   title: string;
@@ -16,6 +30,7 @@ export interface LearningPathModule {
   orderIndex: number;
   durationDays: number;
   pathTemplateId: string;
+  concepts: { concept: Concept }[];
 }
 
 export interface LearningPath {
@@ -91,7 +106,7 @@ export interface CustomPathDetail {
   weeklyHours: number;
   slug: null;
   subject: null;
-  modules: Pick<LearningPathModule, 'id' | 'title' | 'orderIndex' | 'durationDays'>[];
+  modules: LearningPathModule[];
   moduleProgress: { moduleId: string; status: ModuleStatus }[];
   progress: { completed: number; total: number; percentage: number };
 }
