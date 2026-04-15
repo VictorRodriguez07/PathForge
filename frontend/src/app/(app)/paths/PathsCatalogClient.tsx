@@ -224,8 +224,9 @@ export default function PathsCatalogClient() {
   });
 
   // Separar rutas custom de las de catálogo
-  const customPaths = (myPaths ?? []).filter((up) => up.isCustom);
-  const catalogEnrolled = (myPaths ?? []).filter((up) => !up.isCustom);
+  const myPathsArray = Array.isArray(myPaths) ? myPaths : [];
+  const customPaths = myPathsArray.filter((up) => up.isCustom);
+  const catalogEnrolled = myPathsArray.filter((up) => !up.isCustom);
 
   // Map para lookup rápido: slug → info
   const enrolledMap = new Map(
@@ -242,9 +243,10 @@ export default function PathsCatalogClient() {
       ])
   );
 
+  const pathsArray = Array.isArray(paths) ? paths : [];
   const filtered = activeFilter === 'all'
-    ? (paths ?? [])
-    : (paths ?? []).filter((p) => p.goal === activeFilter);
+    ? pathsArray
+    : pathsArray.filter((p) => p.goal === activeFilter);
 
   if (isLoading) {
     return (

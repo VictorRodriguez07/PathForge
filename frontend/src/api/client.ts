@@ -6,6 +6,7 @@ import { API_BASE_URL } from '../lib/constants';
 // Instancia de Axios para realizar solicitudes a la API. Usa la URL base definida en las variables de entorno para ser reutilizada al llamar al backend.
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
+  timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
   },

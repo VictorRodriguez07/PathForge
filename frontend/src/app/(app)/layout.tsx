@@ -9,7 +9,7 @@ export default function AppLayout({
   return (
     <div style={{ minHeight: '100vh', background: 'var(--c-base)' }}>
       <Navbar />
-      <main>{children}</main>
+        <main style={{ paddingBottom: 'var(--mobile-nav-h, 0px)' }}>{children}</main>
       <Toaster position="bottom-right" theme="dark" richColors />
     </div>
   );

@@ -130,16 +130,289 @@
   color: var(--c-t2);
 }
 
+/* ── Desktop user menu refactor ─────────── */
+.userInfo {
+  display: none; /* ya no se usa */
+}
+
+.avatarBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 99px;
+  padding: 5px 12px 5px 5px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.avatarBtn:hover {
+  border-color: rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.04);
+}
+
+.chevron {
+  color: rgba(255,255,255,0.35);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: #0D1525;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 6px;
+  z-index: 200;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.dropdownHeader {
+  padding: 8px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dropdownName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-t1);
+  font-family: var(--ff-h);
+}
+
+.dropdownEmail {
+  font-size: 11px;
+  color: var(--c-muted);
+  font-weight: 300;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin: 2px 0;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 10px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #F87171;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-align: left;
+}
+
+.dropdownItem:hover {
+  background: rgba(248,113,113,0.08);
+}
+
+/* ── Mobile bottom tab bar ───────────────── */
+.mobileNav {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .navbar {
-    padding: 0 16px;
-  }
-
-  .nav {
     display: none;
   }
 
-  .userInfo {
-    display: none;
+  .mobileNav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: #0A0F1A;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 0 0 env(safe-area-inset-bottom, 0px);
+  }
+
+  .mobileTab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 4px 12px;
+    background: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    color: rgba(255,255,255,0.35);
+    transition: color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobileTab:active {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .mobileTabActive {
+    color: #3B82F6;
+  }
+
+  .mobileTabIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .mobileTabLabel {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+
+  /* ── Bottom sheet ── */
+  .sheetOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 200;
+    animation: overlayIn 0.2s ease;
+  }
+
+  @keyframes overlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 201;
+    background: #0D1525;
+    border-top: 1px solid rgba(255,255,255,0.09);
+    border-radius: 20px 20px 0 0;
+    padding: 12px 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+    animation: sheetIn 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  @keyframes sheetIn {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0);   }
+  }
+
+  .sheetHandle {
+    width: 36px;
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 99px;
+    margin: 0 auto 20px;
+  }
+
+  .sheetUserInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 4px 16px;
+  }
+
+  .sheetAvatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ff-h);
+    font-size: 15px;
+    font-weight: 700;
+    color: #60A5FA;
+    flex-shrink: 0;
+  }
+
+  .sheetUserText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sheetUserName {
+    font-family: var(--ff-h);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-t1);
+  }
+
+  .sheetUserEmail {
+    font-size: 12px;
+    color: var(--c-muted);
+    font-weight: 300;
+  }
+
+  .sheetDivider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin: 0 0 8px;
+  }
+
+  .sheetLogout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 12px;
+    background: none;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    color: #F87171;
+    cursor: pointer;
+    transition: background 0.15s;
+    text-align: left;
+    margin-bottom: 4px;
+  }
+
+  .sheetLogout:active {
+    background: rgba(248,113,113,0.08);
+  }
+
+  .sheetCancel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    font-family: var(--ff-h);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--c-t2);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .sheetCancel:active {
+    background: rgba(255,255,255,0.08);
   }
 }
