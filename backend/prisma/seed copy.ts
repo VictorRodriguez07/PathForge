@@ -1,2034 +1,1259 @@
-import { PrismaClient } from "@prisma/client";
+INSERT INTO concepts (
+  id, name, slug, level, description, "whyMatters", explanation,
+  "codeExample", "practicalTips", "commonMistakes", resources, "subjectId"
+) VALUES
 
-const prisma = new PrismaClient();
+(
+  gen_random_uuid(),
+  'Python: filosofía, instalación y primeros pasos',
+  'python-philosophy-and-setup',
+  'BEGINNER',
+  'Entiende qué es Python, por qué se diseñó así, cómo instalarlo correctamente y cómo ejecutar tu primer programa.',
+  'Python tiene una filosofía de diseño explícita que influye en cómo se escribe código. Conocerla desde el inicio te ahorra malos hábitos y te explica por qué la comunidad prefiere ciertas formas de hacer las cosas sobre otras.',
+  'Python es un lenguaje de programación de propósito general creado por Guido van Rossum y publicado en 1991. Su diseño prioriza la legibilidad del código: la idea central es que el código se lee muchas más veces de las que se escribe, por lo tanto debe ser claro antes que compacto.
 
-async function main() {
-  console.log("Seeding subjects and learning paths...");
-  await seedSubjects();
-  console.log("✅ Subjects seeded.");
-  await seedPathTemplates();
-  console.log("✅ Path templates seeded.");
-}
+La filosofía de Python está resumida en un documento llamado PEP 20, conocido como "The Zen of Python". Algunos de sus principios más relevantes son:
+- Explícito es mejor que implícito.
+- Simple es mejor que complejo.
+- La legibilidad cuenta.
+- Debe haber una, y preferiblemente solo una, manera obvia de hacer las cosas.
 
-// SUBJECTS
-// ─────────────────────────────────────────
-async function seedSubjects() {
-  const subjects = [
-    {
-      name: "HTML/CSS",
-      slug: "html-css",
-      description: "Estructura y estilos para construir páginas web",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-    },
-    {
-      name: "JavaScript",
-      slug: "javascript",
-      description: "El lenguaje de programación más usado en la web",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
-    },
-    {
-      name: "TypeScript",
-      slug: "typescript",
-      description: "JavaScript con tipado estático para proyectos escalables",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
-    },
-    {
-      name: "React",
-      slug: "react",
-      description: "Librería para construir interfaces modernas",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-    },
-    {
-      name: "Vue",
-      slug: "vue",
-      description: "Framework progresivo para interfaces web",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg",
-    },
-    {
-      name: "Angular",
-      slug: "angular",
-      description: "Framework para aplicaciones web empresariales",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg",
-    },
-    {
-      name: "Node.js",
-      slug: "nodejs",
-      description: "Runtime de JavaScript para construir backends escalables",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
-    },
-    {
-      name: "Python",
-      slug: "python",
-      description: "Lenguaje versátil para backend, automatización y data science",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
-    },
-    {
-      name: "AWS",
-      slug: "aws",
-      description: "La plataforma cloud más usada en la industria",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg",
-    },
-    {
-      name: "Git",
-      slug: "git",
-      description: "Sistema de control de versiones distribuido",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
-    },
-    {
-      name: "Linux",
-      slug: "linux",
-      description: "Sistema operativo esencial para desarrollo y DevOps",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg",
-    },
-    {
-      name: "Docker",
-      slug: "docker",
-      description: "Plataforma para crear y ejecutar contenedores",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
-    },
-    {
-      name: "SQL",
-      slug: "sql",
-      description: "Lenguaje para trabajar con bases de datos relacionales",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
-    },
-    {
-      name: "PostgreSQL",
-      slug: "postgresql",
-      description: "Base de datos relacional robusta y escalable",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
-    },
-    {
-      name: "MongoDB",
-      slug: "mongodb",
-      description: "Base de datos NoSQL orientada a documentos",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
-    },
-    {
-      name: "Java",
-      slug: "java",
-      description: "Lenguaje orientado a objetos muy usado en backend y mobile",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
-    },
-    {
-      name: "Kubernetes",
-      slug: "kubernetes",
-      description: "Plataforma de orquestación de contenedores",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg",
-    },
-    {
-      name: "React Native",
-      slug: "react-native",
-      description: "Framework para aplicaciones móviles con React",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-    },
-    // ── NUEVOS ──────────────────────────────────────────────
-    {
-      name: "Next.js",
-      slug: "nextjs",
-      description: "Framework full stack para React con SSR y App Router",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
-    },
-    {
-      name: "CI/CD",
-      slug: "cicd",
-      description: "Integración y despliegue continuo con GitHub Actions",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
-    },
-    {
-      name: "Algoritmos",
-      slug: "algorithms",
-      description: "Estructuras de datos y algoritmos fundamentales",
-      iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
-    },
-  ];
+Puedes leer este documento ejecutando import this en cualquier intérprete de Python.
 
-  for (const subject of subjects) {
-    await prisma.subject.upsert({
-      where: { slug: subject.slug },
-      update: subject,
-      create: subject,
-    });
-  }
-  console.log(`  ✅ ${subjects.length} subjects seeded`);
-}
-async function seedPathTemplates() {
-  const s = async (slug: string) =>
-    prisma.subject.findUniqueOrThrow({ where: { slug } });
+Python es un lenguaje interpretado, lo que significa que el código se ejecuta línea por línea sin necesidad de compilar. Esto hace que el ciclo de desarrollo sea rápido: escribes, ejecutas, ves el resultado de inmediato.
 
-  const htmlCss     = await s("html-css");
-  const javascript  = await s("javascript");
-  const typescript  = await s("typescript");
-  const react       = await s("react");
-  const vue         = await s("vue");
-  const angular     = await s("angular");
-  const nodejs      = await s("nodejs");
-  const python      = await s("python");
-  const aws         = await s("aws");
-  const git         = await s("git");
-  const linux       = await s("linux");
-  const docker      = await s("docker");
-  const sql         = await s("sql");
-  const postgresql  = await s("postgresql");
-  const mongodb     = await s("mongodb");
-  const java        = await s("java");
-  const kubernetes  = await s("kubernetes");
-  const reactNative = await s("react-native");
-  const nextjs      = await s("nextjs");
-  const cicd        = await s("cicd");
-  const algorithms  = await s("algorithms");
+INSTALACIÓN
 
-  const paths = [
+La forma recomendada es descargar Python desde python.org. Durante la instalación en Windows, marca la opción "Add Python to PATH" para poder ejecutarlo desde la terminal.
 
-    // ══════════════════════════════════════
-    // BEGINNER
-    // ══════════════════════════════════════
+Verifica la instalación:
 
-    {
-      title: "HTML y CSS desde Cero",
-      slug: "html-css-beginner",
-      description:
-        "Construye páginas web reales desde cero. Aprenderás HTML semántico, CSS moderno con Flexbox y Grid, diseño responsivo y animaciones CSS. Al terminar tendrás un sitio web multi-página publicado y listo para tu portafolio.",
-      level: "BEGINNER" as const,
-      goal: "frontend",
-      weeklyHours: 10,
-      subjectId: htmlCss.id,
-      modules: [
-        {
-          title: "Cómo funciona la web y HTML semántico",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Texto, enlaces, listas, tablas e imágenes",
-          orderIndex: 2,
-          durationDays: 8,
-        },
-        {
-          title: "Formularios HTML y validación nativa",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "CSS: selectores, cascada, especificidad y tipografía",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Box model, colores y unidades CSS",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Layouts modernos con Flexbox",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Layouts de dos dimensiones con CSS Grid",
-          orderIndex: 7,
-          durationDays: 10,
-        },
-        {
-          title: "Diseño responsivo: mobile-first y media queries",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Transiciones, animaciones y pseudo-clases avanzadas",
-          orderIndex: 9,
-          durationDays: 8,
-        },
-        {
-          title: "Proyecto: sitio web responsivo completo",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
+  python --version
 
-    {
-      title: "JavaScript desde Cero",
-      slug: "javascript-beginner",
-      description:
-        "Aprende JavaScript desde variables y funciones hasta asincronía, Fetch API y módulos ES6. El lenguaje de la web que todo desarrollador debe dominar. Al terminar construirás una aplicación web interactiva que consume datos de una API real.",
-      level: "BEGINNER" as const,
-      goal: "frontend",
-      weeklyHours: 10,
-      subjectId: javascript.id,
-      modules: [
-        {
-          title: "Sintaxis, variables y tipos de datos",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Condicionales y ciclos",
-          orderIndex: 2,
-          durationDays: 8,
-        },
-        {
-          title: "Funciones, scope y closures",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Arrays y objetos en profundidad",
-          orderIndex: 4,
-          durationDays: 12,
-        },
-        {
-          title: "DOM: selección y manipulación dinámica",
-          orderIndex: 5,
-          durationDays: 12,
-        },
-        {
-          title: "Eventos del navegador y delegación",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "JavaScript asíncrono: event loop, Promises y async/await",
-          orderIndex: 7,
-          durationDays: 12,
-        },
-        {
-          title: "Fetch API y consumo de APIs REST",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "ES6+ y módulos de JavaScript",
-          orderIndex: 9,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto: aplicación web interactiva con API",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
+En macOS y Linux, es posible que el sistema ya tenga Python instalado, pero generalmente es una versión antigua. Se recomienda instalar la versión más reciente con el instalador oficial o con un gestor como pyenv.
 
-    {
-      title: "Git Esencial",
-      slug: "git-beginner",
-      description:
-        "Domina el control de versiones para trabajar en equipo como desarrollador profesional. Commits, branches, merge, rebase, GitHub y el flujo de trabajo con Pull Requests. Habilidad obligatoria en cualquier empleo de desarrollo.",
-      level: "BEGINNER" as const,
-      goal: "fullstack",
-      weeklyHours: 6,
-      subjectId: git.id,
-      modules: [
-        {
-          title: "Qué es Git y cómo funciona internamente",
-          orderIndex: 1,
-          durationDays: 6,
-        },
-        {
-          title: "Commits: registrar cambios con significado",
-          orderIndex: 2,
-          durationDays: 6,
-        },
-        {
-          title: "Branches, merge y resolución de conflictos",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "GitHub: repositorios remotos y colaboración",
-          orderIndex: 4,
-          durationDays: 8,
-        },
-        {
-          title: "Rebase, stash y reescritura de historial",
-          orderIndex: 5,
-          durationDays: 8,
-        },
-        {
-          title: "Estrategias de branching: Git Flow y GitHub Flow",
-          orderIndex: 6,
-          durationDays: 6,
-        },
-        {
-          title: "Proyecto: flujo profesional de colaboración",
-          orderIndex: 7,
-          durationDays: 6,
-        },
-      ],
-    },
+ENTORNOS VIRTUALES
 
-    {
-      title: "Linux Esencial para DevOps",
-      slug: "linux-beginner",
-      description:
-        "Domina la terminal Linux para trabajar en servidores y cloud. Navegación, permisos, procesos, networking, Bash scripting y administración del sistema. Habilidad indispensable para cualquier rol de backend, DevOps o cloud.",
-      level: "BEGINNER" as const,
-      goal: "devops",
-      weeklyHours: 8,
-      subjectId: linux.id,
-      modules: [
-        {
-          title: "Terminal y sistema de archivos de Linux",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "Permisos, usuarios y grupos",
-          orderIndex: 2,
-          durationDays: 8,
-        },
-        {
-          title: "Procesos, servicios y systemd",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "Pipes, redirecciones y procesamiento de texto",
-          orderIndex: 4,
-          durationDays: 8,
-        },
-        {
-          title: "Networking, SSH y firewall básico",
-          orderIndex: 5,
-          durationDays: 8,
-        },
-        {
-          title: "Bash scripting: automatización del servidor",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Almacenamiento, logs y monitoreo del sistema",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Proyecto: servidor web configurado y asegurado",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-      ],
-    },
+Python instala paquetes de forma global por defecto. Esto genera conflictos cuando distintos proyectos necesitan versiones diferentes del mismo paquete. La solución son los entornos virtuales: carpetas aisladas que contienen su propia instalación de Python y sus propios paquetes.
 
-    {
-      title: "SQL y Bases de Datos Relacionales",
-      slug: "sql-beginner",
-      description:
-        "Aprende SQL para consultar, transformar y modelar datos de forma profesional. JOINs, agregaciones, subqueries, CTEs, transacciones y diseño de esquemas. La habilidad de datos más demandada en el mercado, independientemente del stack.",
-      level: "BEGINNER" as const,
-      goal: "backend",
-      weeklyHours: 8,
-      subjectId: sql.id,
-      modules: [
-        {
-          title: "Bases de datos relacionales y SELECT",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "JOINs: combinando datos de múltiples tablas",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Agregaciones y GROUP BY",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "Subqueries y CTEs",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "INSERT, UPDATE, DELETE y transacciones",
-          orderIndex: 5,
-          durationDays: 8,
-        },
-        {
-          title: "Diseño de esquemas y DDL",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Índices y performance básica",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Window functions y SQL analítico",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto: base de datos de e-commerce con análisis",
-          orderIndex: 9,
-          durationDays: 12,
-        },
-      ],
-    },
+  python -m venv nombre_del_entorno
 
-    {
-      title: "AWS Cloud Practitioner",
-      slug: "aws-cloud-practitioner",
-      description:
-        "Entiende los servicios core de AWS y prepárate para la certificación Cloud Practitioner (CLF-C02). IAM, EC2, S3, Lambda, RDS, VPC, CloudWatch y gestión de costos. El punto de entrada al ecosistema cloud más usado del mundo.",
-      level: "BEGINNER" as const,
-      goal: "devops",
-      weeklyHours: 10,
-      subjectId: aws.id,
-      modules: [
-        {
-          title: "Fundamentos de cloud computing",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "IAM: identidad y control de acceso",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Compute: EC2, Lambda y opciones serverless",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Storage: S3, EBS y EFS",
-          orderIndex: 4,
-          durationDays: 8,
-        },
-        {
-          title: "Networking: VPC, subnets y security groups",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Bases de datos gestionadas: RDS y DynamoDB",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "CloudWatch, billing y gestión de costos",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Preparación para el examen CLF-C02",
-          orderIndex: 8,
-          durationDays: 14,
-        },
-        {
-          title: "Simulacros y práctica final",
-          orderIndex: 9,
-          durationDays: 14,
-        },
-      ],
-    },
+Activas el entorno antes de trabajar en el proyecto y desactivas cuando terminas. Esto es una práctica estándar en cualquier proyecto Python profesional.
 
-    {
-      title: "Java desde Cero",
-      slug: "java-beginner",
-      description:
-        "Aprende Java desde cero: tipos, control de flujo, métodos, arrays, strings y POO. Entiende cómo funciona la JVM y por qué Java domina el backend empresarial. Al terminar construirás una aplicación de consola con programación orientada a objetos real.",
-      level: "BEGINNER" as const,
-      goal: "backend",
-      weeklyHours: 10,
-      subjectId: java.id,
-      modules: [
-        {
-          title: "Qué es Java y cómo funciona la JVM",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "Tipos, variables, operadores y control de flujo",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Métodos, parámetros y organización del código",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Arrays, Strings y tipos wrapper",
-          orderIndex: 4,
-          durationDays: 12,
-        },
-        {
-          title: "Programación orientada a objetos",
-          orderIndex: 5,
-          durationDays: 14,
-        },
-        {
-          title: "Interfaces, clases abstractas y principios de diseño",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Excepciones y manejo de errores robusto",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Collections Framework: List, Map y Set",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto: aplicación de consola completa",
-          orderIndex: 9,
-          durationDays: 12,
-        },
-      ],
-    },
+EL INTÉRPRETE INTERACTIVO (REPL)
 
-    {
-      title: "Python para Data Science",
-      slug: "python-data-science",
-      description:
-        "Aprende Python aplicado al análisis de datos con NumPy, Pandas, Matplotlib y scikit-learn. Desde la exploración de datos hasta modelos de Machine Learning. El stack que usan los data scientists en la industria.",
-      level: "BEGINNER" as const,
-      goal: "data_science",
-      weeklyHours: 12,
-      subjectId: python.id,
-      modules: [
-        {
-          title: "Python y entorno para Data Science",
-          orderIndex: 1,
-          durationDays: 12,
-        },
-        {
-          title: "Python avanzado para análisis de datos",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "NumPy: computación numérica vectorizada",
-          orderIndex: 3,
-          durationDays: 12,
-        },
-        {
-          title: "Pandas: análisis y manipulación de datos",
-          orderIndex: 4,
-          durationDays: 14,
-        },
-        {
-          title: "Visualización con Matplotlib y Seaborn",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Estadística descriptiva e inferencial aplicada",
-          orderIndex: 6,
-          durationDays: 12,
-        },
-        {
-          title: "Machine Learning con scikit-learn",
-          orderIndex: 7,
-          durationDays: 14,
-        },
-        {
-          title: "Pipelines, feature engineering y validación robusta",
-          orderIndex: 8,
-          durationDays: 12,
-        },
-        {
-          title: "Proyecto: análisis de datos real end-to-end",
-          orderIndex: 9,
-          durationDays: 14,
-        },
-      ],
-    },
+Al escribir python en la terminal sin argumentos, se abre el REPL (Read-Eval-Print Loop). Es un entorno interactivo donde puedes escribir código y ver el resultado inmediatamente. Es ideal para explorar, probar ideas y aprender.',
+  '# Verificar la versión instalada
+python --version
 
-    // ── NUEVAS BEGINNER ──────────────────────────────────────
+# Abrir el intérprete interactivo
+python
 
-    {
-      title: "Python desde Cero",
-      slug: "python-beginner",
-      description:
-        "Aprende Python desde los fundamentos: tipos, funciones, colecciones, POO, archivos y la librería estándar. El lenguaje más versátil del mercado, ideal como primer lenguaje de programación. Al terminar construirás una herramienta de automatización CLI.",
-      level: "BEGINNER" as const,
-      goal: "backend",
-      weeklyHours: 8,
-      subjectId: python.id,
-      modules: [
-        {
-          title: "Python: filosofía, instalación y primeros pasos",
-          orderIndex: 1,
-          durationDays: 6,
-        },
-        {
-          title: "Tipos, variables, operadores y strings",
-          orderIndex: 2,
-          durationDays: 8,
-        },
-        {
-          title: "Control de flujo: condicionales y loops",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "Funciones, argumentos y scope",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Listas, tuplas, diccionarios y sets",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Programación orientada a objetos en Python",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Archivos, excepciones y módulos",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Librería estándar esencial y pip",
-          orderIndex: 8,
-          durationDays: 8,
-        },
-        {
-          title: "Proyecto: herramienta de automatización CLI",
-          orderIndex: 9,
-          durationDays: 12,
-        },
-      ],
-    },
+# Dentro del intérprete, leer la filosofía de Python
+import this
 
-    {
-      title: "TypeScript desde Cero",
-      slug: "typescript-beginner",
-      description:
-        "Aprende TypeScript desde los fundamentos: tipos primitivos, interfaces, generics básicos y utility types. Entiende por qué los equipos profesionales lo adoptan y cómo añade seguridad y escalabilidad a cualquier proyecto JavaScript.",
-      level: "BEGINNER" as const,
-      goal: "fullstack",
-      weeklyHours: 8,
-      subjectId: typescript.id,
-      modules: [
-        {
-          title: "Por qué TypeScript existe y cómo configurarlo",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "Tipos primitivos, anotaciones y funciones tipadas",
-          orderIndex: 2,
-          durationDays: 8,
-        },
-        {
-          title: "Objetos, interfaces y type aliases",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "Union types, intersection types y narrowing",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Generics: código reutilizable con type safety",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Enums y clases tipadas",
-          orderIndex: 6,
-          durationDays: 8,
-        },
-        {
-          title: "Utility types de la librería estándar",
-          orderIndex: 7,
-          durationDays: 10,
-        },
-        {
-          title: "Módulos, paths y tipos para librerías externas",
-          orderIndex: 8,
-          durationDays: 8,
-        },
-        {
-          title: "Proyecto: API tipada con TypeScript y Zod",
-          orderIndex: 9,
-          durationDays: 12,
-        },
-      ],
-    },
+# Salir del intérprete
+exit()
 
-    {
-      title: "Algoritmos y Estructuras de Datos",
-      slug: "algorithms-beginner",
-      description:
-        "Domina las estructuras de datos y algoritmos fundamentales para resolver problemas técnicos y destacar en entrevistas de trabajo. Arrays, listas enlazadas, pilas, colas, árboles, grafos, búsqueda, ordenamiento y complejidad Big O.",
-      level: "BEGINNER" as const,
-      goal: "fullstack",
-      weeklyHours: 10,
-      subjectId: algorithms.id,
-      modules: [
-        {
-          title: "Complejidad algorítmica y notación Big O",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "Arrays y strings: técnicas y patrones",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Listas enlazadas: simple, doble y circular",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Pilas, colas y deques",
-          orderIndex: 4,
-          durationDays: 8,
-        },
-        {
-          title: "Tablas hash: implementación y colisiones",
-          orderIndex: 5,
-          durationDays: 8,
-        },
-        {
-          title: "Árboles binarios y BST",
-          orderIndex: 6,
-          durationDays: 12,
-        },
-        {
-          title: "Heaps y colas de prioridad",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Grafos: BFS, DFS y caminos más cortos",
-          orderIndex: 8,
-          durationDays: 12,
-        },
-        {
-          title: "Algoritmos de ordenamiento clásicos",
-          orderIndex: 9,
-          durationDays: 8,
-        },
-        {
-          title: "Programación dinámica y técnicas avanzadas",
-          orderIndex: 10,
-          durationDays: 12,
-        },
-        {
-          title: "Práctica: 30 problemas tipo entrevista resueltos",
-          orderIndex: 11,
-          durationDays: 14,
-        },
-      ],
-    },
+# Crear un entorno virtual llamado venv
+python -m venv venv
 
-    // ══════════════════════════════════════
-    // INTERMEDIATE
-    // ══════════════════════════════════════
+# Activar el entorno virtual (Windows)
+venv\Scripts\activate
 
-    {
-      title: "React para Frontend Developers",
-      slug: "react-frontend",
-      description:
-        "Conviértete en Frontend Developer profesional dominando React. Hooks, estado global con Context y Zustand, React Router v6, TanStack Query, formularios con React Hook Form y Zod, testing con Testing Library y deploy en producción.",
-      level: "INTERMEDIATE" as const,
-      goal: "frontend",
-      weeklyHours: 15,
-      subjectId: react.id,
-      modules: [
-        {
-          title: "Fundamentos de React: Virtual DOM y JSX",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Estado con useState y manejo de eventos",
-          orderIndex: 2,
-          durationDays: 12,
-        },
-        {
-          title: "Props, renderizado condicional y listas",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "useEffect: sincronización y ciclo de vida",
-          orderIndex: 4,
-          durationDays: 12,
-        },
-        {
-          title: "Hooks avanzados: useRef, useMemo y useCallback",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Context API y estado global",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "React Router v6: navegación en SPAs",
-          orderIndex: 7,
-          durationDays: 7,
-        },
-        {
-          title: "Peticiones HTTP con TanStack Query",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Formularios con React Hook Form y Zod",
-          orderIndex: 9,
-          durationDays: 8,
-        },
-        {
-          title: "Performance, testing y arquitectura de proyecto",
-          orderIndex: 10,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto final: SPA completa en producción",
-          orderIndex: 11,
-          durationDays: 14,
-        },
-      ],
-    },
+# Activar el entorno virtual (macOS / Linux)
+source venv/bin/activate
 
-    {
-      title: "TypeScript Profesional",
-      slug: "typescript-intermediate",
-      description:
-        "Domina TypeScript para código seguro y mantenible en proyectos profesionales. Tipos avanzados, generics con infer y constraints, utility types, TypeScript en React y Node.js, declaration files y patrones de diseño con el sistema de tipos.",
-      level: "INTERMEDIATE" as const,
-      goal: "fullstack",
-      weeklyHours: 12,
-      subjectId: typescript.id,
-      modules: [
-        {
-          title: "Sistema de tipos avanzado y control flow analysis",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Tipos avanzados: conditional, mapped e indexed access",
-          orderIndex: 2,
-          durationDays: 8,
-        },
-        {
-          title: "Generics avanzados: infer, constraints y varianza",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Utility types avanzados y template literal types",
-          orderIndex: 4,
-          durationDays: 8,
-        },
-        {
-          title: "TypeScript en React: componentes, hooks y context tipados",
-          orderIndex: 5,
-          durationDays: 12,
-        },
-        {
-          title: "TypeScript en Node.js: Express, Prisma y configuración",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Declaration files y extensión de módulos",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Patrones de diseño con TypeScript",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto: librería TypeScript con tipos públicos",
-          orderIndex: 9,
-          durationDays: 12,
-        },
-      ],
-    },
+# Verificar que el entorno está activo (el prompt cambia)
+# (venv) usuario@maquina:~$
 
-    {
-      title: "Node.js Backend Developer",
-      slug: "nodejs-backend",
-      description:
-        "Construye APIs REST robustas con Node.js, Express, Prisma y PostgreSQL. Auth JWT con refresh tokens, validación con Zod, upload a S3, jobs con BullMQ, rate limiting, testing con Jest y Supertest, y deploy con CI/CD.",
-      level: "INTERMEDIATE" as const,
-      goal: "backend",
-      weeklyHours: 15,
-      subjectId: nodejs.id,
-      modules: [
-        {
-          title: "Node.js core: event loop, módulos y streams",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "Express.js: APIs REST y middleware",
-          orderIndex: 2,
-          durationDays: 12,
-        },
-        {
-          title: "PostgreSQL y Prisma ORM con TypeScript",
-          orderIndex: 3,
-          durationDays: 12,
-        },
-        {
-          title: "Autenticación JWT con access y refresh tokens",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Validación con Zod y manejo de errores estructurado",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Upload de archivos, email y jobs en background",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Seguridad: CORS, rate limiting y headers HTTP",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Testing: unitario, integración y APIs",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Performance: caching con Redis y paginación",
-          orderIndex: 9,
-          durationDays: 8,
-        },
-        {
-          title: "Deploy y observabilidad en producción",
-          orderIndex: 10,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto final: API REST completa en producción",
-          orderIndex: 11,
-          durationDays: 14,
-        },
-      ],
-    },
+# Desactivar el entorno virtual
+deactivate
 
-    {
-      title: "Vue para Frontend Developers",
-      slug: "vue-frontend",
-      description:
-        "Domina Vue 3 con Composition API para construir interfaces modernas. Composables, Pinia para estado global, Vue Router con guards, VeeValidate con Zod, TanStack Query para Vue y deploy en producción con Vite.",
-      level: "INTERMEDIATE" as const,
-      goal: "frontend",
-      weeklyHours: 12,
-      subjectId: vue.id,
-      modules: [
-        {
-          title: "Fundamentos de Vue 3 y Composition API",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Templates, directivas y reactividad",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Componentes, props y emits",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Composables y reutilización de lógica",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Vue Router: navegación en SPAs",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Pinia: estado global en Vue",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Formularios, validación y peticiones HTTP",
-          orderIndex: 7,
-          durationDays: 10,
-        },
-        {
-          title: "Testing con Vitest y Vue Testing Library",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Performance, SSR con Nuxt y deploy",
-          orderIndex: 9,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto final: SPA completa con Vue",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
+# Crear y ejecutar el primer archivo
+# archivo: hola.py
+print("Hola, mundo")
 
-    {
-      title: "Angular para Frontend Developers",
-      slug: "angular-frontend",
-      description:
-        "Domina Angular para aplicaciones web empresariales. Componentes, servicios con DI, RxJS y programación reactiva, formularios reactivos, routing con guards, HttpClient y arquitectura escalable con módulos.",
-      level: "INTERMEDIATE" as const,
-      goal: "frontend",
-      weeklyHours: 12,
-      subjectId: angular.id,
-      modules: [
-        {
-          title: "Fundamentos de Angular y arquitectura",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Componentes, templates y data binding",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Servicios, inyección de dependencias y módulos",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "RxJS: programación reactiva en Angular",
-          orderIndex: 4,
-          durationDays: 12,
-        },
-        {
-          title: "Routing y navigation guards",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Formularios reactivos y validación",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "HttpClient, interceptors y manejo de errores",
-          orderIndex: 7,
-          durationDays: 10,
-        },
-        {
-          title: "State management con NgRx o signals",
-          orderIndex: 8,
-          durationDays: 12,
-        },
-        {
-          title: "Testing con Jasmine y Angular Testing Utilities",
-          orderIndex: 9,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto final: aplicación empresarial con Angular",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
+# Ejecutar desde la terminal
+python hola.py',
+  ARRAY[
+    'Usa siempre un entorno virtual por proyecto. Es un hábito que te evitará conflictos de dependencias desde el primer día.',
+    'El REPL es tu mejor herramienta de aprendizaje. Antes de escribir código en un archivo, prueba la idea en el intérprete para ver el resultado de inmediato.',
+    'Lee el Zen of Python (import this) una vez por semana durante el primer mes. Con el tiempo, sus principios se vuelven intuición.',
+    'Instala la extensión de Python para VS Code. Ofrece autocompletado, detección de errores en tiempo real y ejecución directa desde el editor.'
+  ],
+  ARRAY[
+    'No agregar Python al PATH durante la instalación en Windows. Resulta en que la terminal no reconoce el comando python.',
+    'Instalar paquetes globalmente sin activar un entorno virtual. A medida que acumulas proyectos, los conflictos de versiones se vuelven inevitables.',
+    'Confundir Python 2 con Python 3. Python 2 llegó a su fin de vida en 2020 y no debe usarse en proyectos nuevos. Verifica siempre que estás usando Python 3.',
+    'Nombrar el archivo del proyecto python.py. Python intenta importar su propio módulo estándar y falla de forma confusa.'
+  ],
+  '[{"type":"article","title":"The Zen of Python (PEP 20)","url":"https://peps.python.org/pep-0020/"},{"type":"article","title":"Python.org - Downloads","url":"https://www.python.org/downloads/"},{"type":"article","title":"Python Virtual Environments: A Primer","url":"https://realpython.com/python-virtual-environments-a-primer/"}]'::jsonb,
+  'a1e56981-d263-463b-a35d-a5f1380d8f00'
+),
 
-    {
-      title: "PostgreSQL Profesional",
-      slug: "postgresql-intermediate",
-      description:
-        "Domina PostgreSQL más allá del SQL básico. JSONB, arrays, isolation levels, índices avanzados (GIN, GiST), window functions, CTEs recursivos, funciones PL/pgSQL, full-text search y performance tuning.",
-      level: "INTERMEDIATE" as const,
-      goal: "backend",
-      weeklyHours: 10,
-      subjectId: postgresql.id,
-      modules: [
-        {
-          title: "Arquitectura de PostgreSQL y tipos de datos avanzados",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Relaciones avanzadas y normalización",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Transacciones, isolation levels y locks",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Queries avanzadas: window functions y CTEs recursivos",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Índices avanzados y performance tuning",
-          orderIndex: 5,
-          durationDays: 12,
-        },
-        {
-          title: "Funciones PL/pgSQL, triggers y vistas materializadas",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Full-text search y búsqueda avanzada",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Backup, replicación y alta disponibilidad",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto: sistema de datos para aplicación real",
-          orderIndex: 9,
-          durationDays: 12,
-        },
-      ],
-    },
+(
+  gen_random_uuid(),
+  'Tipos, variables, operadores y strings',
+  'python-types-variables-operators-strings',
+  'BEGINNER',
+  'Aprende cómo Python maneja los datos: qué tipos existen, cómo se declaran variables, qué operadores hay disponibles y cómo trabajar con texto.',
+  'Toda aplicación, sin importar su complejidad, se reduce a manipular datos. Entender los tipos de datos y cómo operar con ellos es el vocabulario básico del lenguaje. Sin esto, nada de lo demás tiene sentido.',
+  'VARIABLES Y TIPADO DINÁMICO
 
-    {
-      title: "MongoDB para Backend",
-      slug: "mongodb-intermediate",
-      description:
-        "Aprende MongoDB para backends con datos flexibles. Modelado de documentos, embedding vs referencing, aggregation pipeline, índices, transacciones ACID e integración con Node.js usando Mongoose. Deploy en MongoDB Atlas.",
-      level: "INTERMEDIATE" as const,
-      goal: "backend",
-      weeklyHours: 10,
-      subjectId: mongodb.id,
-      modules: [
-        {
-          title: "MongoDB: modelo de documentos y cuándo usarlo",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "Modelado de datos: embedding vs referencing",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Queries, filtros y operadores",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Aggregation Pipeline",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Índices y performance en MongoDB",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Transacciones y consistencia",
-          orderIndex: 6,
-          durationDays: 8,
-        },
-        {
-          title: "Integración con Node.js: Mongoose y driver nativo",
-          orderIndex: 7,
-          durationDays: 12,
-        },
-        {
-          title: "Proyecto: API con MongoDB Atlas en producción",
-          orderIndex: 8,
-          durationDays: 12,
-        },
-      ],
-    },
+En Python, una variable es un nombre que apunta a un valor. No se declara el tipo de la variable: Python lo infiere automáticamente según el valor asignado. Esto se llama tipado dinámico.
 
-    {
-      title: "Docker para Desarrolladores",
-      slug: "docker-intermediate",
-      description:
-        "Conteneriza aplicaciones para entornos reproducibles. Dockerfile multi-stage, volúmenes, redes, Docker Compose para ambientes completos, publicación en ECR, buenas prácticas de seguridad y deploy de contenedores en producción.",
-      level: "INTERMEDIATE" as const,
-      goal: "devops",
-      weeklyHours: 10,
-      subjectId: docker.id,
-      modules: [
-        {
-          title: "Contenedores: qué son y por qué importan",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "Dockerfile: construir imágenes propias",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Volúmenes y redes en Docker",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "Docker Compose: ambientes multi-contenedor",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Registry privado y gestión de imágenes",
-          orderIndex: 5,
-          durationDays: 8,
-        },
-        {
-          title: "Buenas prácticas: seguridad y optimización",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Logging, monitoreo y debugging de contenedores",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Proyecto: aplicación completa containerizada",
-          orderIndex: 8,
-          durationDays: 12,
-        },
-      ],
-    },
+  nombre = "Ana"
+  edad = 28
+  activo = True
 
-    {
-      title: "Java Profesional",
-      slug: "java-intermediate",
-      description:
-        "Consolida Java para el mundo profesional. SOLID, Streams y lambdas de Java 8+, testing con JUnit 5 y Mockito, concurrencia con ExecutorService, Java moderno (records, sealed classes), Maven/Gradle y arquitectura hexagonal.",
-      level: "INTERMEDIATE" as const,
-      goal: "backend",
-      weeklyHours: 12,
-      subjectId: java.id,
-      modules: [
-        {
-          title: "POO sólida: principios SOLID y diseño de clases",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Herencia avanzada, interfaces y polimorfismo",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Colecciones, generics y Streams API",
-          orderIndex: 3,
-          durationDays: 12,
-        },
-        {
-          title: "Excepciones, archivos y I/O con NIO.2",
-          orderIndex: 4,
-          durationDays: 12,
-        },
-        {
-          title: "Testing con JUnit 5 y Mockito",
-          orderIndex: 5,
-          durationDays: 12,
-        },
-        {
-          title: "Concurrencia: threads, synchronized y ExecutorService",
-          orderIndex: 6,
-          durationDays: 12,
-        },
-        {
-          title: "Java moderno: records, sealed classes y pattern matching",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Maven, Gradle y gestión de dependencias",
-          orderIndex: 8,
-          durationDays: 8,
-        },
-        {
-          title: "Arquitectura hexagonal y patrones de diseño",
-          orderIndex: 9,
-          durationDays: 12,
-        },
-        {
-          title: "Proyecto: aplicación backend Java bien estructurada",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
+Python es también un lenguaje de tipado fuerte: aunque no declares el tipo, Python no mezcla tipos de forma silenciosa. Sumar un número con un texto genera un error, no un resultado inesperado.
 
-    {
-      title: "AWS para Backend y Serverless",
-      slug: "aws-intermediate",
-      description:
-        "Construye y despliega arquitecturas serverless en AWS. Lambda, API Gateway, DynamoDB, SQS, S3 presigned URLs, Cognito, CloudWatch, VPC e Infrastructure as Code con Serverless Framework.",
-      level: "INTERMEDIATE" as const,
-      goal: "devops",
-      weeklyHours: 12,
-      subjectId: aws.id,
-      modules: [
-        {
-          title: "Lambda y API Gateway: serverless desde cero",
-          orderIndex: 1,
-          durationDays: 12,
-        },
-        {
-          title: "DynamoDB: diseño y acceso a datos NoSQL",
-          orderIndex: 2,
-          durationDays: 12,
-        },
-        {
-          title: "VPC, subnets y conectividad de servicios",
-          orderIndex: 3,
-          durationDays: 12,
-        },
-        {
-          title: "CloudWatch: logs, métricas y alarmas",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Seguridad serverless: IAM, Secrets Manager y WAF",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "SQS y procesamiento asíncrono",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "S3 avanzado: presigned URLs, eventos y lifecycle",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Cognito: autenticación gestionada",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Infrastructure as Code con Serverless Framework",
-          orderIndex: 9,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto: backend serverless completo en producción",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
+TIPOS PRIMITIVOS
 
-    {
-      title: "React Native para Mobile Developers",
-      slug: "react-native-intermediate",
-      description:
-        "Construye apps para iOS y Android con React Native. React Navigation, APIs nativas del dispositivo, estado global con Zustand, notificaciones push, almacenamiento local y publicación en App Store y Google Play.",
-      level: "INTERMEDIATE" as const,
-      goal: "mobile",
-      weeklyHours: 12,
-      subjectId: reactNative.id,
-      modules: [
-        {
-          title: "Fundamentos de React Native y entorno",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Componentes nativos, estilos y layouts",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Navegación con React Navigation",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Estado global con Zustand y persistencia",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "APIs del dispositivo: cámara, geolocalización y sensores",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Notificaciones push y almacenamiento local",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Peticiones HTTP, autenticación y manejo de errores",
-          orderIndex: 7,
-          durationDays: 10,
-        },
-        {
-          title: "Performance, animaciones y experiencia de usuario",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Publicación en App Store y Google Play",
-          orderIndex: 9,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto final: app móvil completa publicada",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
+Los tipos de datos fundamentales en Python son:
 
-    {
-      title: "QA Automation con JavaScript",
-      slug: "qa-javascript-intermediate",
-      description:
-        "Automatiza pruebas de software con JavaScript. Testing unitario con Jest, integración con Supertest, E2E con Cypress y Playwright, estrategia de QA, reportes y pipelines de calidad en CI/CD.",
-      level: "INTERMEDIATE" as const,
-      goal: "qa",
-      weeklyHours: 10,
-      subjectId: javascript.id,
-      modules: [
-        {
-          title: "Fundamentos de testing y estrategia QA",
-          orderIndex: 1,
-          durationDays: 8,
-        },
-        {
-          title: "Testing unitario con Jest: mocks, spies y cobertura",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Testing de APIs con Supertest e integración",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "E2E con Cypress: escenarios reales de usuario",
-          orderIndex: 4,
-          durationDays: 12,
-        },
-        {
-          title: "E2E con Playwright: cross-browser y mobile",
-          orderIndex: 5,
-          durationDays: 12,
-        },
-        {
-          title: "Performance testing y accesibilidad",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "CI/CD para pipelines de calidad automáticos",
-          orderIndex: 7,
-          durationDays: 10,
-        },
-        {
-          title: "Reportes, métricas y estrategia de QA en equipos",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto: suite de tests completa para una aplicación real",
-          orderIndex: 9,
-          durationDays: 12,
-        },
-      ],
-    },
+- int: números enteros, sin límite de tamaño. Ejemplos: 0, 42, -7
+- float: números con decimales. Ejemplos: 3.14, -0.5, 2.0
+- bool: valores lógicos. Solo puede ser True o False. Internamente, True es 1 y False es 0.
+- str: cadenas de texto, siempre entre comillas simples o dobles.
+- NoneType: el tipo del valor especial None, que representa la ausencia de valor.
 
-    // ── NUEVAS INTERMEDIATE ──────────────────────────────────
+Puedes verificar el tipo de cualquier valor con la función type():
+  type(42)      # <class int>
+  type("hola")  # <class str>
 
-    {
-      title: "CI/CD con GitHub Actions",
-      slug: "cicd-github-actions",
-      description:
-        "Implementa pipelines de integración y despliegue continuo profesionales con GitHub Actions. Tests automáticos, build de Docker, gestión de secrets con OIDC, deploy a AWS Lambda y ECS, automatización de PRs y análisis de calidad de código.",
-      level: "INTERMEDIATE" as const,
-      goal: "devops",
-      weeklyHours: 8,
-      subjectId: cicd.id,
-      modules: [
-        {
-          title: "Qué es CI/CD y por qué cambia todo",
-          orderIndex: 1,
-          durationDays: 6,
-        },
-        {
-          title: "GitHub Actions: workflows, jobs y steps",
-          orderIndex: 2,
-          durationDays: 8,
-        },
-        {
-          title: "Pipeline de tests automáticos",
-          orderIndex: 3,
-          durationDays: 8,
-        },
-        {
-          title: "Secrets, variables de entorno y seguridad",
-          orderIndex: 4,
-          durationDays: 8,
-        },
-        {
-          title: "Build y publicación de imágenes Docker",
-          orderIndex: 5,
-          durationDays: 8,
-        },
-        {
-          title: "Deploy automático a producción",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Automatización de PRs y calidad de código",
-          orderIndex: 7,
-          durationDays: 6,
-        },
-        {
-          title: "Proyecto: pipeline completo de producción",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-      ],
-    },
+OPERADORES
 
-    {
-      title: "Next.js Full Stack",
-      slug: "nextjs-fullstack",
-      description:
-        "Construye aplicaciones full stack con Next.js 15 y App Router. Server Components, Server Actions, API Routes, autenticación con NextAuth, bases de datos con Prisma, deploy en Vercel y AWS. El stack más demandado para proyectos React en producción.",
-      level: "INTERMEDIATE" as const,
-      goal: "fullstack",
-      weeklyHours: 15,
-      subjectId: nextjs.id,
-      modules: [
-        {
-          title: "App Router: Server Components y Client Components",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Routing, layouts y nested routes",
-          orderIndex: 2,
-          durationDays: 8,
-        },
-        {
-          title: "Data fetching: fetch, cache y revalidación",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Server Actions: mutaciones sin API explícita",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "API Routes y Route Handlers",
-          orderIndex: 5,
-          durationDays: 8,
-        },
-        {
-          title: "Autenticación con NextAuth v5",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Base de datos con Prisma y PostgreSQL",
-          orderIndex: 7,
-          durationDays: 12,
-        },
-        {
-          title: "Optimización: imágenes, fuentes y metadata SEO",
-          orderIndex: 8,
-          durationDays: 8,
-        },
-        {
-          title: "Testing en Next.js: unitario, integración y E2E",
-          orderIndex: 9,
-          durationDays: 10,
-        },
-        {
-          title: "Deploy en Vercel y self-hosted en AWS",
-          orderIndex: 10,
-          durationDays: 8,
-        },
-        {
-          title: "Proyecto final: aplicación full stack completa",
-          orderIndex: 11,
-          durationDays: 14,
-        },
-      ],
-    },
+Aritméticos: + - * / // % **
+  - / siempre devuelve float aunque dividas enteros.
+  - // es la división entera (descarta decimales).
+  - % es el módulo (resto de la división).
+  - ** es la potencia.
 
-    // ══════════════════════════════════════
-    // ADVANCED
-    // ══════════════════════════════════════
+De comparación: == != > < >= <=
+Devuelven True o False.
 
-    {
-      title: "Java Avanzado",
-      slug: "java-advanced",
-      description:
-        "Domina Java para sistemas de alto rendimiento. Concurrencia avanzada con CompletableFuture y Virtual Threads (Java 21), Collections internals, patrones GoF, arquitectura limpia y hexagonal, performance profiling y preparación para Spring Boot.",
-      level: "ADVANCED" as const,
-      goal: "backend",
-      weeklyHours: 12,
-      subjectId: java.id,
-      modules: [
-        {
-          title: "Generics avanzados y APIs robustas",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Concurrencia avanzada: CompletableFuture y reactive",
-          orderIndex: 2,
-          durationDays: 12,
-        },
-        {
-          title: "Virtual Threads y Project Loom (Java 21)",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Java Collections internals y performance",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Patrones de diseño GoF aplicados a Java",
-          orderIndex: 5,
-          durationDays: 12,
-        },
-        {
-          title: "Arquitectura limpia y hexagonal en Java",
-          orderIndex: 6,
-          durationDays: 12,
-        },
-        {
-          title: "JVM internals: GC tuning y profiling",
-          orderIndex: 7,
-          durationDays: 10,
-        },
-        {
-          title: "Preparación para Spring Boot y ecosistema",
-          orderIndex: 8,
-          durationDays: 14,
-        },
-      ],
-    },
+Lógicos: and, or, not
+Operan sobre valores booleanos o cualquier valor que Python pueda interpretar como verdadero o falso.
 
-    {
-      title: "Spring Boot Backend",
-      slug: "spring-boot-backend",
-      description:
-        "Construye APIs y microservicios con Spring Boot 3. Arquitectura en capas, Spring Data JPA, Bean Validation, Spring Security con JWT, testing con JUnit 5 y Mockito, documentación con OpenAPI y deploy en contenedores.",
-      level: "ADVANCED" as const,
-      goal: "backend",
-      weeklyHours: 15,
-      subjectId: java.id,
-      modules: [
-        {
-          title: "Estructura de proyecto y Spring Boot internals",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Controllers, services y dependency injection",
-          orderIndex: 2,
-          durationDays: 12,
-        },
-        {
-          title: "REST APIs, validación con Bean Validation y manejo de errores",
-          orderIndex: 3,
-          durationDays: 12,
-        },
-        {
-          title: "Persistencia con Spring Data JPA y PostgreSQL",
-          orderIndex: 4,
-          durationDays: 14,
-        },
-        {
-          title: "Spring Security: autenticación JWT y autorización",
-          orderIndex: 5,
-          durationDays: 12,
-        },
-        {
-          title: "Testing: unitario, integración y slice tests",
-          orderIndex: 6,
-          durationDays: 12,
-        },
-        {
-          title: "Documentación con OpenAPI y Swagger UI",
-          orderIndex: 7,
-          durationDays: 8,
-        },
-        {
-          title: "Configuración, profiles y gestión de secretos",
-          orderIndex: 8,
-          durationDays: 8,
-        },
-        {
-          title: "Containerización con Docker y deploy en producción",
-          orderIndex: 9,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto final: microservicio Spring Boot en producción",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
+De asignación: = += -= *= /= //= %= **=
 
-    {
-      title: "Kubernetes Esencial",
-      slug: "kubernetes-intermediate",
-      description:
-        "Orquesta contenedores en producción con Kubernetes. Pods, Deployments, Services, Ingress, ConfigMaps, Secrets, Persistent Volumes, HPA para escalado automático, RBAC y observabilidad con Prometheus y Grafana.",
-      level: "ADVANCED" as const,
-      goal: "devops",
-      weeklyHours: 12,
-      subjectId: kubernetes.id,
-      modules: [
-        {
-          title: "Arquitectura de Kubernetes y componentes core",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Pods, deployments y ReplicaSets",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Services, Ingress y networking",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "ConfigMaps, Secrets y gestión de configuración",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Persistent Volumes y StatefulSets",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "HPA, VPA y escalado automático",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "RBAC, seguridad y network policies",
-          orderIndex: 7,
-          durationDays: 10,
-        },
-        {
-          title: "Observabilidad con Prometheus y Grafana",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Helm: gestión de paquetes en Kubernetes",
-          orderIndex: 9,
-          durationDays: 8,
-        },
-        {
-          title: "Proyecto: despliegue completo de aplicación en EKS",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
+STRINGS EN DETALLE
 
-    {
-      title: "AWS Well-Architected",
-      slug: "aws-advanced",
-      description:
-        "Diseña arquitecturas cloud que escalan, resisten fallos y optimizan costos siguiendo el AWS Well-Architected Framework. Los 6 pilares con casos reales. Para roles de arquitecto cloud y soluciones senior.",
-      level: "ADVANCED" as const,
-      goal: "devops",
-      weeklyHours: 12,
-      subjectId: aws.id,
-      modules: [
-        {
-          title: "Operational Excellence: observabilidad y automatización",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Security Pillar: IAM avanzado, KMS y detección de amenazas",
-          orderIndex: 2,
-          durationDays: 10,
-        },
-        {
-          title: "Reliability: multi-AZ, disaster recovery y chaos engineering",
-          orderIndex: 3,
-          durationDays: 10,
-        },
-        {
-          title: "Performance Efficiency: caching, CDN y auto-scaling",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Cost Optimization: right-sizing, Reserved Instances y Savings Plans",
-          orderIndex: 5,
-          durationDays: 10,
-        },
-        {
-          title: "Sustainability: arquitecturas eficientes en energía",
-          orderIndex: 6,
-          durationDays: 8,
-        },
-        {
-          title: "Microservicios en AWS: ECS, EKS y service mesh",
-          orderIndex: 7,
-          durationDays: 12,
-        },
-        {
-          title: "Event-driven architecture: EventBridge, SNS y SQS avanzado",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Infrastructure as Code avanzado: CDK y Terraform",
-          orderIndex: 9,
-          durationDays: 12,
-        },
-        {
-          title: "Proyecto: arquitectura Well-Architected completa",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
+Los strings son inmutables: no puedes modificar un carácter dentro de un string existente, solo crear uno nuevo.
+
+Operaciones esenciales:
+- Concatenación: "hola" + " mundo"
+- Repetición: "ab" * 3 → "ababab"
+- Longitud: len("texto")
+- Indexación: "texto"[0] → "t"
+- Slicing: "texto"[1:4] → "ext"
+- Métodos: .upper(), .lower(), .strip(), .replace(), .split(), .startswith(), .endswith()
+
+F-STRINGS (CADENAS FORMATEADAS)
+
+Introducidos en Python 3.6, los f-strings son la forma moderna y recomendada de insertar variables dentro de un string:
+
+  nombre = "Ana"
+  edad = 28
+  print(f"Me llamo {nombre} y tengo {edad} años")
+
+Puedes incluir expresiones dentro de las llaves:
+  print(f"El doble de mi edad es {edad * 2}")',
+  '# Tipos básicos
+entero = 42
+decimal = 3.14
+texto = "Python"
+activo = True
+nada = None
+
+print(type(entero))   # <class int>
+print(type(decimal))  # <class float>
+print(type(texto))    # <class str>
+print(type(activo))   # <class bool>
+print(type(nada))     # <class NoneType>
+
+# Operadores aritméticos
+print(10 / 3)    # 3.3333... (float)
+print(10 // 3)   # 3 (entero)
+print(10 % 3)    # 1 (resto)
+print(2 ** 8)    # 256 (potencia)
+
+# Operadores de comparación
+print(5 > 3)     # True
+print(5 == 5.0)  # True (mismo valor, distinto tipo)
+print(5 != 3)    # True
+
+# Operadores lógicos
+print(True and False)  # False
+print(True or False)   # True
+print(not True)        # False
+
+# Strings: indexación y slicing
+lenguaje = "Python"
+print(lenguaje[0])     # P
+print(lenguaje[-1])    # n (índice negativo: desde el final)
+print(lenguaje[0:3])   # Pyt
+print(lenguaje[::-1])  # nohtyP (invertido)
+
+# Métodos de string
+frase = "  hola mundo  "
+print(frase.strip())          # "hola mundo"
+print(frase.strip().upper())  # "HOLA MUNDO"
+print("hola mundo".split())   # ["hola", "mundo"]
+print("hola".replace("l","r")) # "hora"
+
+# F-strings
+nombre = "Ana"
+edad = 28
+print(f"Me llamo {nombre} y tengo {edad} años.")
+print(f"El año que viene tendré {edad + 1}.")',
+  ARRAY[
+    'Usa f-strings para todo lo que involucre insertar variables en texto. Son más legibles y eficientes que la concatenación con +.',
+    'El slicing tiene la forma [inicio:fin:paso]. El fin es exclusivo. Aprende esto bien porque aplica también a listas.',
+    'None no es lo mismo que False, 0 o una cadena vacía. Son valores distintos aunque en contextos booleanos todos se evalúen como falso.',
+    'Usa la función repr() para ver la representación exacta de un string, incluyendo caracteres especiales. Es útil para depuración.'
+  ],
+  ARRAY[
+    'Usar == para comparar con None. La forma correcta y recomendada es usar is None, porque None es un objeto único en Python.',
+    'Confundir / con //. La división simple siempre produce float en Python 3, lo que sorprende a quienes vienen de otros lenguajes.',
+    'Intentar modificar un carácter de un string directamente: texto[0] = "H" genera un TypeError porque los strings son inmutables.',
+    'Olvidar que los índices empiezan en 0. El primer carácter de "Python" es "P" en la posición 0, no en la 1.'
+  ],
+  '[{"type":"article","title":"Python Data Types","url":"https://docs.python.org/3/library/stdtypes.html"},{"type":"article","title":"Python f-strings (PEP 498)","url":"https://peps.python.org/pep-0498/"},{"type":"article","title":"Real Python - Strings and Character Data","url":"https://realpython.com/python-strings/"}]'::jsonb,
+  'a1e56981-d263-463b-a35d-a5f1380d8f00'
+),
+
+(
+  gen_random_uuid(),
+  'Control de flujo: condicionales y loops',
+  'python-control-flow',
+  'BEGINNER',
+  'Aprende a controlar qué código se ejecuta y cuántas veces: toma de decisiones con if/elif/else e iteraciones con for y while.',
+  'El control de flujo es lo que le da inteligencia a un programa. Sin él, el código simplemente ejecuta instrucciones de arriba hacia abajo sin poder reaccionar a datos ni repetir tareas. Es la base de cualquier lógica de programación.',
+  'CONDICIONALES: if, elif, else
+
+La instrucción if evalúa una condición y ejecuta un bloque de código solo si esa condición es verdadera. En Python, los bloques se delimitan por indentación (4 espacios), no por llaves como en otros lenguajes.
+
+  if condicion:
+      # se ejecuta si condicion es True
+  elif otra_condicion:
+      # se ejecuta si la primera fue False y esta es True
+  else:
+      # se ejecuta si todas las anteriores fueron False
+
+Python evalúa como False los siguientes valores: None, 0, 0.0, cadena vacía "", lista vacía [], diccionario vacío {}, conjunto vacío set(). Todo lo demás se evalúa como True.
+
+OPERADOR TERNARIO
+
+Python tiene una forma compacta de escribir un if/else en una sola línea:
+
+  resultado = "mayor" if edad >= 18 else "menor"
+
+LOOPS: for
+
+El loop for en Python itera sobre cualquier objeto iterable: listas, strings, rangos, diccionarios, etc. No itera sobre índices por defecto como en C o Java.
+
+  for elemento in coleccion:
+      # código que se ejecuta para cada elemento
+
+La función range() genera secuencias de números:
+  range(5)      → 0, 1, 2, 3, 4
+  range(2, 8)   → 2, 3, 4, 5, 6, 7
+  range(0, 10, 2) → 0, 2, 4, 6, 8
+
+Cuando necesitas el índice además del valor, usa enumerate():
+  for indice, valor in enumerate(lista):
+
+LOOPS: while
+
+El loop while ejecuta un bloque mientras la condición sea verdadera. Se usa cuando no sabes de antemano cuántas iteraciones necesitas.
+
+  while condicion:
+      # código que se ejecuta mientras condicion sea True
+
+CONTROL DE LOOPS: break, continue, else
+
+- break: sale del loop inmediatamente.
+- continue: salta a la siguiente iteración sin ejecutar el resto del bloque.
+- else en loops: Python permite un bloque else en for y while que se ejecuta solo si el loop terminó sin un break. Es un patrón útil para búsquedas.
+
+COMPRENSIÓN DE LISTAS (LIST COMPREHENSION)
+
+Es la forma idiomática de Python para crear listas a partir de iteraciones:
+
+  cuadrados = [x**2 for x in range(10)]
+  pares = [x for x in range(20) if x % 2 == 0]',
+  '# Condicionales básicos
+edad = 20
+
+if edad >= 18:
+    print("Mayor de edad")
+elif edad >= 13:
+    print("Adolescente")
+else:
+    print("Niño")
+
+# Valores que Python evalúa como False
+valores_falsos = [None, 0, 0.0, "", [], {}, set()]
+for v in valores_falsos:
+    if not v:
+        print(f"{repr(v)} se evalúa como False")
+
+# Operador ternario
+categoria = "mayor" if edad >= 18 else "menor"
+print(categoria)
+
+# for con range
+for i in range(5):
+    print(i)  # 0 1 2 3 4
+
+# for con enumerate
+frutas = ["manzana", "pera", "uva"]
+for indice, fruta in enumerate(frutas):
+    print(f"{indice}: {fruta}")
+
+# while con break
+intento = 0
+while True:
+    intento += 1
+    if intento == 3:
+        print("Encontrado en el intento", intento)
+        break
+
+# else en for (se ejecuta si no hubo break)
+for fruta in frutas:
+    if fruta == "kiwi":
+        break
+else:
+    print("Kiwi no encontrado en la lista")
+
+# continue: saltar números impares
+for n in range(10):
+    if n % 2 != 0:
+        continue
+    print(n)  # 0 2 4 6 8
+
+# List comprehension
+cuadrados = [x**2 for x in range(1, 6)]
+print(cuadrados)  # [1, 4, 9, 16, 25]
+
+pares = [x for x in range(20) if x % 2 == 0]
+print(pares)  # [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]',
+  ARRAY[
+    'La indentación en Python no es opcional ni estética: define la estructura del programa. Usa siempre 4 espacios, nunca tabulaciones mezcladas con espacios.',
+    'Prefiere for sobre while siempre que puedas. While requiere que gestiones manualmente la condición de salida, lo que facilita los bucles infinitos por error.',
+    'Usa enumerate() en lugar de range(len(lista)) cuando necesites el índice. Es más legible y es la forma idiomática de Python.',
+    'Las list comprehensions son más rápidas que un for equivalente para construir listas. Úsalas cuando la lógica sea simple; si es compleja, un for normal es más legible.'
+  ],
+  ARRAY[
+    'Crear loops infinitos con while True sin un break claramente definido. Si el programa se cuelga, lo más probable es un loop infinito.',
+    'Modificar una lista mientras iteras sobre ella con for. El comportamiento es impredecible. Si necesitas modificarla, itera sobre una copia: for item in lista.copy().',
+    'Confundir = con == dentro de una condición. El primero asigna, el segundo compara. Python detecta algunos casos pero no todos.',
+    'Ignorar el bloque else del for. Es un patrón poco conocido pero muy útil en búsquedas para distinguir si el loop terminó normalmente o por un break.'
+  ],
+  '[{"type":"article","title":"Python Docs - Control Flow","url":"https://docs.python.org/3/tutorial/controlflow.html"},{"type":"article","title":"Real Python - List Comprehensions","url":"https://realpython.com/list-comprehension-python/"}]'::jsonb,
+  'a1e56981-d263-463b-a35d-a5f1380d8f00'
+),
+
+(
+  gen_random_uuid(),
+  'Funciones, argumentos y scope',
+  'python-functions-scope',
+  'BEGINNER',
+  'Aprende a definir funciones reutilizables, manejar distintos tipos de argumentos y entender cómo Python decide qué variable es visible en cada parte del código.',
+  'Las funciones son la unidad básica de organización del código. Sin ellas, los programas son secuencias de instrucciones que no pueden reutilizarse. Entender el scope evita errores sutiles que son difíciles de depurar cuando el programa crece.',
+  'DEFINICIÓN DE FUNCIONES
+
+Una función es un bloque de código con nombre que puede recibir datos, procesarlos y devolver un resultado. Se define con la palabra clave def.
+
+  def nombre_funcion(parametros):
+      # cuerpo de la función
+      return resultado
+
+Si no se incluye return, la función devuelve None implícitamente.
+
+TIPOS DE ARGUMENTOS
+
+Python ofrece cuatro formas de pasar argumentos a una función:
+
+1. Posicionales: se asignan según el orden en que se pasan.
+2. Por nombre (keyword arguments): se especifica el nombre del parámetro al llamar la función, sin importar el orden.
+3. Con valor por defecto: el parámetro tiene un valor predeterminado que se usa si no se pasa ninguno.
+4. *args y **kwargs: permiten que una función acepte un número variable de argumentos.
+
+  *args captura argumentos posicionales extra como una tupla.
+  **kwargs captura argumentos con nombre extra como un diccionario.
+
+ADVERTENCIA IMPORTANTE: Nunca uses un objeto mutable (lista, diccionario) como valor por defecto de un parámetro. El objeto se crea una sola vez cuando Python define la función, no en cada llamada, lo que genera comportamiento inesperado.
+
+  # MAL
+  def agregar(item, lista=[]):
+      lista.append(item)
+      return lista
+
+  # BIEN
+  def agregar(item, lista=None):
+      if lista is None:
+          lista = []
+      lista.append(item)
+      return lista
+
+SCOPE (ALCANCE DE VARIABLES)
+
+El scope define desde dónde es visible una variable. Python sigue la regla LEGB para resolver nombres:
+
+- L (Local): dentro de la función actual.
+- E (Enclosing): en funciones externas que envuelven la actual (closures).
+- G (Global): en el módulo actual, fuera de cualquier función.
+- B (Built-in): nombres predefinidos de Python como len, print, range.
+
+Python busca el nombre en ese orden. Si no lo encuentra en ninguno, lanza NameError.
+
+Las variables creadas dentro de una función son locales por defecto. Para modificar una variable global desde dentro de una función, se debe declarar con global. Para modificar una variable del scope envolvente, se usa nonlocal. En la práctica, ambas palabras clave deben evitarse: son señal de que la función tiene efectos secundarios.
+
+FUNCIONES LAMBDA
+
+Las funciones lambda son funciones anónimas de una sola expresión. Son útiles como argumentos para funciones como sorted(), map() y filter().
+
+  doble = lambda x: x * 2
+  print(doble(5))  # 10
+
+DOCSTRINGS
+
+La primera línea de una función puede ser un string que la documenta. Python usa esto para generar documentación automática.
+
+  def sumar(a, b):
+      """Devuelve la suma de a y b."""
+      return a + b
+
+  help(sumar)  # muestra el docstring',
+  '# Función básica con return
+def calcular_area(base, altura):
+    """Calcula el área de un rectángulo."""
+    return base * altura
+
+print(calcular_area(5, 3))  # 15
+
+# Argumentos posicionales y por nombre
+def presentar(nombre, edad, ciudad="desconocida"):
+    return f"{nombre}, {edad} años, de {ciudad}"
+
+print(presentar("Ana", 28))                     # Ana, 28 años, de desconocida
+print(presentar("Luis", ciudad="Bogotá", edad=35))  # Luis, 35 años, de Bogotá
+
+# *args: número variable de argumentos posicionales
+def sumar_todo(*numeros):
+    return sum(numeros)
+
+print(sumar_todo(1, 2, 3, 4, 5))  # 15
+
+# **kwargs: número variable de argumentos con nombre
+def mostrar_info(**datos):
+    for clave, valor in datos.items():
+        print(f"{clave}: {valor}")
+
+mostrar_info(nombre="Ana", edad=28, lenguaje="Python")
+
+# Argumento mutable como default (forma correcta)
+def agregar_item(item, lista=None):
+    if lista is None:
+        lista = []
+    lista.append(item)
+    return lista
+
+print(agregar_item("a"))  # ["a"]
+print(agregar_item("b"))  # ["b"]  (no acumula entre llamadas)
+
+# Scope: LEGB
+x = "global"
+
+def externa():
+    x = "enclosing"
+    def interna():
+        x = "local"
+        print(x)  # local
+    interna()
+    print(x)  # enclosing
+
+externa()
+print(x)  # global
+
+# Lambda con sorted
+personas = [("Ana", 28), ("Luis", 35), ("Mia", 22)]
+ordenadas = sorted(personas, key=lambda p: p[1])
+print(ordenadas)  # ordena por edad',
+  ARRAY[
+    'Escribe un docstring para cada función que definas. Es un hábito que mejora la mantenibilidad y te enseña a pensar en qué hace la función antes de cómo la implementas.',
+    'Cuando una función necesita devolver varios valores, Python permite retornarlos separados por coma. Internamente Python los empaqueta como una tupla.',
+    'Mantén las funciones cortas y con un único propósito. Si una función hace más de una cosa, divídela. Una buena función cabe en la pantalla sin necesidad de scroll.',
+    'Usa *args y **kwargs cuando diseñes funciones utilitarias o decoradores. En funciones de dominio específico, los parámetros explícitos son siempre preferibles.'
+  ],
+  ARRAY[
+    'Usar objetos mutables como valores por defecto de parámetros. Es uno de los errores más famosos de Python y el comportamiento resultante es muy difícil de rastrear.',
+    'Abusar de global. Si necesitas modificar muchas variables globales desde una función, el diseño tiene un problema estructural que debe resolverse de otra forma.',
+    'Confundir la definición de una función con su llamada. def solo define; para ejecutar, debes llamarla con paréntesis. Omitir los paréntesis pasa la función como objeto, no la ejecuta.',
+    'No retornar nada explícitamente cuando la función debería devolver un valor. Python retorna None silenciosamente, lo que genera errores confusos más adelante.'
+  ],
+  '[{"type":"article","title":"Python Docs - Defining Functions","url":"https://docs.python.org/3/tutorial/controlflow.html#defining-functions"},{"type":"article","title":"Real Python - Python Scope and the LEGB Rule","url":"https://realpython.com/python-scope-legb-rule/"},{"type":"article","title":"Real Python - *args and **kwargs","url":"https://realpython.com/python-kwargs-and-args/"}]'::jsonb,
+  'a1e56981-d263-463b-a35d-a5f1380d8f00'
+),
+
+(
+  gen_random_uuid(),
+  'Listas, tuplas, diccionarios y sets',
+  'python-collections',
+  'BEGINNER',
+  'Domina las cuatro estructuras de datos fundamentales de Python: cuándo usar cada una, cómo manipularlas y qué operaciones ofrecen.',
+  'Los programas reales raramente trabajan con datos aislados. Manejan colecciones: listas de usuarios, registros de ventas, configuraciones clave-valor. Elegir la estructura correcta para cada situación impacta directamente en la claridad y el rendimiento del código.',
+  'LISTAS
+
+Las listas son colecciones ordenadas y mutables. Pueden contener elementos de cualquier tipo, incluyendo otras listas. Se definen con corchetes.
+
+  frutas = ["manzana", "pera", "uva"]
+
+Son la estructura más versátil de Python. Los elementos tienen un índice que empieza en 0. El índice negativo accede desde el final: -1 es el último elemento.
+
+Operaciones esenciales: append(), extend(), insert(), remove(), pop(), sort(), sorted(), reverse(), index(), count(), len(), in.
+
+Las listas en Python no son arrays de tamaño fijo. Internamente son arrays dinámicos que se redimensionan automáticamente.
+
+TUPLAS
+
+Las tuplas son colecciones ordenadas e inmutables. Se definen con paréntesis (o sin ellos, separando con comas). Una vez creadas, no se pueden modificar.
+
+  coordenadas = (40.7128, -74.0060)
+  punto = 10, 20  # también es una tupla
+
+Se usan cuando los datos no deben cambiar: coordenadas, registros de base de datos, valores de retorno múltiple de funciones. Son más eficientes en memoria y velocidad que las listas.
+
+El unpacking (desempaquetado) es una de las características más elegantes de Python:
+  x, y = coordenadas
+  primero, *resto = [1, 2, 3, 4, 5]
+
+DICCIONARIOS
+
+Los diccionarios almacenan pares clave-valor. Son mutables y desde Python 3.7 mantienen el orden de inserción. Las claves deben ser inmutables (strings, números, tuplas).
+
+  usuario = {"nombre": "Ana", "edad": 28, "activo": True}
+
+Acceso: usuario["nombre"] → lanza KeyError si no existe.
+Acceso seguro: usuario.get("email", "sin email") → devuelve el valor por defecto si no existe.
+
+Métodos esenciales: keys(), values(), items(), update(), pop(), setdefault().
+
+La iteración con .items() es el patrón más común:
+  for clave, valor in usuario.items():
+
+SETS
+
+Los sets son colecciones desordenadas de elementos únicos. Son mutables. Se definen con llaves, pero sin pares clave-valor.
+
+  colores = {"rojo", "verde", "azul"}
+  set_vacio = set()  # NO {}; eso crea un diccionario vacío
+
+Su principal uso es eliminar duplicados y realizar operaciones de conjuntos: unión (|), intersección (&), diferencia (-), diferencia simétrica (^).
+
+CUÁNDO USAR CADA UNA
+
+- Lista: cuando el orden importa y los datos pueden cambiar.
+- Tupla: cuando los datos no deben cambiar o usas la colección como clave de diccionario.
+- Diccionario: cuando necesitas asociar claves con valores y acceder por clave.
+- Set: cuando necesitas unicidad o hacer operaciones de conjuntos.',
+  '# LISTAS
+frutas = ["manzana", "pera", "uva"]
+frutas.append("kiwi")           # agrega al final
+frutas.insert(1, "fresa")       # inserta en posición 1
+frutas.remove("pera")           # elimina por valor
+ultimo = frutas.pop()           # elimina y devuelve el último
+print(len(frutas))              # longitud
+print("uva" in frutas)          # True
+frutas.sort()                   # ordena in-place
+nueva = sorted(frutas)          # devuelve nueva lista ordenada
+
+# Slicing
+numeros = [0, 1, 2, 3, 4, 5]
+print(numeros[1:4])    # [1, 2, 3]
+print(numeros[::2])    # [0, 2, 4]
+print(numeros[::-1])   # [5, 4, 3, 2, 1, 0]
+
+# TUPLAS y unpacking
+coordenadas = (40.7128, -74.0060)
+lat, lon = coordenadas
+print(f"Latitud: {lat}, Longitud: {lon}")
+
+primero, *resto = [1, 2, 3, 4, 5]
+print(primero)  # 1
+print(resto)    # [2, 3, 4, 5]
+
+# DICCIONARIOS
+usuario = {"nombre": "Ana", "edad": 28}
+print(usuario["nombre"])               # Ana
+print(usuario.get("email", "N/A"))     # N/A (sin KeyError)
+usuario["activo"] = True               # agregar clave
+usuario.update({"edad": 29, "ciudad": "Bogotá"})
+
+for clave, valor in usuario.items():
+    print(f"{clave}: {valor}")
+
+# Dict comprehension
+cuadrados = {x: x**2 for x in range(1, 6)}
+print(cuadrados)  # {1:1, 2:4, 3:9, 4:16, 5:25}
+
+# SETS
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print(a | b)   # unión: {1,2,3,4,5,6}
+print(a & b)   # intersección: {3,4}
+print(a - b)   # diferencia: {1,2}
+
+# Eliminar duplicados de una lista
+con_duplicados = [1, 2, 2, 3, 3, 3, 4]
+sin_duplicados = list(set(con_duplicados))
+print(sin_duplicados)',
+  ARRAY[
+    'Para verificar si una clave existe en un diccionario, usa el operador in: "clave" in diccionario. Es más claro que verificar el resultado de .get().',
+    'Cuando necesites un diccionario con valor por defecto para claves nuevas, considera collections.defaultdict. Evita verificar manualmente si la clave existe antes de asignar.',
+    'El set es la estructura más eficiente para verificar pertenencia (in). Si tienes una lista grande sobre la que haces muchas búsquedas, conviértela a set primero.',
+    'Usa tuple como clave de diccionario cuando necesites una clave compuesta (por ejemplo, coordenadas). Las listas no son válidas como claves porque son mutables.'
+  ],
+  ARRAY[
+    'Crear un set vacío con {}. Eso crea un diccionario vacío, no un set. La forma correcta es set().',
+    'Acceder a una clave de diccionario que no existe con corchetes. Usa .get() cuando no estás seguro de que la clave existe.',
+    'Asumir que las listas son eficientes para búsquedas con in. Buscar un elemento en una lista requiere recorrerla entera. Un set hace lo mismo en tiempo constante.',
+    'Modificar una lista mientras iteras sobre ella. Si necesitas filtrar, crea una nueva lista con list comprehension en lugar de eliminar elementos durante la iteración.'
+  ],
+  '[{"type":"article","title":"Python Docs - Data Structures","url":"https://docs.python.org/3/tutorial/datastructures.html"},{"type":"article","title":"Real Python - Dictionaries in Python","url":"https://realpython.com/python-dicts/"},{"type":"article","title":"Real Python - Sets in Python","url":"https://realpython.com/python-sets/"}]'::jsonb,
+  'a1e56981-d263-463b-a35d-a5f1380d8f00'
+),
+
+(
+  gen_random_uuid(),
+  'Programación orientada a objetos en Python',
+  'python-oop',
+  'BEGINNER',
+  'Aprende a modelar el mundo con clases y objetos: atributos, métodos, herencia, encapsulación y los métodos especiales de Python.',
+  'La programación orientada a objetos permite organizar código complejo en unidades coherentes que representan conceptos del mundo real. Frameworks como Django y FastAPI están construidos sobre POO. Entenderla es obligatorio para trabajar con cualquier librería seria de Python.',
+  'CLASES Y OBJETOS
+
+Una clase es una plantilla que define la estructura y el comportamiento de un tipo de dato. Un objeto es una instancia concreta de esa clase.
+
+  class Persona:
+      def __init__(self, nombre, edad):
+          self.nombre = nombre
+          self.edad = edad
+
+__init__ es el constructor: se ejecuta automáticamente cuando se crea un objeto. self es la referencia al objeto que se está creando o usando. Siempre es el primer parámetro de los métodos de instancia.
+
+ATRIBUTOS Y MÉTODOS
+
+- Atributos de instancia: datos específicos de cada objeto (self.nombre).
+- Atributos de clase: datos compartidos por todos los objetos de la clase.
+- Métodos de instancia: funciones que operan sobre el objeto (usan self).
+- Métodos de clase (@classmethod): reciben la clase como primer argumento (cls). Útiles como constructores alternativos.
+- Métodos estáticos (@staticmethod): no reciben ni self ni cls. Son funciones que conceptualmente pertenecen a la clase pero no necesitan acceder a ella.
+
+ENCAPSULACIÓN
+
+Python no tiene modificadores de acceso como public o private del modo en que los tienen Java o C++. Por convención:
+- Un guion bajo al inicio (_atributo) indica que es de uso interno. No es una restricción técnica, es una señal para otros desarrolladores.
+- Dos guiones bajos (__atributo) activan el name mangling: Python renombra el atributo internamente para dificultar el acceso accidental desde fuera, pero no lo hace imposible.
+
+HERENCIA
+
+Una clase puede heredar atributos y métodos de otra clase.
+
+  class Empleado(Persona):
+      def __init__(self, nombre, edad, empresa):
+          super().__init__(nombre, edad)
+          self.empresa = empresa
+
+super() llama al método de la clase padre. Python soporta herencia múltiple.
+
+MÉTODOS ESPECIALES (DUNDER METHODS)
+
+Son métodos con doble guion bajo al inicio y al final. Permiten que los objetos se comporten como tipos nativos de Python.
+
+Los más importantes:
+- __init__: constructor.
+- __str__: representación legible del objeto (usada por print()).
+- __repr__: representación oficial del objeto (usada en el REPL).
+- __len__: permite usar len() sobre el objeto.
+- __eq__: define cómo comparar dos objetos con ==.
+- __lt__, __gt__: permiten usar operadores de comparación y sorted().
+
+DATACLASSES
+
+Python 3.7 introdujo el decorador @dataclass, que genera automáticamente __init__, __repr__ y __eq__ basándose en los atributos declarados. Es la forma moderna de crear clases que principalmente almacenan datos.',
+  '# Clase básica
+class Persona:
+    especie = "Homo sapiens"  # atributo de clase
+
+    def __init__(self, nombre, edad):
+        self.nombre = nombre        # atributo de instancia
+        self._edad = edad           # convención: uso interno
+
+    def saludar(self):
+        return f"Hola, soy {self.nombre}"
+
+    def cumpleanos(self):
+        self._edad += 1
+
+    @property
+    def edad(self):
+        return self._edad
+
+    def __str__(self):
+        return f"Persona({self.nombre}, {self._edad})"
+
+    def __repr__(self):
+        return f"Persona(nombre={self.nombre!r}, edad={self._edad!r})"
+
+    def __eq__(self, otro):
+        return self.nombre == otro.nombre and self._edad == otro._edad
+
+    @classmethod
+    def desde_dict(cls, datos):
+        return cls(datos["nombre"], datos["edad"])
+
+    @staticmethod
+    def es_mayor_de_edad(edad):
+        return edad >= 18
 
 
-    {
-      title: "Arquitectura de Microservicios",
-      slug: "microservices-advanced",
-      description:
-        "Diseña y construye sistemas distribuidos con arquitectura de microservicios. Comunicación síncrona y asíncrona, patrones de resiliencia (Circuit Breaker, Saga), API Gateway, service discovery y observabilidad distribuida.",
-      level: "ADVANCED" as const,
-      goal: "backend",
-      weeklyHours: 15,
-      subjectId: nodejs.id,
-      modules: [
-        {
-          title: "De monolito a microservicios: cuándo y cómo",
-          orderIndex: 1,
-          durationDays: 10,
-        },
-        {
-          title: "Comunicación síncrona: REST y gRPC entre servicios",
-          orderIndex: 2,
-          durationDays: 12,
-        },
-        {
-          title: "Mensajería asíncrona con RabbitMQ y Kafka",
-          orderIndex: 3,
-          durationDays: 14,
-        },
-        {
-          title: "Patrones de resiliencia: Circuit Breaker, Retry y Bulkhead",
-          orderIndex: 4,
-          durationDays: 10,
-        },
-        {
-          title: "Patrón Saga para transacciones distribuidas",
-          orderIndex: 5,
-          durationDays: 12,
-        },
-        {
-          title: "API Gateway: autenticación, rate limiting y routing",
-          orderIndex: 6,
-          durationDays: 10,
-        },
-        {
-          title: "Service discovery y configuración centralizada",
-          orderIndex: 7,
-          durationDays: 10,
-        },
-        {
-          title: "Observabilidad distribuida: tracing, métricas y logs",
-          orderIndex: 8,
-          durationDays: 10,
-        },
-        {
-          title: "Seguridad en sistemas distribuidos: mTLS y zero trust",
-          orderIndex: 9,
-          durationDays: 10,
-        },
-        {
-          title: "Proyecto: sistema de microservicios completo en producción",
-          orderIndex: 10,
-          durationDays: 14,
-        },
-      ],
-    },
-  ];
+# Uso
+p1 = Persona("Ana", 28)
+print(p1.saludar())    # Hola, soy Ana
+print(str(p1))         # Persona(Ana, 28)
+print(p1.edad)         # 28 (usando property)
 
-  for (const pathData of paths) {
-    const { modules, ...pathInfo } = pathData;
+p2 = Persona.desde_dict({"nombre": "Luis", "edad": 35})
+print(Persona.es_mayor_de_edad(16))  # False
 
-    const path = await prisma.pathTemplate.upsert({
-      where: { slug: pathInfo.slug },
-      update: { ...pathInfo },
-      create: { ...pathInfo },
-    });
 
-    for (const module of modules) {
-      await prisma.pathModule.upsert({
-        where: {
-          pathTemplateId_orderIndex: {
-            pathTemplateId: path.id,
-            orderIndex: module.orderIndex,
-          },
-        },
-        update: module,
-        create: { ...module, pathTemplateId: path.id },
-      });
+# Herencia
+class Empleado(Persona):
+    def __init__(self, nombre, edad, empresa):
+        super().__init__(nombre, edad)
+        self.empresa = empresa
+
+    def saludar(self):  # sobreescribe el método
+        base = super().saludar()
+        return f"{base}, trabajo en {self.empresa}"
+
+e = Empleado("Mia", 30, "TechCorp")
+print(e.saludar())
+print(isinstance(e, Persona))   # True
+print(isinstance(e, Empleado))  # True
+
+
+# Dataclass
+from dataclasses import dataclass, field
+
+@dataclass
+class Producto:
+    nombre: str
+    precio: float
+    stock: int = 0
+    etiquetas: list = field(default_factory=list)
+
+p = Producto("Laptop", 999.99, stock=10)
+print(p)  # Producto(nombre="Laptop", precio=999.99, stock=10, etiquetas=[])',
+  ARRAY[
+    'Implementa siempre __repr__ en tus clases. Cuando el objeto aparece en el REPL o en un mensaje de error, __repr__ es lo que ves. Un buen __repr__ hace la depuración mucho más rápida.',
+    'Usa @dataclass para clases que principalmente almacenan datos. Te ahorra escribir __init__, __repr__ y __eq__ manualmente y reduce el riesgo de errores.',
+    'El decorador @property te permite acceder a un método como si fuera un atributo. Es la forma correcta de añadir lógica de validación a atributos sin romper la interfaz pública de la clase.',
+    'Aprende a leer el MRO (Method Resolution Order) con ClaseHija.__mro__. Cuando usas herencia múltiple, Python lo usa para decidir qué método ejecutar primero.'
+  ],
+  ARRAY[
+    'Olvidar self como primer parámetro de los métodos de instancia. Python lanza TypeError indicando que la función recibió un argumento de más, lo que desorienta a los principiantes.',
+    'Usar atributos de clase para datos mutables compartidos. Si una lista es atributo de clase, todos los objetos comparten la misma lista. Los cambios en un objeto afectan a todos.',
+    'Sobreescribir __init__ en una subclase sin llamar a super().__init__(). Los atributos del padre no se inicializan y el objeto queda en un estado incompleto.',
+    'Abusar de la herencia cuando la composición sería más apropiada. La regla general: herencia para relaciones "es un" (Empleado es una Persona), composición para relaciones "tiene un" (Coche tiene un Motor).'
+  ],
+  '[{"type":"article","title":"Python Docs - Classes","url":"https://docs.python.org/3/tutorial/classes.html"},{"type":"article","title":"Real Python - Object Oriented Programming","url":"https://realpython.com/python3-object-oriented-programming/"},{"type":"article","title":"Python Docs - dataclasses","url":"https://docs.python.org/3/library/dataclasses.html"}]'::jsonb,
+  'a1e56981-d263-463b-a35d-a5f1380d8f00'
+),
+
+(
+  gen_random_uuid(),
+  'Archivos, excepciones y módulos',
+  'python-files-exceptions-modules',
+  'BEGINNER',
+  'Aprende a leer y escribir archivos, manejar errores de forma controlada con excepciones, y organizar el código en módulos reutilizables.',
+  'Cualquier aplicación real interactúa con el sistema de archivos, puede fallar por razones externas y necesita organizar su código en múltiples archivos. Estas tres habilidades son el puente entre los ejercicios de aprendizaje y los programas que funcionan en producción.',
+  'MANEJO DE ARCHIVOS
+
+Python provee la función built-in open() para trabajar con archivos. La forma recomendada es siempre usar el gestor de contexto with, que garantiza que el archivo se cierre correctamente aunque ocurra un error.
+
+  with open("archivo.txt", "r", encoding="utf-8") as f:
+      contenido = f.read()
+
+Modos de apertura:
+- "r": lectura (por defecto). Lanza FileNotFoundError si no existe.
+- "w": escritura. Crea el archivo si no existe; lo sobreescribe si existe.
+- "a": append. Agrega al final sin borrar el contenido existente.
+- "x": creación exclusiva. Lanza FileExistsError si ya existe.
+- "rb", "wb": modo binario (imágenes, PDFs, etc.).
+
+Métodos principales de lectura:
+- f.read(): lee el archivo completo como un string.
+- f.readline(): lee una línea.
+- f.readlines(): devuelve una lista con todas las líneas.
+- Iterar directamente: for linea in f: es eficiente en memoria para archivos grandes.
+
+MANEJO DE EXCEPCIONES
+
+Las excepciones son la forma en que Python reporta errores en tiempo de ejecución. El bloque try/except captura esas excepciones y permite responder a ellas de forma controlada.
+
+  try:
+      resultado = 10 / divisor
+  except ZeroDivisionError:
+      print("No se puede dividir entre cero")
+  except (TypeError, ValueError) as e:
+      print(f"Error de tipo o valor: {e}")
+  else:
+      print("Todo salió bien")  # se ejecuta si no hubo excepción
+  finally:
+      print("Esto siempre se ejecuta")  # con o sin excepción
+
+Las excepciones más comunes: ValueError, TypeError, KeyError, IndexError, FileNotFoundError, ZeroDivisionError, AttributeError, ImportError.
+
+Para lanzar excepciones propias: raise ValueError("mensaje descriptivo").
+
+Para crear excepciones personalizadas, se define una clase que hereda de Exception.
+
+MÓDULOS Y PAQUETES
+
+Un módulo es simplemente un archivo .py. Cuando importas un módulo, Python ejecuta ese archivo y pone sus definiciones a tu disposición.
+
+Formas de importar:
+  import math                    # importa el módulo completo
+  from math import sqrt, pi      # importa nombres específicos
+  from math import sqrt as raiz  # importa con alias
+
+Un paquete es una carpeta que contiene un archivo __init__.py y uno o más módulos. __init__.py puede estar vacío; su presencia convierte la carpeta en un paquete de Python.
+
+Cuando ejecutas python archivo.py, Python asigna a la variable __name__ el valor "__main__". Cuando el mismo archivo se importa como módulo, __name__ toma el nombre del módulo. El patrón if __name__ == "__main__" se usa para separar el código que debe ejecutarse solo cuando el archivo se corre directamente.',
+  '# ARCHIVOS: lectura
+with open("datos.txt", "r", encoding="utf-8") as f:
+    for linea in f:             # eficiente en memoria
+        print(linea.strip())    # strip elimina el salto de línea
+
+# ARCHIVOS: escritura
+lineas = ["primera linea", "segunda linea", "tercera linea"]
+with open("salida.txt", "w", encoding="utf-8") as f:
+    for linea in lineas:
+        f.write(linea + "\n")
+
+# ARCHIVOS: JSON (muy común en aplicaciones reales)
+import json
+
+datos = {"nombre": "Ana", "edad": 28, "activo": True}
+
+# Escribir JSON
+with open("usuario.json", "w", encoding="utf-8") as f:
+    json.dump(datos, f, indent=2)
+
+# Leer JSON
+with open("usuario.json", "r", encoding="utf-8") as f:
+    cargado = json.load(f)
+    print(cargado["nombre"])  # Ana
+
+
+# EXCEPCIONES
+def leer_archivo(ruta):
+    try:
+        with open(ruta, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"El archivo {ruta} no existe")
+        return None
+    except PermissionError:
+        print("No tienes permisos para leer ese archivo")
+        return None
+
+# Excepción personalizada
+class SaldoInsuficienteError(Exception):
+    def __init__(self, saldo, monto):
+        super().__init__(f"Saldo insuficiente: tienes {saldo}, intentas retirar {monto}")
+        self.saldo = saldo
+        self.monto = monto
+
+def retirar(saldo, monto):
+    if monto > saldo:
+        raise SaldoInsuficienteError(saldo, monto)
+    return saldo - monto
+
+try:
+    nuevo_saldo = retirar(100, 200)
+except SaldoInsuficienteError as e:
+    print(e)
+
+# MÓDULOS
+# archivo: calculos.py
+def sumar(a, b):
+    return a + b
+
+if __name__ == "__main__":
+    # Este bloque solo se ejecuta si corres calculos.py directamente
+    print(sumar(3, 4))
+
+# archivo: main.py
+# from calculos import sumar
+# print(sumar(10, 20))',
+  ARRAY[
+    'Especifica siempre encoding="utf-8" al abrir archivos de texto. El encoding por defecto varía entre sistemas operativos y puede generar errores difíciles de reproducir.',
+    'Captura excepciones específicas, no la clase base Exception. Capturar Exception silencia errores inesperados que deberías conocer durante el desarrollo.',
+    'Usa el módulo json de la librería estándar para leer y escribir archivos JSON. Es la operación de archivo más común en aplicaciones web y scripts de automatización.',
+    'Crea excepciones personalizadas con nombres descriptivos que terminen en Error. Hacen el código más legible y permiten capturarlas con precisión.'
+  ],
+  ARRAY[
+    'No usar with al abrir archivos. Si el código lanza una excepción antes de llamar a f.close(), el archivo queda abierto. El gestor de contexto garantiza el cierre siempre.',
+    'Capturar excepciones y no hacer nada con ellas (pass). Silenciar errores hace que el programa falle más adelante en un lugar diferente, sin pista del origen del problema.',
+    'Usar rutas absolutas hardcodeadas. Usa el módulo pathlib o os.path para construir rutas de forma portable entre sistemas operativos.',
+    'Nombrar un módulo propio con el mismo nombre que un módulo de la librería estándar o de un paquete instalado. Python importará el tuyo en lugar del esperado, causando ImportError confusos.'
+  ],
+  '[{"type":"article","title":"Python Docs - Reading and Writing Files","url":"https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files"},{"type":"article","title":"Python Docs - Errors and Exceptions","url":"https://docs.python.org/3/tutorial/errors.html"},{"type":"article","title":"Real Python - Python Exceptions","url":"https://realpython.com/python-exceptions/"}]'::jsonb,
+  'a1e56981-d263-463b-a35d-a5f1380d8f00'
+),
+
+(
+  gen_random_uuid(),
+  'Librería estándar esencial y pip',
+  'python-stdlib-and-pip',
+  'BEGINNER',
+  'Conoce los módulos más útiles que vienen incluidos con Python y aprende a instalar y gestionar paquetes externos con pip.',
+  'Python se describe frecuentemente como un lenguaje con "baterías incluidas". Su librería estándar resuelve la mayoría de las tareas cotidianas sin necesidad de instalar nada. Saber qué existe evita reinventar la rueda y construir herramientas frágiles.',
+  'LA LIBRERÍA ESTÁNDAR
+
+Python incluye una colección extensa de módulos listos para usar. Los más relevantes para un desarrollador backend son:
+
+os y pathlib
+Interacción con el sistema operativo y el sistema de archivos.
+- os.environ: acceso a variables de entorno.
+- os.getcwd(): directorio de trabajo actual.
+- pathlib.Path: la forma moderna de trabajar con rutas. Orientada a objetos, portable entre sistemas operativos.
+
+sys
+Información sobre el intérprete de Python.
+- sys.argv: lista de argumentos pasados al script desde la terminal.
+- sys.exit(): termina el programa con un código de salida.
+- sys.path: lista de directorios donde Python busca módulos.
+
+json
+Codificación y decodificación de JSON. json.dumps() convierte un objeto Python a string JSON. json.loads() convierte un string JSON a objeto Python. json.dump() y json.load() trabajan directamente con archivos.
+
+datetime
+Manejo de fechas y tiempos. La clase datetime.datetime representa un punto en el tiempo. timedelta representa una duración.
+
+collections
+Estructuras de datos especializadas:
+- Counter: cuenta ocurrencias de elementos.
+- defaultdict: diccionario con valor por defecto para claves nuevas.
+- deque: lista optimizada para inserciones y eliminaciones en ambos extremos.
+- namedtuple: tupla con nombres para sus campos.
+
+itertools
+Herramientas para trabajar con iterables de forma eficiente en memoria: chain, product, combinations, permutations, groupby.
+
+re
+Expresiones regulares para búsqueda y manipulación de texto.
+
+random
+Generación de números y selecciones aleatorias.
+
+hashlib
+Funciones de hash criptográfico: SHA-256, MD5, etc.
+
+GESTIÓN DE PAQUETES CON pip
+
+pip es el instalador de paquetes de Python. Descarga paquetes desde PyPI (Python Package Index), el repositorio central de paquetes de Python.
+
+Comandos esenciales:
+  pip install nombre-paquete
+  pip install nombre-paquete==2.0.1    # versión específica
+  pip uninstall nombre-paquete
+  pip list                              # paquetes instalados
+  pip show nombre-paquete               # info de un paquete
+  pip freeze > requirements.txt         # exportar dependencias
+  pip install -r requirements.txt       # instalar desde archivo
+
+REQUIREMENTS.TXT
+
+Es el archivo estándar para documentar las dependencias de un proyecto. Debe vivir en la raíz del repositorio y debe estar incluido en el control de versiones. Permite que cualquiera que clone el repositorio pueda recrear el entorno exacto con un solo comando.
+
+Siempre usa pip dentro de un entorno virtual activo. Los paquetes instalados globalmente no aparecen en el requirements.txt del entorno virtual y contaminan el entorno base de Python.',
+  '# OS y PATHLIB
+import os
+from pathlib import Path
+
+print(os.getcwd())                     # directorio actual
+print(os.environ.get("HOME", "N/A"))   # variable de entorno
+
+ruta = Path("datos") / "usuarios" / "perfil.json"
+print(ruta)                            # datos/usuarios/perfil.json
+print(ruta.suffix)                     # .json
+print(ruta.stem)                       # perfil
+print(ruta.parent)                     # datos/usuarios
+
+# Crear directorio si no existe
+ruta.parent.mkdir(parents=True, exist_ok=True)
+
+# SYS
+import sys
+print(sys.version)
+print(sys.argv)  # ["script.py", "arg1", "arg2"] si se pasan argumentos
+
+# DATETIME
+from datetime import datetime, timedelta
+
+ahora = datetime.now()
+print(ahora.strftime("%Y-%m-%d %H:%M:%S"))
+
+manana = ahora + timedelta(days=1)
+print(manana.date())
+
+nacimiento = datetime(1995, 6, 15)
+edad_dias = (ahora - nacimiento).days
+print(f"Días vividos: {edad_dias}")
+
+# COLLECTIONS
+from collections import Counter, defaultdict, deque
+
+palabras = ["python", "es", "genial", "python", "es", "python"]
+conteo = Counter(palabras)
+print(conteo.most_common(2))  # [("python",3), ("es",2)]
+
+grupos = defaultdict(list)
+datos = [("frontend", "React"), ("backend", "Django"), ("frontend", "Vue")]
+for categoria, tecnologia in datos:
+    grupos[categoria].append(tecnologia)
+print(dict(grupos))
+
+cola = deque([1, 2, 3])
+cola.appendleft(0)   # [0, 1, 2, 3]
+cola.append(4)       # [0, 1, 2, 3, 4]
+cola.popleft()       # 0
+
+# JSON
+import json
+datos = {"nombre": "Ana", "skills": ["Python", "SQL"]}
+json_str = json.dumps(datos, indent=2)
+print(json_str)
+recuperado = json.loads(json_str)
+print(recuperado["skills"])
+
+# RE (expresiones regulares)
+import re
+texto = "Contacto: ana@email.com y luis@empresa.org"
+emails = re.findall(r"[\w.+-]+@[\w-]+\.[a-z]{2,}", texto)
+print(emails)  # ["ana@email.com", "luis@empresa.org"]',
+  ARRAY[
+    'Usa pathlib.Path en lugar de os.path para trabajar con rutas. Es más legible, orientada a objetos y portable entre Windows, macOS y Linux.',
+    'Genera el requirements.txt con pip freeze > requirements.txt antes de cada commit cuando agregues dependencias. Mantenerlo actualizado es responsabilidad del desarrollador.',
+    'Antes de instalar un paquete externo, verifica si la librería estándar ya resuelve tu necesidad. Menos dependencias externas significa menos superficie de ataque y proyectos más portables.',
+    'Usa Counter cuando necesites contar frecuencias. Es más rápido y legible que un diccionario con lógica manual de conteo.'
+  ],
+  ARRAY[
+    'Instalar paquetes con pip sin tener el entorno virtual activo. Los paquetes se instalan globalmente y no quedan registrados en el requirements.txt del proyecto.',
+    'Commitear el requirements.txt sin actualizarlo después de instalar nuevas dependencias. Los colaboradores o el servidor de deploy no podrán reproducir el entorno.',
+    'Construir manualmente rutas con concatenación de strings: "carpeta/" + "archivo.txt". En Windows las rutas usan backslash, lo que rompe el código. pathlib resuelve esto.',
+    'Ignorar la documentación de PyPI antes de instalar un paquete. Verifica la fecha de la última actualización, el número de descargas y si el paquete tiene mantenimiento activo.'
+  ],
+  '[{"type":"article","title":"Python Docs - The Python Standard Library","url":"https://docs.python.org/3/library/"},{"type":"article","title":"Python Docs - pathlib","url":"https://docs.python.org/3/library/pathlib.html"},{"type":"article","title":"Real Python - pip","url":"https://realpython.com/what-is-pip/"}]'::jsonb,
+  'a1e56981-d263-463b-a35d-a5f1380d8f00'
+),
+
+(
+  gen_random_uuid(),
+  'Proyecto: herramienta de automatización CLI',
+  'python-cli-automation-project',
+  'BEGINNER',
+  'Aplica todos los conceptos del curso construyendo una herramienta de línea de comandos real que automatiza una tarea concreta usando las mejores prácticas de Python.',
+  'El conocimiento sin aplicación no se consolida. Construir una herramienta CLI real obliga a integrar tipos, funciones, colecciones, POO, archivos, excepciones y la librería estándar en un programa coherente. Es el tipo de proyecto que se puede mostrar en un portafolio.',
+  'QUÉ ES UNA HERRAMIENTA CLI
+
+Una herramienta CLI (Command Line Interface) es un programa que se ejecuta desde la terminal y recibe instrucciones a través de argumentos y opciones. Son la base de la automatización: scripts de deploy, procesamiento de datos, generación de reportes, gestión de archivos.
+
+Ejemplos cotidianos de herramientas CLI: git, pip, npm, docker, aws.
+
+ESTRUCTURA DE UN PROYECTO PYTHON PROFESIONAL
+
+Antes de escribir código, la estructura del proyecto importa:
+
+  mi-herramienta/
+  ├── cli.py              # punto de entrada principal
+  ├── core/
+  │   ├── __init__.py
+  │   ├── procesador.py   # lógica de negocio
+  │   └── modelos.py      # clases de datos
+  ├── utils/
+  │   ├── __init__.py
+  │   └── archivos.py     # utilidades de I/O
+  ├── requirements.txt
+  └── README.md
+
+ARGPARSE: ARGUMENTOS EN LA TERMINAL
+
+El módulo argparse (librería estándar) convierte los argumentos de la terminal en variables Python y genera documentación automática con --help.
+
+  import argparse
+  parser = argparse.ArgumentParser(description="Descripción de la herramienta")
+  parser.add_argument("archivo", help="Archivo a procesar")
+  parser.add_argument("--formato", choices=["json", "csv"], default="json")
+  parser.add_argument("--verbose", action="store_true")
+  args = parser.parse_args()
+
+LA HERRAMIENTA: ANALIZADOR DE LOGS
+
+La herramienta que construiremos en este proyecto lee un archivo de logs en formato texto, analiza su contenido, genera estadísticas y exporta un reporte en JSON o CSV.
+
+Funcionalidades:
+1. Leer el archivo de logs desde un argumento de línea de comandos.
+2. Parsear cada línea para extraer: timestamp, nivel (INFO, WARNING, ERROR), mensaje.
+3. Contar ocurrencias por nivel.
+4. Filtrar líneas por nivel si el usuario lo solicita.
+5. Exportar el reporte en JSON o CSV según la opción elegida.
+6. Manejar errores: archivo no encontrado, formato inválido.
+
+Este proyecto usa: argparse, pathlib, datetime, collections.Counter, json, csv, clases con dataclass, excepciones personalizadas, módulos separados y el patrón if __name__ == "__main__".',
+  '# core/modelos.py
+from dataclasses import dataclass
+from datetime import datetime
+
+NIVELES_VALIDOS = {"INFO", "WARNING", "ERROR", "DEBUG"}
+
+class FormatoLogInvalidoError(Exception):
+    pass
+
+@dataclass
+class EntradaLog:
+    timestamp: datetime
+    nivel: str
+    mensaje: str
+
+    @classmethod
+    def desde_linea(cls, linea: str) -> "EntradaLog":
+        """
+        Parsea una línea con el formato:
+        2024-01-15 10:30:00 ERROR mensaje del error
+        """
+        partes = linea.strip().split(" ", 3)
+        if len(partes) < 4:
+            raise FormatoLogInvalidoError(f"Línea inválida: {linea.strip()}")
+        fecha_str, hora_str, nivel, mensaje = partes
+        if nivel not in NIVELES_VALIDOS:
+            raise FormatoLogInvalidoError(f"Nivel desconocido: {nivel}")
+        timestamp = datetime.strptime(f"{fecha_str} {hora_str}", "%Y-%m-%d %H:%M:%S")
+        return cls(timestamp=timestamp, nivel=nivel, mensaje=mensaje)
+
+
+# core/procesador.py
+from collections import Counter
+from pathlib import Path
+from core.modelos import EntradaLog, FormatoLogInvalidoError
+
+def leer_logs(ruta: Path, nivel_filtro: str = None) -> list[EntradaLog]:
+    entradas = []
+    errores = 0
+    with open(ruta, "r", encoding="utf-8") as f:
+        for numero, linea in enumerate(f, start=1):
+            if not linea.strip():
+                continue
+            try:
+                entrada = EntradaLog.desde_linea(linea)
+                if nivel_filtro is None or entrada.nivel == nivel_filtro:
+                    entradas.append(entrada)
+            except FormatoLogInvalidoError:
+                errores += 1
+                print(f"Advertencia: línea {numero} ignorada por formato inválido")
+    if errores:
+        print(f"Total de líneas ignoradas: {errores}")
+    return entradas
+
+def generar_estadisticas(entradas: list[EntradaLog]) -> dict:
+    conteo = Counter(e.nivel for e in entradas)
+    return {
+        "total": len(entradas),
+        "por_nivel": dict(conteo),
     }
 
-    console.log(`  ✅ ${pathInfo.title} (${modules.length} módulos)`);
-  }
-}
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+# cli.py
+import argparse
+import json
+import csv
+import sys
+from pathlib import Path
+from core.procesador import leer_logs, generar_estadisticas
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Analiza archivos de log y genera reportes"
+    )
+    parser.add_argument("archivo", type=Path, help="Ruta al archivo de log")
+    parser.add_argument(
+        "--nivel",
+        choices=["INFO", "WARNING", "ERROR", "DEBUG"],
+        help="Filtrar por nivel de log"
+    )
+    parser.add_argument(
+        "--formato",
+        choices=["json", "csv"],
+        default="json",
+        help="Formato del reporte de salida (default: json)"
+    )
+    parser.add_argument(
+        "--salida",
+        type=Path,
+        default=Path("reporte"),
+        help="Nombre base del archivo de salida"
+    )
+    args = parser.parse_args()
+
+    if not args.archivo.exists():
+        print(f"Error: el archivo {args.archivo} no existe.")
+        sys.exit(1)
+
+    entradas = leer_logs(args.archivo, nivel_filtro=args.nivel)
+    estadisticas = generar_estadisticas(entradas)
+
+    if args.formato == "json":
+        ruta_salida = args.salida.with_suffix(".json")
+        with open(ruta_salida, "w", encoding="utf-8") as f:
+            json.dump(estadisticas, f, indent=2)
+    elif args.formato == "csv":
+        ruta_salida = args.salida.with_suffix(".csv")
+        with open(ruta_salida, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["nivel", "cantidad"])
+            for nivel, cantidad in estadisticas["por_nivel"].items():
+                writer.writerow([nivel, cantidad])
+
+    print(f"Reporte generado: {ruta_salida}")
+    print(f"Total de entradas procesadas: {estadisticas[''total'']}")
+
+if __name__ == "__main__":
+    main()
+
+# Uso desde la terminal:
+# python cli.py servidor.log
+# python cli.py servidor.log --nivel ERROR
+# python cli.py servidor.log --formato csv --salida reportes/enero',
+  ARRAY[
+    'Divide el código en módulos desde el inicio aunque el proyecto sea pequeño. Desarrollar el hábito de separar responsabilidades vale más que terminar rápido con todo en un solo archivo.',
+    'Prueba tu herramienta con argumentos inválidos y archivos mal formados. Las herramientas robustas se diseñan pensando en los casos de error, no solo en el camino feliz.',
+    'Escribe un README claro que explique cómo instalar y usar la herramienta. Es lo primero que verá alguien que encuentre tu repositorio.',
+    'Usa sys.exit(1) cuando el programa termina por un error. El código de salida 0 indica éxito; cualquier otro número indica fallo. Esto permite que otros scripts o pipelines detecten si tu herramienta falló.'
+  ],
+  ARRAY[
+    'Poner toda la lógica en cli.py. El punto de entrada debe encargarse solo de parsear argumentos y coordinar; la lógica de negocio va en módulos separados.',
+    'No manejar el caso en que el archivo de entrada no existe. Es el error más común al usar herramientas CLI y el usuario espera un mensaje claro, no una excepción de Python sin formato.',
+    'Olvidar agregar un if __name__ == "__main__" en el punto de entrada. Sin esto, importar el módulo desde otro archivo ejecutaría el programa inmediatamente.',
+    'No incluir --help en la documentación de argparse. argparse lo genera automáticamente si describes bien cada argumento con el parámetro help. No aprovecharlo es desperdiciar una función gratuita.'
+  ],
+  '[{"type":"article","title":"Python Docs - argparse","url":"https://docs.python.org/3/library/argparse.html"},{"type":"article","title":"Real Python - Building Command Line Interfaces with argparse","url":"https://realpython.com/command-line-interfaces-python-argparse/"},{"type":"article","title":"Hitchhiker''s Guide to Python - Structuring Your Project","url":"https://docs.python-guide.org/writing/structure/"}]'::jsonb,
+  'a1e56981-d263-463b-a35d-a5f1380d8f00'
+);

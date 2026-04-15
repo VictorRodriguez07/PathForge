@@ -181,13 +181,20 @@ model ModuleItem {
 }
 
 model Concept {
-  id        String @id @default(uuid())
-  name      String
-  slug      String @unique
-  level     Level
-  subjectId String
-  subject   Subject         @relation(fields: [subjectId], references: [id])
-  moduleItems ConceptOnModule[]
+  id             String   @id @default(uuid())
+  name           String
+  slug           String   @unique
+  level          Level
+  description    String?
+  whyMatters     String?
+  explanation    String?
+  codeExample    String?
+  practicalTips  String[]
+  commonMistakes String[]
+  resources      Json?
+  subjectId      String
+  subject        Subject          @relation(fields: [subjectId], references: [id])
+  moduleItems    ConceptOnModule[]
 
   @@index([subjectId])
   @@index([level])

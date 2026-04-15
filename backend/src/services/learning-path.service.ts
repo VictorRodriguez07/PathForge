@@ -28,6 +28,13 @@ export async function getLearningPathBySlug(slug: string) {
       },
       modules: {
         orderBy: { orderIndex: "asc" },
+        include: {
+          concepts: {
+            include: {
+              concept: true,
+            },
+          },
+        },
       },
     },
   });

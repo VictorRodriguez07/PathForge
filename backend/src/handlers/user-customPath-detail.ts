@@ -21,23 +21,34 @@ export const handler = async (event: APIGatewayProxyEventV2) => {
     });
 
     const userPath = await prisma.userPath.findFirst({
-      where: { id: userPathId, userId: user.id },
+  where: { id: userPathId, userId: user.id },
+  include: {
+    pathTemplate: {
       include: {
-        pathTemplate: {
+        subject: { select: { name: true, slug: true, iconUrl: true } },
+        modules: {
+          orderBy: { orderIndex: "asc" },
           include: {
-            subject: { select: { name: true, slug: true, iconUrl: true } },
-            modules: { orderBy: { orderIndex: "asc" } },
-          },
-        },
-        moduleProgress: {
-          include: {
-            module: {
-              select: { id: true, title: true, orderIndex: true, durationDays: true },
+            concepts: {
+              include: { concept: true },
             },
           },
         },
       },
-    });
+    },
+    moduleProgress: {
+  include: {
+    module: {
+      include: {
+        concepts: {
+          include: { concept: true },
+        },
+      },
+    },
+  },
+},
+  },
+});
 
     if (!userPath) {
       return {
