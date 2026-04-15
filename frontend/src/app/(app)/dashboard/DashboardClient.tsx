@@ -173,7 +173,7 @@ export default function DashboardClient() {
   const user = useAuthStore((s) => s.user);
 
   const { data: pathsData, isLoading } = useQuery({
-    queryKey: QUERY_KEYS.learningPaths,
+    queryKey: QUERY_KEYS.learningPaths(),
     queryFn: () => usersApi.getMyPaths(),
   });
 
